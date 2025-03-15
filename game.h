@@ -5,30 +5,39 @@ enum Direction{UP,DOWN,LEFT,RIGHT};
 class people 
 {
 public:
-	void DisplayMessage();
+	people() :x(0), y(0) {}
+	void DisplayMessage(people&);
 	void SetPeopleBeginPos(int,int);
 	void Movepeople(Direction heading);
-	int getx();
-	int gety();
+	int& getx();
+	int& gety();
+	 int returnx()const;
+	 int returny()const;
 private:
 	int x; 
 	int y;
 };
 class game 
 {
+
 public:
-	void DisplayRelativeMove(people p1, people p2, people*, people*);
-	void DisplayPath();
+	~game();
+	void DisplayRelativeMove( people*, people*);
+	bool IfYes(int, people*);
 	void setrun(int);
-	people getp1();
-	people getp2();
-	people* getp1array();
-	people* getp2array();
+	int getrun();
+	people& getp1();
+	people& getp2();
+	people*& getp1array();
+	people*& getp2array();
+	people*& getp2relative();
+	void setp2relative(people*&,people*,people*,int run);
+	void setzihzhen();
 private:
 	people p1, p2;
 	int run;
-	people* p1array=new people[run];
-	people* p2array=new people[run];
-	
+	people* p1array;
+	people* p2array;
+	people* p2relative;
 };
 #endif // !GAME_H

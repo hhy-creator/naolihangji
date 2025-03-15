@@ -10,8 +10,8 @@ public:
 	void Exitgame();
 	void BeginGame();
 	void ChooseGame();
-	void ChooseLevel();
 	void RunChoose();
+	int getlevel();
 
 private:
 	int choose;
