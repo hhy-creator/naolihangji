@@ -3,7 +3,7 @@
 using namespace std;
 void people::DisplayMessage( people& p1) 
 {
-	cout << p1.returnx() << " " << p1.returny()<<endl;
+	cout << p1.returnx() << " " << p1.returny()<<"     ";
 }
 void people::SetPeopleBeginPos(int x1, int y1)
 {
@@ -39,17 +39,6 @@ int& people::gety()
 	return y;
 
 }
-void game::setrun(int num1)
-{
-	this->run = num1;
-	
-}
-void game::setzihzhen() 
-{
-	p1array = new people[run];
-	p2array = new people[run];
-	p2relative = new people[run];
-}
 int people::returnx() const
 {
 	return x;
@@ -66,6 +55,17 @@ game::~game()
 	p1array = nullptr;
 	p2array = nullptr;
 	p2relative = nullptr;
+}
+void game::setrun(int num1)
+{
+	this->run = num1;
+
+}
+void game::setzihzhen()
+{
+	p1array = new people[run];
+	p2array = new people[run];
+	p2relative = new people[run];
 }
 void game::setp2relative(people*& p1, people*p2, people*p3,int run)
 {
@@ -89,12 +89,14 @@ void game::DisplayRelativeMove(people* p1array, people*p2relative)
 			cout << "开始你及别人的坐标：" << endl;
 			p1array[i].DisplayMessage(p1array[i]); 
 			p2relative[i].DisplayMessage(p2relative[i]);
+			cout << endl;
 		}
 		else 
 		{
 			cout << "第" << i << "次你的坐标及别人的相对坐标:" << endl;
 			p1array[i].DisplayMessage(p1array[i]);
 			p2relative[i].DisplayMessage(p2relative[i]);
+			cout << endl;
 
 		}
 	}
@@ -142,7 +144,7 @@ people& game::getp2()
 {
 	return this->p2;
 }
-people* &game::getp1array() 
+people*&game::getp1array() 
 {
 	return this->p1array;
 }

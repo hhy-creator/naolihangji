@@ -11,8 +11,8 @@ public:
 	void Movepeople(Direction heading);
 	int& getx();
 	int& gety();
-	 int returnx()const;
-	 int returny()const;
+	int returnx()const;
+	int returny()const;
 private:
 	int x; 
 	int y;

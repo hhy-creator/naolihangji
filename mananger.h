@@ -12,11 +12,9 @@ public:
 	void ChooseGame();
 	void RunChoose();
 	int getlevel();
-
 private:
 	int choose;
 	int level;
-
 };
 
 #endif // !MANANGER_H

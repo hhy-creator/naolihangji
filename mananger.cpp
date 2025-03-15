@@ -28,6 +28,9 @@ void Mananger::RunChoose()
 		Exitgame();
 		break;
 	}
+	default:
+		cout << "输入的选择不符合要求，请重新输入：" << endl;
+		break;
 
 	}
 }
@@ -64,6 +67,30 @@ int Mananger::getlevel()
 {
 	return level;
 }
+void GameShowmess(game& g1) 
+{
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	bool x = 1;
+	while (x) {
+		g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
+		bool a = g1.IfYes(g1.getrun(), g1.getp2array());
+		if (a)
+		{
+			x = 0;
+			cout << "游戏挑战成功，棒棒的。" << endl;
+			break;
+		}
+		else
+		{
+			cout << "挑战失败" << endl;
+			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
+			bool aga;
+			cin >> aga;
+			if (!aga) { cout << "放弃挑战" << endl; break; }
+			else { system("cls"); }
+		}
+	}
+}
 void creatgame1()
 {
 	game g1;
@@ -89,27 +116,294 @@ void creatgame1()
 	g1.getp2array()[3] = g1.getp2();
 	g1.getp2().Movepeople(DOWN);
 	g1.getp2array()[4] = g1.getp2();
-	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-	bool x = 1;
-	while (x) {
-		g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
-		bool a = g1.IfYes(g1.getrun(), g1.getp2array());
-		if (a)
-		{
-			x = 0;
-			cout << "游戏挑战成功，棒棒的。" << endl;
-			break;
-		}
-		else
-		{
-			cout << "挑战失败" << endl;
-			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
-			bool aga;
-			cin >> aga;
-			if (!aga) { cout << "放弃挑战" << endl; break; }
-			else { system("cls"); }
-		}
-	}
+	GameShowmess(g1);
+}
+void creatgam2()
+{
+	game g2;
+	g2.setrun(11);
+	g2.setzihzhen();
+	g2.getp1().SetPeopleBeginPos(19,17);
+	g2.getp1array()[0] = g2.getp1();
+	g2.getp1().Movepeople(LEFT);
+	g2.getp1array()[1] = g2.getp1();
+	g2.getp1().Movepeople(LEFT);
+	g2.getp1array()[2] = g2.getp1();
+	g2.getp1().Movepeople(LEFT);
+	g2.getp1array()[3] = g2.getp1();
+	g2.getp1().Movepeople(DOWN);
+	g2.getp1array()[4] = g2.getp1();
+	g2.getp1().Movepeople(DOWN);
+	g2.getp1array()[5] = g2.getp1();
+	g2.getp1().Movepeople(RIGHT);
+	g2.getp1array()[6] = g2.getp1();
+	g2.getp1().Movepeople(RIGHT);
+	g2.getp1array()[7] = g2.getp1();
+	g2.getp1().Movepeople(DOWN);
+	g2.getp1array()[8] = g2.getp1();
+	g2.getp1().Movepeople(RIGHT);
+	g2.getp1array()[9] = g2.getp1();
+	g2.getp1().Movepeople(RIGHT);
+	g2.getp1array()[10] = g2.getp1();
+	g2.getp2().SetPeopleBeginPos(22, 22);
+	g2.getp2array()[0] = g2.getp2();
+	g2.getp2().Movepeople(UP);
+	g2.getp2array()[1] = g2.getp2();
+	g2.getp2().Movepeople(UP);
+	g2.getp2array()[2] = g2.getp2();
+	g2.getp2().Movepeople(RIGHT);
+	g2.getp2array()[3] = g2.getp2();
+	g2.getp2().Movepeople(UP);
+	g2.getp2array()[4] = g2.getp2();
+	g2.getp2().Movepeople(UP);
+	g2.getp2array()[5] = g2.getp2();
+	g2.getp2().Movepeople(LEFT);
+	g2.getp2array()[6] = g2.getp2();
+	g2.getp2().Movepeople(DOWN);
+	g2.getp2array()[7] = g2.getp2();
+	g2.getp2().Movepeople(LEFT);
+	g2.getp2array()[8] = g2.getp2();
+	g2.getp2().Movepeople(LEFT);
+	g2.getp2array()[9] = g2.getp2();
+	g2.getp2().Movepeople(DOWN);
+	g2.getp2array()[10] = g2.getp2();
+	GameShowmess(g2);
+}
+void creatgame3() 
+{
+	game g3;
+	g3.setrun(16);
+	g3.setzihzhen();
+	g3.getp1().SetPeopleBeginPos(70, 62);
+	g3.getp1array()[0] = g3.getp1();
+	g3.getp1().Movepeople(UP);
+	g3.getp1array()[1] = g3.getp1();
+	g3.getp1().Movepeople(LEFT);
+	g3.getp1array()[2] = g3.getp1();
+	g3.getp1().Movepeople(DOWN);
+	g3.getp1array()[3] = g3.getp1();
+	g3.getp1().Movepeople(LEFT);
+	g3.getp1array()[4] = g3.getp1();
+	g3.getp1().Movepeople(UP);
+	g3.getp1array()[5] = g3.getp1();
+	g3.getp1().Movepeople(UP);
+	g3.getp1array()[6] = g3.getp1();
+	g3.getp1().Movepeople(LEFT);
+	g3.getp1array()[7] = g3.getp1();
+	g3.getp1().Movepeople(LEFT);
+	g3.getp1array()[8] = g3.getp1();
+	g3.getp1().Movepeople(DOWN);
+	g3.getp1array()[9] = g3.getp1();
+	g3.getp1().Movepeople(DOWN);
+	g3.getp1array()[10] = g3.getp1();
+	g3.getp1().Movepeople(LEFT);
+	g3.getp1array()[11] = g3.getp1();
+	g3.getp1().Movepeople(LEFT);
+	g3.getp1array()[12] = g3.getp1();
+	g3.getp1().Movepeople(UP);
+	g3.getp1array()[13] = g3.getp1();
+	g3.getp1().Movepeople(UP);
+	g3.getp1array()[14] = g3.getp1();
+	g3.getp1().Movepeople(LEFT);
+	g3.getp1array()[15] = g3.getp1();
+	g3.getp2().SetPeopleBeginPos(57, 59);
+	g3.getp2array()[0] = g3.getp2();
+	g3.getp2().Movepeople(RIGHT);
+	g3.getp2array()[1] = g3.getp2();
+	g3.getp2().Movepeople(DOWN);
+	g3.getp2array()[2] = g3.getp2();
+	g3.getp2().Movepeople(DOWN);
+	g3.getp2array()[3] = g3.getp2();
+	g3.getp2().Movepeople(RIGHT);
+	g3.getp2array()[4] = g3.getp2();
+	g3.getp2().Movepeople(UP);
+	g3.getp2array()[5] = g3.getp2();
+	g3.getp2().Movepeople(UP);
+	g3.getp2array()[6] = g3.getp2();
+	g3.getp2().Movepeople(RIGHT);
+	g3.getp2array()[7] = g3.getp2();
+	g3.getp2().Movepeople(DOWN);
+	g3.getp2array()[8] = g3.getp2();
+	g3.getp2().Movepeople(DOWN);
+	g3.getp2array()[9] = g3.getp2();
+	g3.getp2().Movepeople(RIGHT);
+	g3.getp2array()[10] = g3.getp2();
+	g3.getp2().Movepeople(UP);
+	g3.getp2array()[11] = g3.getp2();
+	g3.getp2().Movepeople(UP);
+	g3.getp2array()[12] = g3.getp2();
+	g3.getp2().Movepeople(RIGHT);
+	g3.getp2array()[13] = g3.getp2();
+	g3.getp2().Movepeople(RIGHT);
+	g3.getp2array()[14] = g3.getp2();
+	g3.getp2().Movepeople(DOWN);
+	g3.getp2array()[15] = g3.getp2();
+
+	GameShowmess(g3);
+}
+void creatgame4()
+{
+	cout << "我两爱方形" << endl;
+	game g4;
+	g4.setrun(16);
+	g4.setzihzhen();
+	g4.getp1().SetPeopleBeginPos(10, 14);
+	g4.getp1array()[0] = g4.getp1();
+	g4.getp1().Movepeople(DOWN);
+	g4.getp1array()[1] = g4.getp1();
+	g4.getp1().Movepeople(DOWN);
+	g4.getp1array()[2] = g4.getp1();
+	g4.getp1().Movepeople(DOWN);
+	g4.getp1array()[3] = g4.getp1();
+	g4.getp1().Movepeople(LEFT);
+	g4.getp1array()[4] = g4.getp1();
+	g4.getp1().Movepeople(LEFT);
+	g4.getp1array()[5] = g4.getp1();
+	g4.getp1().Movepeople(LEFT);
+	g4.getp1array()[6] = g4.getp1();
+	g4.getp1().Movepeople(UP);
+	g4.getp1array()[7] = g4.getp1();
+	g4.getp1().Movepeople(UP);
+	g4.getp1array()[8] = g4.getp1();
+	g4.getp1().Movepeople(UP);
+	g4.getp1array()[9] = g4.getp1();
+	g4.getp1().Movepeople(RIGHT);
+	g4.getp1array()[10] = g4.getp1();
+	g4.getp1().Movepeople(RIGHT);
+	g4.getp1array()[11] = g4.getp1();
+	g4.getp1().Movepeople(DOWN);
+	g4.getp1array()[12] = g4.getp1();
+	g4.getp1().Movepeople(DOWN);
+	g4.getp1array()[13] = g4.getp1();
+	g4.getp1().Movepeople(LEFT);
+	g4.getp1array()[14] = g4.getp1();
+	g4.getp1().Movepeople(UP);
+	g4.getp1array()[15] = g4.getp1();
+	g4.getp2().SetPeopleBeginPos(6, 16);
+	g4.getp2array()[0] = g4.getp2();
+	g4.getp2().Movepeople(UP);
+	g4.getp2array()[1] = g4.getp2();
+	g4.getp2().Movepeople(UP);
+	g4.getp2array()[2] = g4.getp2();
+	g4.getp2().Movepeople(UP);
+	g4.getp2array()[3] = g4.getp2();
+	g4.getp2().Movepeople(RIGHT);
+	g4.getp2array()[4] = g4.getp2();
+	g4.getp2().Movepeople(RIGHT);
+	g4.getp2array()[5] = g4.getp2();
+	g4.getp2().Movepeople(RIGHT);
+	g4.getp2array()[6] = g4.getp2();
+	g4.getp2().Movepeople(DOWN);
+	g4.getp2array()[7] = g4.getp2();
+	g4.getp2().Movepeople(DOWN);
+	g4.getp2array()[8] = g4.getp2();
+	g4.getp2().Movepeople(DOWN);
+	g4.getp2array()[9] = g4.getp2();
+	g4.getp2().Movepeople(LEFT);
+	g4.getp2array()[10] = g4.getp2();
+	g4.getp2().Movepeople(LEFT);
+	g4.getp2array()[11] = g4.getp2();
+	g4.getp2().Movepeople(UP);
+	g4.getp2array()[12] = g4.getp2();
+	g4.getp2().Movepeople(UP);
+	g4.getp2array()[13] = g4.getp2();
+	g4.getp2().Movepeople(RIGHT);
+	g4.getp2array()[14] = g4.getp2();
+	g4.getp2().Movepeople(DOWN);
+	g4.getp2array()[15] = g4.getp2();
+	GameShowmess(g4);
+}
+void creatgame5()
+{
+	cout << "耿直的他" << endl;
+	game g5;
+	g5.setrun(21);
+	g5.setzihzhen();
+	g5.getp1().SetPeopleBeginPos(8,54);
+	g5.getp1array()[0] = g5.getp1();
+	g5.getp1().Movepeople(UP);
+	g5.getp1array()[1] = g5.getp1();
+	g5.getp1().Movepeople(LEFT);
+	g5.getp1array()[2] = g5.getp1();
+	g5.getp1().Movepeople(DOWN);
+	g5.getp1array()[3] = g5.getp1();
+	g5.getp1().Movepeople(DOWN);
+	g5.getp1array()[4] = g5.getp1();
+	g5.getp1().Movepeople(RIGHT);
+	g5.getp1array()[5] = g5.getp1();
+	g5.getp1().Movepeople(RIGHT);
+	g5.getp1array()[6] = g5.getp1();
+	g5.getp1().Movepeople(UP);
+	g5.getp1array()[7] = g5.getp1();
+	g5.getp1().Movepeople(UP);
+	g5.getp1array()[8] = g5.getp1();
+	g5.getp1().Movepeople(UP);
+	g5.getp1array()[9] = g5.getp1();
+	g5.getp1().Movepeople(LEFT);
+	g5.getp1array()[10] = g5.getp1();
+	g5.getp1().Movepeople(LEFT);
+	g5.getp1array()[11] = g5.getp1();
+	g5.getp1().Movepeople(UP);
+	g5.getp1array()[12] = g5.getp1();
+	g5.getp1().Movepeople(UP);
+	g5.getp1array()[13] = g5.getp1();
+	g5.getp1().Movepeople(RIGHT);
+	g5.getp1array()[14] = g5.getp1();
+	g5.getp1().Movepeople(DOWN);
+	g5.getp1array()[15] = g5.getp1();
+	g5.getp1().Movepeople(RIGHT);
+	g5.getp1array()[16] = g5.getp1();
+	g5.getp1().Movepeople(UP);
+	g5.getp1array()[17] = g5.getp1();
+	g5.getp1().Movepeople(UP);
+	g5.getp1array()[18] = g5.getp1();
+	g5.getp1().Movepeople(RIGHT);
+	g5.getp1array()[19] = g5.getp1();
+	g5.getp1().Movepeople(DOWN);
+	g5.getp1array()[20] = g5.getp1();
+	g5.getp2().SetPeopleBeginPos(10, 30);
+	g5.getp2array()[0] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[1] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[2] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[3] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[4] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[5] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[6] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[7] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[8] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[9] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[10] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[11] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[12] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[13] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[14] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[15] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[16] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[17] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[18] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[19] = g5.getp2();
+	g5.getp2().Movepeople(DOWN);
+	g5.getp2array()[20] = g5.getp2();
+	GameShowmess(g5);
 }
 void Mananger::ChooseGame() 
 {
@@ -117,11 +411,31 @@ void Mananger::ChooseGame()
 	int num;
 	cin >> num;
 	this->level = num;
-	switch (getlevel()) 
+	switch (getlevel())
 	{
-	case 1: 
+	case 1:
 	{
 		creatgame1();
+		break;
+	}
+	case 2:
+	{
+		creatgam2();
+		break;
+	}
+	case 3:
+	{
+		creatgame3();
+		break;
+	}
+	case 4:
+	{
+		creatgame4();
+		break;
+	}
+	case 5:
+	{
+		creatgame5();
 		break;
 	}
 	}
