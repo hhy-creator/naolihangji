@@ -1,5 +1,6 @@
 #include"mananger.h"
 #include"game.h"
+#include "player.h"
 #include <iostream>
 #include <time.h>
 using namespace std;
@@ -28,6 +29,10 @@ void Mananger::RunChoose()
 		Exitgame();
 		break;
 	}
+	case 3:
+		system("cls");
+		CheckMessage(p1);
+		break;
 	default:
 		cout << "输入的选择不符合要求，请重新输入：" << endl;
 		break;
@@ -46,6 +51,7 @@ void Mananger::ShowMenu()
 	cout << "****************************" << endl;
 	cout << "********1开始游戏***********" << endl;
 	cout << "********2了解游戏规则*******" << endl;
+	cout << "********3展示用户消息*******" << endl;
 	cout << "*********0退出游戏**********" << endl;
 	cout << "****************************" << endl;
 };
@@ -67,7 +73,17 @@ int Mananger::getlevel()
 {
 	return level;
 }
-void GameShowmess(game& g1) 
+player& Mananger::getplayer() 
+{
+	return this->p1;
+}
+void Mananger::CheckMessage( player&p1) 
+{
+	cout << p1.GetName()<<":";
+	p1.ShowAccuracy(p1.Getaccuracy());
+	p1.ShowScore(p1.Getscore());
+}
+void Mananger::GameShowmess(game& g1) 
 {
 	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
 	bool x = 1;
@@ -78,10 +94,18 @@ void GameShowmess(game& g1)
 		{
 			x = 0;
 			cout << "游戏挑战成功，棒棒的。" << endl;
+			bool a = 1;
+			getplayer().CreatScore(getplayer().Getscore(),getlevel(), a);
+			getplayer().AddRight(getplayer().Getright(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(),getplayer().Getaccuracy());
 			break;
 		}
 		else
 		{
+			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
+			bool a = 0;
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a);
 			cout << "挑战失败" << endl;
 			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
 			bool aga;
@@ -91,7 +115,7 @@ void GameShowmess(game& g1)
 		}
 	}
 }
-void creatgame1()
+void Mananger::creatgame1()
 {
 	game g1;
 	g1.setrun(5);
@@ -118,7 +142,7 @@ void creatgame1()
 	g1.getp2array()[4] = g1.getp2();
 	GameShowmess(g1);
 }
-void creatgam2()
+void Mananger::creatgame2()
 {
 	game g2;
 	g2.setrun(11);
@@ -169,7 +193,7 @@ void creatgam2()
 	g2.getp2array()[10] = g2.getp2();
 	GameShowmess(g2);
 }
-void creatgame3() 
+void Mananger::creatgame3()
 {
 	game g3;
 	g3.setrun(16);
@@ -241,7 +265,7 @@ void creatgame3()
 
 	GameShowmess(g3);
 }
-void creatgame4()
+void Mananger::creatgame4()
 {
 	cout << "我两爱方形" << endl;
 	game g4;
@@ -313,7 +337,7 @@ void creatgame4()
 	g4.getp2array()[15] = g4.getp2();
 	GameShowmess(g4);
 }
-void creatgame5()
+void Mananger::creatgame5()
 {
 	cout << "耿直的他" << endl;
 	game g5;
@@ -420,7 +444,7 @@ void Mananger::ChooseGame()
 	}
 	case 2:
 	{
-		creatgam2();
+		creatgame2();
 		break;
 	}
 	case 3:

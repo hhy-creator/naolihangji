@@ -3,7 +3,7 @@
 using namespace std;
 void people::DisplayMessage( people& p1) 
 {
-	cout << p1.returnx() << " " << p1.returny()<<"     ";
+	cout <<"("<< p1.returnx() << "," << p1.returny()<<")" << "   ";
 }
 void people::SetPeopleBeginPos(int x1, int y1)
 {

@@ -1,5 +1,6 @@
 #include "game.h"
 #include "mananger.h"
+#include "player.h"
 #include <iostream>
 using namespace std;
 int main() 
