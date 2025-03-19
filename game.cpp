@@ -101,8 +101,16 @@ void game::DisplayRelativeMove(people* p1array, people*p2relative)
 		}
 	}
 }
+void game::getanswer(people *p2array) 
+{
+	for (int i = 0; i < this->getrun(); i++) 
+	{
+		p2array[i].DisplayMessage(p2array[i]);
+	}
+}
 bool game::IfYes(int number, people* p2array) 
 {
+	cout << "需要提示请输入250 250" << endl;
 	people* p3array = new people[number];
 	for (int i = 0; i < number; i++) 
 	{
@@ -111,12 +119,22 @@ bool game::IfYes(int number, people* p2array)
 			cout << "别人一开始的坐标：" << endl;
 			int x1, y1;
 			cin >> x1 >> y1;
+			if (x1 == 250 && y1 == 250) 
+			{
+				gettip(i, p2array);
+				cin >> x1 >> y1;
+			}
 			p3array[i].SetPeopleBeginPos(x1, y1);
 		}
 		else {
 			cout << "请输入第" << i << "步别人的实际坐标：" << endl;
 			int x1, y1;
 			cin >> x1 >> y1;
+			if (x1 == 250 && y1 == 250)
+			{
+				gettip(i, p2array);
+				cin >> x1 >> y1;
+			}
 			p3array[i].SetPeopleBeginPos(x1, y1);
 		}
 
@@ -130,7 +148,24 @@ bool game::IfYes(int number, people* p2array)
 		}
 	}
 	system("cls");
+	delete[]p3array;
 	return true;
+}
+bool game::ifpass(people*& p1, const int& num) 
+{
+	for (int i = this->getrun() - 1; i > num; i--) 
+	{
+		if ((p1[i].returnx() == p1[num].returnx()) && p1[i].returny() == p1[num].returny()) 
+		{
+			return false;
+		}
+	}
+	return true;
+}
+void game::gettip(int &i, people* p2array)
+{
+
+		cout << "提示："; p2array[i].DisplayMessage(p2array[i]);
 }
 int game::getrun() 
 {

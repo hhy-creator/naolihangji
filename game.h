@@ -33,6 +33,9 @@ public:
 	people*& getp2relative();
 	void setp2relative(people*&,people*,people*,int run);
 	void setzihzhen();
+	void getanswer(people *);
+	bool ifpass( people*&, const int&);
+	void gettip(int &,people*);
 private:
 	people p1, p2;
 	int run;
@@ -40,4 +43,5 @@ private:
 	people* p2array;
 	people* p2relative;
 };
+
 #endif // !GAME_H

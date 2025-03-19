@@ -3,6 +3,8 @@
 #include "player.h"
 #include <iostream>
 #include <time.h>
+#include <random>
+#include <ctime>
 using namespace std;
 void Mananger::RunChoose() 
 {
@@ -108,9 +110,33 @@ void Mananger::GameShowmess(game& g1)
 			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a);
 			cout << "挑战失败" << endl;
 			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
+			int num1 = 0;
+			cin >> num1;
 			bool aga;
-			cin >> aga;
-			if (!aga) { cout << "放弃挑战" << endl; break; }
+			if (num1 == 1) { aga = 1; }
+			else if (num1 == 0) { aga = 0; }
+			else 
+			{
+				cout << "输入不符合要求，请重新输入" << endl; cin >> num1;
+			}
+
+			
+			if (!aga) 
+			{ 
+				cout << "放弃挑战" << endl;
+				cout << "是否查看答案（1表示是，0表示否）" << endl;
+				int num2 = 0;
+				cin >> num2;
+				bool c1;
+				if (num2 == 1) { c1 = 1; }
+				else if (num2 == 0) { c1 = 0; }
+				else
+				{
+					cout << "输入不符合要求，请重新输入" << endl; cin >> num2;
+				}
+				if (c1) { g1.getanswer(g1.getp2array()); }
+			    break; 
+			}
 			else { system("cls"); }
 		}
 	}
@@ -462,5 +488,127 @@ void Mananger::ChooseGame()
 		creatgame5();
 		break;
 	}
+	case 6:
+		randomcreatgame();
+		break;
 	}
+}
+void Mananger::randomcreatgame() 
+{
+	game randomgame;
+	int number1 = rand() % 7 + 10;
+	randomgame.setrun(number1);
+	randomgame.setzihzhen();
+	int xfinal = 0, yfinal = 0;
+	xfinal = rand() % 100 + 1;
+	yfinal = rand() % 100 + 1;
+	randomgame.getp1().SetPeopleBeginPos(xfinal, yfinal);
+	randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
+	randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+	randomgame.getp2array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+	for (int i = number1 - 2; i >= 0;) 
+	{
+		int number1 = rand() % 4;
+		switch (number1) 
+		{
+		case 0: 
+		{
+			randomgame.getp1().Movepeople(UP);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(DOWN);
+			break;
+		}
+		case 1:
+		{
+			randomgame.getp1().Movepeople(DOWN);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(UP);
+			break;
+		}
+		case 2:
+		{
+			randomgame.getp1().Movepeople(LEFT);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(RIGHT);
+			break;
+		}
+		case 3:
+		{
+			randomgame.getp1().Movepeople(RIGHT);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(LEFT);
+			break;
+		}
+		}
+		
+	}
+	for (int i = number1 - 2; i >= 0;)
+	{
+		int number1 = rand() % 4;
+		bool c2 = 0;
+		switch (number1)
+		{
+		case 0:
+		{
+			randomgame.getp2().Movepeople(UP);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(DOWN);
+			break;
+		}
+		case 1:
+		{
+			randomgame.getp2().Movepeople(DOWN);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(UP);
+			break;
+		}
+		case 2:
+		{
+			randomgame.getp2().Movepeople(LEFT);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(RIGHT);
+			break;
+		}
+		case 3:
+		{
+			randomgame.getp2().Movepeople(RIGHT);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(LEFT);
+			break;
+		}
+		}
+	}
+	GameShowmess(randomgame);
 }

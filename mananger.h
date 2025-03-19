@@ -22,6 +22,7 @@ public:
 	void creatgame3();
 	void creatgame4();
 	void creatgame5();
+	void randomcreatgame();
 private:
 	int choose;
 	int level;
