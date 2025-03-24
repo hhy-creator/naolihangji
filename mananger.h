@@ -7,13 +7,13 @@ class Mananger
 {
 public:
 	void ChangeChoose();
-	void ShowMenu();
-	void ShowRule();
+	void ShowMenu()const;
+	void ShowRule()const;
 	void Exitgame();
 	void BeginGame();
 	void ChooseGame();
 	void RunChoose();
-	int getlevel();
+	int getlevel()const;
 	void CheckMessage(player&);
 	void GameShowmess(game& g1);
 	player& getplayer();

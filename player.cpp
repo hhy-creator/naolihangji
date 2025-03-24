@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 using namespace std;
 #include "player.h"
 player& player::SetName()
@@ -45,17 +46,19 @@ void player::CreatScore(array<int, 10>& score, const int&i,const bool&x )
 }
 void player::ShowScore(const array<int, 10>&array1) 
 {
+	cout << "关卡" << setw(8) << "分数" << endl;
 	for (int i = 1; i <= 5; i++) 
 	{
-		cout << "第" << i << "关的分数为" << array1[i]<<"   ";
+		cout << i << setw(8)<< array1[i]<<endl;
 	}
 	cout << endl;
 }
 void player::ShowAccuracy(const array<double, 10>&array1)
 {
+	cout << "关卡" << setw(8) << "正确率" << endl;
 	for (int i = 1; i <=5; i++)
 	{
-		cout << "第" << i  << "关的正确率为" << array1[i]*100 << "%  ";
+		cout << i <<setw(8)<< array1[i]*100 << "% "<<endl;
 	}
 	cout << endl;
 }

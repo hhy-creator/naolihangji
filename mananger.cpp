@@ -32,9 +32,11 @@ void Mananger::RunChoose()
 		break;
 	}
 	case 3:
+	{
 		system("cls");
 		CheckMessage(p1);
 		break;
+	}
 	default:
 		cout << "输入的选择不符合要求，请重新输入：" << endl;
 		break;
@@ -47,17 +49,17 @@ void Mananger::ChangeChoose()
 	cin >> choose1;
 	this->choose = choose1;
 }
-void Mananger::ShowMenu() 
+void Mananger::ShowMenu()const 
 {
 	cout << "       请输入你的选择：" << endl;
 	cout << "****************************" << endl;
 	cout << "********1开始游戏***********" << endl;
 	cout << "********2了解游戏规则*******" << endl;
 	cout << "********3展示用户消息*******" << endl;
-	cout << "*********0退出游戏**********" << endl;
+	cout << "********0退出游戏**********" << endl;
 	cout << "****************************" << endl;
 };
-void Mananger::ShowRule() 
+void Mananger::ShowRule()const 
 {
 	cout << "您将会获得一条通往某一目的地的航行路线，同时，以你为参照物，您能获得另一人的相对路径，请推理出另一人的实际路径。" << endl;
 }
@@ -71,7 +73,7 @@ void Mananger::BeginGame()
 	ChooseGame();
 
 }
-int Mananger::getlevel() 
+int Mananger::getlevel()const 
 {
 	return level;
 }
@@ -81,7 +83,7 @@ player& Mananger::getplayer()
 }
 void Mananger::CheckMessage( player&p1) 
 {
-	cout << p1.GetName()<<":";
+	cout << p1.GetName() << ":"<<endl;
 	p1.ShowAccuracy(p1.Getaccuracy());
 	p1.ShowScore(p1.Getscore());
 }
@@ -489,8 +491,13 @@ void Mananger::ChooseGame()
 		break;
 	}
 	case 6:
+	{
 		randomcreatgame();
 		break;
+	}
+	default:
+		cout << "当前关卡不存在，请重新输入!"<<endl;
+		ChooseGame();
 	}
 }
 void Mananger::randomcreatgame() 

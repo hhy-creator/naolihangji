@@ -1,17 +1,18 @@
 #include "game.h"
 #include <iostream>
+#include <iomanip>
 using namespace std;
-void people::DisplayMessage( people& p1) 
+void people::DisplayMessage(const people& p1)const 
 {
 	cout <<"("<< p1.returnx() << "," << p1.returny()<<")" << "   ";
 }
-void people::SetPeopleBeginPos(int x1, int y1)
+void people::SetPeopleBeginPos(const int& x1, const int& y1)
 {
 	this->x = x1;
 	this->y = y1;
 	
 }
-void people::Movepeople(Direction heading) 
+void people::Movepeople(const Direction& heading) 
 {
 	switch (heading) 
 	{
@@ -56,7 +57,7 @@ game::~game()
 	p2array = nullptr;
 	p2relative = nullptr;
 }
-void game::setrun(int num1)
+void game::setrun(const int& num1)
 {
 	this->run = num1;
 
@@ -67,18 +68,18 @@ void game::setzihzhen()
 	p2array = new people[run];
 	p2relative = new people[run];
 }
-void game::setp2relative(people*& p1, people*p2, people*p3,int run)
+void game::setp2relative(people*& p1, people*&p2, people*&p3,const int& run)
 {
-	p1[0].getx() = p2->getx();
-	p1[0].gety() = p2->gety();
+	p1[0].getx() = p2->returnx();
+	p1[0].gety() = p2->returny();
 	for (int i = 1; i < run; i++) 
 	{
-		p1[i].getx() = p1[i - 1].getx() + p2[i].getx()-p2[i-1].getx()- p3[i].getx() + p3[i - 1].getx();
-		p1[i].gety() = p1[i - 1].gety() + p2[i].gety() - p2[i - 1].gety() - p3[i].gety() + p3[i - 1].gety();
+		p1[i].getx() = p1[i - 1].getx() + p2[i].returnx()-p2[i-1].returnx()- p3[i].returnx() + p3[i - 1].returnx();
+		p1[i].gety() = p1[i - 1].gety() + p2[i].returny() - p2[i - 1].returny() - p3[i].returny() + p3[i - 1].returny();
 	}
 
 }
-void game::DisplayRelativeMove(people* p1array, people*p2relative)
+void game::DisplayRelativeMove( people*& p1array,  people*&p2relative)const
 {
 	
 
@@ -86,14 +87,15 @@ void game::DisplayRelativeMove(people* p1array, people*p2relative)
 	{
 		if (i == 0) 
 		{
-			cout << "开始你及别人的坐标：" << endl;
+			cout << "你与别人的起点：" << endl;
 			p1array[i].DisplayMessage(p1array[i]); 
 			p2relative[i].DisplayMessage(p2relative[i]);
 			cout << endl;
+			cout << "步数     你与别人的坐标" << endl;
 		}
 		else 
 		{
-			cout << "第" << i << "次你的坐标及别人的相对坐标:" << endl;
+			cout << i << setw(8);
 			p1array[i].DisplayMessage(p1array[i]);
 			p2relative[i].DisplayMessage(p2relative[i]);
 			cout << endl;
@@ -101,14 +103,14 @@ void game::DisplayRelativeMove(people* p1array, people*p2relative)
 		}
 	}
 }
-void game::getanswer(people *p2array) 
+void game::getanswer( people* &p2array)const 
 {
 	for (int i = 0; i < this->getrun(); i++) 
 	{
 		p2array[i].DisplayMessage(p2array[i]);
 	}
 }
-bool game::IfYes(int number, people* p2array) 
+bool game::IfYes( int number,  people*& p2array) 
 {
 	cout << "需要提示请输入250 250" << endl;
 	people* p3array = new people[number];
@@ -116,7 +118,7 @@ bool game::IfYes(int number, people* p2array)
 	{
 		if (i == 0) 
 		{
-			cout << "别人一开始的坐标：" << endl;
+			cout << "别人的起点：" << endl;
 			int x1, y1;
 			cin >> x1 >> y1;
 			if (x1 == 250 && y1 == 250) 
@@ -125,14 +127,16 @@ bool game::IfYes(int number, people* p2array)
 				cin >> x1 >> y1;
 			}
 			p3array[i].SetPeopleBeginPos(x1, y1);
+			cout << "步数     别人的坐标" << endl;
 		}
 		else {
-			cout << "请输入第" << i << "步别人的实际坐标：" << endl;
+			cout << i <<"          ";
 			int x1, y1;
 			cin >> x1 >> y1;
 			if (x1 == 250 && y1 == 250)
 			{
 				gettip(i, p2array);
+				cout << "请继续输入当前别人的坐标：" << endl;
 				cin >> x1 >> y1;
 			}
 			p3array[i].SetPeopleBeginPos(x1, y1);
@@ -141,7 +145,7 @@ bool game::IfYes(int number, people* p2array)
 	}
 	for (int i = 0; i < number; i++)
 	{
-		if (p2array[i].getx() != p3array[i].getx() || p2array[i].gety() != p3array[i].gety())
+		if (p2array[i].returnx() != p3array[i].returnx() || p2array[i].returny() != p3array[i].returny())
 		{
 			system("cls");
 			return false;
@@ -151,7 +155,7 @@ bool game::IfYes(int number, people* p2array)
 	delete[]p3array;
 	return true;
 }
-bool game::ifpass(people*& p1, const int& num) 
+bool game::ifpass(people*& p1, const int& num)const 
 {
 	for (int i = this->getrun() - 1; i > num; i--) 
 	{
@@ -162,12 +166,12 @@ bool game::ifpass(people*& p1, const int& num)
 	}
 	return true;
 }
-void game::gettip(int &i, people* p2array)
+void game::gettip( int &i, people*& p2array)const
 {
 
 		cout << "提示："; p2array[i].DisplayMessage(p2array[i]);
 }
-int game::getrun() 
+int game::getrun() const
 {
 	return run;
 }
