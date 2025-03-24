@@ -6,6 +6,18 @@
 #include <random>
 #include <ctime>
 using namespace std;
+bool again() 
+{
+	int num1 = 0;
+	cin >> num1;
+	if (num1 == 1) { return true; }
+	else if (num1 == 0) { return false; }
+	else
+	{
+		cout << "输入不符合要求，请重新输入:" << endl; 
+		again();
+	}
+}
 void Mananger::RunChoose() 
 {
 	ShowMenu();
@@ -112,31 +124,14 @@ void Mananger::GameShowmess(game& g1)
 			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a);
 			cout << "挑战失败" << endl;
 			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
-			int num1 = 0;
-			cin >> num1;
-			bool aga;
-			if (num1 == 1) { aga = 1; }
-			else if (num1 == 0) { aga = 0; }
-			else 
-			{
-				cout << "输入不符合要求，请重新输入" << endl; cin >> num1;
-			}
+
 
 			
-			if (!aga) 
+			if (!again()) 
 			{ 
 				cout << "放弃挑战" << endl;
 				cout << "是否查看答案（1表示是，0表示否）" << endl;
-				int num2 = 0;
-				cin >> num2;
-				bool c1;
-				if (num2 == 1) { c1 = 1; }
-				else if (num2 == 0) { c1 = 0; }
-				else
-				{
-					cout << "输入不符合要求，请重新输入" << endl; cin >> num2;
-				}
-				if (c1) { g1.getanswer(g1.getp2array()); }
+				if (again()) { g1.getanswer(g1.getp2array()); }
 			    break; 
 			}
 			else { system("cls"); }

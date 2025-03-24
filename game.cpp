@@ -95,7 +95,7 @@ void game::DisplayRelativeMove( people*& p1array,  people*&p2relative)const
 		}
 		else 
 		{
-			cout << i << setw(8);
+			cout <<setw(3)<< i << setw(8);
 			p1array[i].DisplayMessage(p1array[i]);
 			p2relative[i].DisplayMessage(p2relative[i]);
 			cout << endl;
@@ -109,6 +109,7 @@ void game::getanswer( people* &p2array)const
 	{
 		p2array[i].DisplayMessage(p2array[i]);
 	}
+	cout << endl;
 }
 bool game::IfYes( int number,  people*& p2array) 
 {
