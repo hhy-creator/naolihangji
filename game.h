@@ -35,6 +35,7 @@ public:
 	void setzihzhen();
 	void getanswer( people *&)const;
 	bool ifpass( people*&, const int&)const;
+	bool ifpass1(people*&, const int&)const;
 	void gettip( int &, people*&)const;
 private:
 	people p1, p2;

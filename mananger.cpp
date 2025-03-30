@@ -49,9 +49,26 @@ void Mananger::RunChoose()
 		CheckMessage(p1);
 		break;
 	}
+	case 4:
+	{
+		system("cls");
+		PlayerGreatgame();
+		break;
+	}
+	case 5:
+	{
+		system("cls");
+		challengegame();
+		break;
+	}
+	case 6:
+	{
+		system("cls");
+		noendchallenge();
+		break;
+	}
 	default:
 		cout << "输入的选择不符合要求，请重新输入：" << endl;
-		break;
 
 	}
 }
@@ -68,7 +85,11 @@ void Mananger::ShowMenu()const
 	cout << "********1开始游戏***********" << endl;
 	cout << "********2了解游戏规则*******" << endl;
 	cout << "********3展示用户消息*******" << endl;
+	cout << "********4创造模式**********"<<endl;
+	cout << "********5挑战模式**********" << endl;
+	cout << "********6无尽模式**********" << endl;
 	cout << "********0退出游戏**********" << endl;
+
 	cout << "****************************" << endl;
 };
 void Mananger::ShowRule()const 
@@ -138,6 +159,77 @@ void Mananger::GameShowmess(game& g1)
 		}
 	}
 }
+void Mananger::PlayerGameShowmess(game& g1)
+{
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	cout << "请输入玩家作答还是系统作答：(1玩家0系统)" << endl;
+	bool aa;
+	cin >> aa;
+	if (aa)
+	{
+		bool x = 1;
+		while (x) {
+			g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
+			bool a = g1.IfYes(g1.getrun(), g1.getp2array());
+			if (a)
+			{
+				x = 0;
+				cout << "游戏挑战成功，棒棒的。" << endl;
+				break;
+			}
+			else
+			{
+				cout << "挑战失败" << endl;
+				cout << "是否再次挑战？(1表示是，0表示否)" << endl;
+
+
+
+				if (!again())
+				{
+					cout << "放弃挑战" << endl;
+					cout << "是否查看答案（1表示是，0表示否）" << endl;
+					if (again()) { g1.getanswer(g1.getp2array()); }
+					break;
+				}
+				else { system("cls"); }
+			}
+		}
+	}
+	else { g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative()); g1.getanswer(g1.getp2array()); }
+}
+void Mananger::GameShowmess1(game& g1)
+{
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+		bool x = 1;
+		while (x) {
+			g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
+			bool a = g1.IfYes(g1.getrun(), g1.getp2array());
+			if (a)
+			{
+				x = 0;
+				cout << "游戏挑战成功，棒棒的。" << endl;
+				break;
+			}
+			else
+			{
+				cout << "挑战失败" << endl;
+				cout << "是否再次挑战？(1表示是，0表示否)" << endl;
+
+
+
+				if (!again())
+				{
+					cout << "放弃挑战" << endl;
+					cout << "是否查看答案（1表示是，0表示否）" << endl;
+					if (again()) { g1.getanswer(g1.getp2array()); }
+					break;
+				}
+				else { system("cls"); }
+			}
+		}
+	
+}
+
 void Mananger::creatgame1()
 {
 	game g1;
@@ -613,4 +705,334 @@ void Mananger::randomcreatgame()
 		}
 	}
 	GameShowmess(randomgame);
+}
+void Mananger::randomcreatgame(int number1)
+{
+
+	game randomgame;
+	randomgame.setrun(number1);
+	randomgame.setzihzhen();
+	int xfinal = 0, yfinal = 0;
+	xfinal = rand() % 50 + 1;
+	yfinal = rand() % 50 + 1;
+	randomgame.getp1().SetPeopleBeginPos(xfinal, yfinal);
+	randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
+	randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+	randomgame.getp2array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+	for (int i = number1 - 2; i >= 0;)
+	{
+		int number1 = rand() % 4;
+		switch (number1)
+		{
+		case 0:
+		{
+			randomgame.getp1().Movepeople(UP);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(DOWN);
+			break;
+		}
+		case 1:
+		{
+			randomgame.getp1().Movepeople(DOWN);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(UP);
+			break;
+		}
+		case 2:
+		{
+			randomgame.getp1().Movepeople(LEFT);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(RIGHT);
+			break;
+		}
+		case 3:
+		{
+			randomgame.getp1().Movepeople(RIGHT);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(LEFT);
+			break;
+		}
+		}
+
+	}
+	for (int i = number1 - 2; i >= 0;)
+	{
+		int number1 = rand() % 4;
+		bool c2 = 0;
+		switch (number1)
+		{
+		case 0:
+		{
+			randomgame.getp2().Movepeople(UP);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(DOWN);
+			break;
+		}
+		case 1:
+		{
+			randomgame.getp2().Movepeople(DOWN);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(UP);
+			break;
+		}
+		case 2:
+		{
+			randomgame.getp2().Movepeople(LEFT);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(RIGHT);
+			break;
+		}
+		case 3:
+		{
+			randomgame.getp2().Movepeople(RIGHT);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(LEFT);
+			break;
+		}
+		}
+	}
+	GameShowmess1(randomgame);
+}
+void Mananger::PlayerGreatgame() 
+{
+	game playergame;
+	int number1 = 0;
+	cout << "请输入移动步数：" << endl;
+	cin >> number1;
+	playergame.setrun(number1+1);
+	playergame.setzihzhen();
+	int xstart1 = 0, ystart1 = 0;
+	cout << "请输入您的起始坐标：" << endl;
+	cin >> xstart1 >> ystart1;
+	playergame.getp1().SetPeopleBeginPos(xstart1, ystart1);
+	playergame.getp1array()[0].SetPeopleBeginPos(xstart1, ystart1);
+	cout << "请输入您的移动(0上1下2左3右):" << endl;
+	int number2 = 0;
+	for (int i = 1; i<playergame.getrun();)
+	{
+		cin >> number2;
+		switch (number2)
+		{
+		case 0:
+		{
+			playergame.getp1().Movepeople(UP);
+			playergame.getp1array()[i] = playergame.getp1();
+			if (playergame.ifpass1(playergame.getp1array(), i))
+			{
+				i++;
+			}
+			else
+			{
+				cout << "该地方已经经过，请重新输入：" << endl;
+				playergame.getp1().Movepeople(DOWN);
+
+			}
+			break;
+		}
+		case 1:
+		{
+			playergame.getp1().Movepeople(DOWN);
+			playergame.getp1array()[i] = playergame.getp1();
+			if (playergame.ifpass1(playergame.getp1array(), i))
+			{
+				i++;
+			}
+			else
+			{
+				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp1().Movepeople(UP);
+
+			}
+			break;
+		}
+		case 2:
+		{
+			playergame.getp1().Movepeople(LEFT);
+			playergame.getp1array()[i] = playergame.getp1();
+			if (playergame.ifpass1(playergame.getp1array(), i))
+			{
+				i++;
+			}
+			else {
+				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp1().Movepeople(RIGHT);
+			}
+			break;
+		}
+		case 3:
+		{
+			playergame.getp1().Movepeople(RIGHT);
+			playergame.getp1array()[i] = playergame.getp1();
+			if (playergame.ifpass1(playergame.getp1array(), i))
+			{
+				i++;
+			}
+			else
+			{
+				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp1().Movepeople(LEFT);
+			}
+			break;
+		}
+		}
+
+	}
+	int xstart2, ystart2 = 0;
+	cout << "请输入别人的起始坐标：" << endl;
+	cin >> xstart2 >> ystart2;
+	playergame.getp2().SetPeopleBeginPos(xstart2, ystart2);
+	playergame.getp2array()[0].SetPeopleBeginPos(xstart2, ystart2);
+	cout << "请输入别人的移动(0上1下2左3右):" << endl;
+	for (int i = 1; i < playergame.getrun();)
+	{
+		int number2 = 0;
+		cin >> number2;
+		switch (number2)
+		{
+		case 0:
+		{
+			playergame.getp2().Movepeople(UP);
+			playergame.getp2array()[i] = playergame.getp2();
+			if (playergame.ifpass1(playergame.getp2array(), i))
+			{
+				i++;
+			}
+			else
+			{
+				cout << "该地方已经经过，请重新输入：" << endl;
+				playergame.getp2().Movepeople(DOWN);
+
+			}
+			break;
+		}
+		case 1:
+		{
+			playergame.getp2().Movepeople(DOWN);
+			playergame.getp2array()[i] = playergame.getp2();
+			if (playergame.ifpass1(playergame.getp2array(), i))
+			{
+				i++;
+			}
+			else
+			{
+				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp2().Movepeople(UP);
+
+			}
+			break;
+		}
+		case 2:
+		{
+			playergame.getp2().Movepeople(LEFT);
+			playergame.getp2array()[i] = playergame.getp2();
+			if (playergame.ifpass1(playergame.getp2array(), i))
+			{
+				i++;
+			}
+			else {
+				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp2().Movepeople(RIGHT);
+			}
+			break;
+		}
+		case 3:
+		{
+			playergame.getp2().Movepeople(RIGHT);
+			playergame.getp2array()[i] = playergame.getp2();
+			if (playergame.ifpass1(playergame.getp2array(), i))
+			{
+				i++;
+			}
+			else
+			{
+				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp2().Movepeople(LEFT);
+			}
+			break;
+		}
+		}
+
+	}
+	PlayerGameShowmess(playergame);
+}
+void Mananger::challengegame() 
+{
+	cout << "请输入您要挑战的难度(1简单2困难3传奇)：" << endl;
+	int number;
+	cin >> number;
+	switch (number) 
+	{
+	case 1: 
+	{
+		int number1 = rand() % 10 + 1;
+		randomcreatgame(number1);
+		break;
+	}
+	case 2:
+	{
+		int number1 = rand() % 10 + 15;
+		randomcreatgame(number1);
+		break;
+	}
+	case 3: 
+	{
+		int number1 = rand() % 10 + 27;
+		randomcreatgame(number1);
+		break;
+	}
+	default:
+	{
+		cout << "输入不符合要求，请重新输入:" << endl;
+		challengegame();
+	}
+	}
+
+}
+void Mananger::noendchallenge() 
+{
+	int i = 1;
+	bool x = 1;
+	while (x)
+	{
+		cout << "第" << i << "关" << endl;
+		randomcreatgame(i+1);
+		cout << "是否继续挑战？(退出请输入0继续请按1)" << endl;
+		bool a;
+		cin >> a;
+		if (a) 
+		{
+			i++;
+		}
+		else 
+		{
+			break;
+		}
+
+	}
 }

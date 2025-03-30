@@ -167,6 +167,17 @@ bool game::ifpass(people*& p1, const int& num)const
 	}
 	return true;
 }
+bool game::ifpass1(people*& p1, const int& num)const
+{
+	for (int i = 0; i<num-1; i++)
+	{
+		if ((p1[i].returnx() == p1[num].returnx()) && p1[i].returny() == p1[num].returny())
+		{
+			return false;
+		}
+	}
+	return true;
+}
 void game::gettip( int &i, people*& p2array)const
 {
 

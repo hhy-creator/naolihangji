@@ -16,6 +16,7 @@ public:
 	int getlevel()const;
 	void CheckMessage(player&);
 	void GameShowmess(game& g1);
+	void GameShowmess1(game& g1);
 	player& getplayer();
 	void creatgame1();
 	void creatgame2();
@@ -23,6 +24,11 @@ public:
 	void creatgame4();
 	void creatgame5();
 	void randomcreatgame();
+	void PlayerGreatgame();
+	void challengegame();
+	void randomcreatgame(int number1);
+	void PlayerGameShowmess(game& g1);
+	void noendchallenge();
 private:
 	int choose;
 	int level;
