@@ -26,7 +26,7 @@ private:
 	array<int, 10>score;
 	array<int, 10>right;
 	array<int, 10>wrong;
-
+	int noendscore;
 
 
 

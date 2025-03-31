@@ -14,7 +14,7 @@ string player::GetName()
 {
 	return this->name;
 }
-player::player() : time{ 0 }, accuracy{ 0 }, score{ 0 }, right{ 0 }, wrong{0}
+player::player() : time{ 0 }, accuracy{ 0 }, score{ 0 }, right{ 0 }, wrong{0},noendscore(0)
 {
 	SetName();
 }
