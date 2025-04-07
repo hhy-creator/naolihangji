@@ -229,7 +229,6 @@ void Mananger::GameShowmess1(game& g1)
 		}
 	
 }
-
 void Mananger::creatgame1()
 {
 	game g1;
