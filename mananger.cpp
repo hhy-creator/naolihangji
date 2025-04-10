@@ -4,8 +4,12 @@
 #include <iostream>
 #include <time.h>
 #include <random>
+#include <easyx.h>
 #include <ctime>
 using namespace std;
+Mananger::Mananger() 
+{
+}
 bool again() 
 {
 	int num1 = 0;

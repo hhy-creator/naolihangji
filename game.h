@@ -1,29 +1,29 @@
 #ifndef GAME_H
 #define GAME_H
 #include <iostream>
-enum Direction{UP,DOWN,LEFT,RIGHT};
-class people 
+enum Direction { UP, DOWN, LEFT, RIGHT };
+class people
 {
 public:
 	people() :x(0), y(0) {}
 	void DisplayMessage(const people&)const;
-	void SetPeopleBeginPos(const int&,const int&);
+	void SetPeopleBeginPos(const int&, const int&);
 	void Movepeople(const Direction& heading);
 	int& getx();
 	int& gety();
 	int returnx()const;
 	int returny()const;
 private:
-	int x; 
+	int x;
 	int y;
 };
-class game 
+class game
 {
 
 public:
 	~game();
-	void DisplayRelativeMove( people*&, people*&)const;
-	bool IfYes( int,  people*&);
+	void DisplayRelativeMove(people*&, people*&)const;
+	bool IfYes(int, people*&);
 	void setrun(const int&);
 	int getrun()const;
 	people& getp1();
@@ -31,16 +31,16 @@ public:
 	people*& getp1array();
 	people*& getp2array();
 	people*& getp2relative();
-	void setp2relative(people*&, people*&, people*&,const int& run);
+	void setp2relative(people*&, people*&, people*&, const int& run);
 	void setzihzhen();
-	void getanswer( people *&)const;
-	bool ifpass( people*&, const int&)const;
+	void getanswer(people*&)const;
+	bool ifpass(people*&, const int&)const;
 	bool ifpass1(people*&, const int&)const;
-	void gettip( int &, people*&)const;
+	void gettip(int&, people*&)const;
 private:
 	people p1, p2;
 	int run;
-	people* p1array=nullptr;
+	people* p1array = nullptr;
 	people* p2array = nullptr;
 	people* p2relative = nullptr;
 };

@@ -3,9 +3,11 @@
 #include <iostream>
 #include "player.h"
 #include"game.h"
+
 class Mananger
 {
 public:
+	Mananger();
 	void ChangeChoose();
 	void ShowMenu()const;
 	void ShowRule()const;
@@ -29,10 +31,12 @@ public:
 	void randomcreatgame(int number1);
 	void PlayerGameShowmess(game& g1);
 	void noendchallenge();
+
 private:
 	int choose;
 	int level;
 	player p1;
+
 };
 
 #endif // !MANANGER_H
