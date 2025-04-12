@@ -3,14 +3,36 @@
 #include <iostream>
 #include "player.h"
 #include"game.h"
-
+#include <easyx.h>
+#include <array>
+class button
+{
+public:
+	button();
+	button(const int& x, const int& y, const int& width, const int& height, const std::string& text);
+	void drawbutton();
+	void drawbutton1();
+	int returnx();
+	int returny();
+	int returnwidth();
+	int returnheight();
+	void changecolor();
+	~button();
+private:
+	int x;
+	int y;
+	int width;
+	int height;
+	COLORREF color;
+	std::string text;
+};
 class Mananger
 {
 public:
 	Mananger();
 	void ChangeChoose();
-	void ShowMenu()const;
-	void ShowRule()const;
+	void ShowMenu();
+	void ShowRule();
 	void Exitgame();
 	void BeginGame();
 	void ChooseGame();
@@ -31,12 +53,16 @@ public:
 	void randomcreatgame(int number1);
 	void PlayerGameShowmess(game& g1);
 	void noendchallenge();
+	void createwindow();
+	int ifinbutoon(button&,ExMessage );
+	void createrule();
+	ExMessage getmousemessage();
 
 private:
 	int choose;
 	int level;
 	player p1;
-
+	array<button, 10>buttonarr;
+	IMAGE img[10];
 };
-
 #endif // !MANANGER_H

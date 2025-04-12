@@ -7,8 +7,27 @@
 #include <easyx.h>
 #include <ctime>
 using namespace std;
-Mananger::Mananger() 
+Mananger::Mananger()
 {
+	button b0(320, 120, 200, 50, "开始游戏");
+	button b1(320, 170, 200, 50, "查看规则");
+	button b2(320, 220, 200, 50, "查看信息");
+	button b3(320, 270, 200, 50, "创造模式");
+	button b4(320, 320, 200, 50, "挑战模式");
+	button b5(320, 370, 200, 50, "无尽模式");
+	button b6(320, 420, 200, 50, "退出游戏");
+	button b7(0, 0, 125,50, "返回");
+	this->buttonarr[0] = b0;
+	this->buttonarr[1] = b1;
+	this->buttonarr[2] = b2;
+	this->buttonarr[3] = b3;
+	this->buttonarr[4] = b4;
+	this->buttonarr[5] = b5;
+	this->buttonarr[6] = b6;
+	this->buttonarr[7] = b7;
+	createwindow();
+	createrule();
+
 }
 bool again() 
 {
@@ -78,27 +97,71 @@ void Mananger::RunChoose()
 }
 void Mananger::ChangeChoose() 
 {
-	int choose1;
-	cin >> choose1;
-	this->choose = choose1;
+	while (1) {
+		cleardevice();
+		putimage(0, 0, &this->img[0]);
+		for (int i = 0; i <= 6; i++)
+		{
+			this->buttonarr[i].drawbutton();
+		}
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(this->buttonarr[0], msg)) 
+		{
+			EndBatchDraw();
+			this->choose = 1;
+			break;
+		}
+		if (ifinbutoon(this->buttonarr[1], msg)) 
+		{
+			EndBatchDraw(); this->choose = 2; break;
+		}
+		if (ifinbutoon(this->buttonarr[2], msg)) {
+			EndBatchDraw(); this->choose = 3; break;
+		}
+		if (ifinbutoon(this->buttonarr[3], msg)) {
+			EndBatchDraw(); this->choose = 4; break;
+		}
+		if (ifinbutoon(this->buttonarr[4], msg)) {
+			EndBatchDraw(); this->choose = 5; break;
+		}
+		if (ifinbutoon(this->buttonarr[5], msg)) {
+			EndBatchDraw(); this->choose = 6; break;
+		}
+		if (ifinbutoon(this->buttonarr[6], msg)) {
+			EndBatchDraw(); this->choose = 0; break;
+		}
+	}
 }
-void Mananger::ShowMenu()const 
+void Mananger::ShowMenu() 
 {
+
 	cout << "       请输入你的选择：" << endl;
 	cout << "****************************" << endl;
 	cout << "********1开始游戏***********" << endl;
-	cout << "********2了解游戏规则*******" << endl;
-	cout << "********3展示用户消息*******" << endl;
+	cout << "********2查看规则*******" << endl;
+	cout << "********3查看消息*******" << endl;
 	cout << "********4创造模式**********"<<endl;
 	cout << "********5挑战模式**********" << endl;
 	cout << "********6无尽模式**********" << endl;
 	cout << "********0退出游戏**********" << endl;
-
 	cout << "****************************" << endl;
 };
-void Mananger::ShowRule()const 
+void Mananger::ShowRule()
 {
-	cout << "您将会获得一条通往某一目的地的航行路线，同时，以你为参照物，您能获得另一人的相对路径，请推理出另一人的实际路径。" << endl;
+	cleardevice();
+	while (1) {
+		putimage(0, 0, &this->img[1]);
+		this->buttonarr[7].drawbutton1();
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(this->buttonarr[7], msg))
+		{
+			EndBatchDraw();
+			cleardevice();
+			RunChoose(); 
+		}
+	}
 }
 void Mananger::Exitgame() 
 {
@@ -1038,4 +1101,99 @@ void Mananger::noendchallenge()
 		}
 
 	}
+}
+button::button(const int& x, const int& y, const int& width, const int& height, const string& text1)
+	:text(text1), x(x), y(y), width(width), height(height), color(YELLOW)
+{
+
+}
+button::~button() {}
+int button::returnx()
+{
+	return this->x;
+
+}
+int button::returny() 
+{
+	return this->y;
+}
+int button::returnwidth() 
+{
+	return this->width;
+}
+int button::returnheight() 
+{
+	return this->height;
+}
+void button::drawbutton()
+{
+	setfillcolor(this->color);
+	settextstyle(35, 20, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("查看规则")) / 2;
+	int vspace = (this->height - textheight("查看规则")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x+hspace, this->y+vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawbutton1()
+{
+	setfillcolor(this->color);
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("返回")) / 2;
+	int vspace = (this->height - textheight("返回")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+button::button() {}
+void button::changecolor() 
+{
+	this->color = RED;
+}
+void Mananger::createwindow()
+{
+	initgraph(900, 600);
+	setbkmode(TRANSPARENT);
+	loadimage(&this->img[0], "C:/Users/pcuser/Desktop/实训/开始界面.jpg", 900, 600);
+	putimage(0, 0, &this->img[0]);
+	for (int i = 0; i <= 6; i++)
+	{
+		this->buttonarr[i].drawbutton();
+	}
+}
+void Mananger::createrule()
+{
+	cleardevice();
+	initgraph(900, 600);
+	setbkmode(TRANSPARENT);
+	loadimage(&this->img[1], "C:/Users/pcuser/Desktop/实训/规则介绍.jpg", 900, 600);
+}
+ExMessage Mananger::getmousemessage() 
+{
+	ExMessage msg;
+	while (true)
+	{
+		if (peekmessage(&msg, EX_MOUSE)) 
+		{
+			if (msg.message == WM_LBUTTONDOWN) 
+			{
+				return msg;
+			}
+		}
+	}
+}
+int Mananger::ifinbutoon(button&pb, ExMessage m)
+{
+	if (pb.returnx() < m.x && pb.returnx() + pb.returnwidth() > m.x && pb.returny() < m.y && pb.returny() + pb.returnheight() > m.y) 
+	{
+		pb.changecolor();
+		pb.drawbutton();
+		return 1;
+
+	}
+	return 0;
 }
