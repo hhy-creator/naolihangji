@@ -17,6 +17,8 @@ public:
 	int returnwidth();
 	int returnheight();
 	void changecolor();
+	void drawchoosebutton();
+	void drawGQbutton();
 	~button();
 private:
 	int x;
@@ -25,6 +27,7 @@ private:
 	int height;
 	COLORREF color;
 	std::string text;
+	int passnumber = 0;
 };
 class Mananger
 {
@@ -53,16 +56,21 @@ public:
 	void randomcreatgame(int number1);
 	void PlayerGameShowmess(game& g1);
 	void noendchallenge();
-	void createwindow();
+	void loadwindow();
 	int ifinbutoon(button&,ExMessage );
-	void createrule();
+	void loadrule();
 	ExMessage getmousemessage();
+	void loadChooseGQmenu();
+	void createGameP();
+	void loadGamebk();
 
 private:
 	int choose;
 	int level;
 	player p1;
 	array<button, 10>buttonarr;
+	array<button, 10>GQChoosebutton;
 	IMAGE img[10];
+	array<button, 625>GQbutton;
 };
 #endif // !MANANGER_H

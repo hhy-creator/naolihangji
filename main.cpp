@@ -16,6 +16,5 @@ int main()
 		m1.RunChoose();
 	}
 
-	closegraph();
 
 }

@@ -7,28 +7,6 @@
 #include <easyx.h>
 #include <ctime>
 using namespace std;
-Mananger::Mananger()
-{
-	button b0(320, 120, 200, 50, "开始游戏");
-	button b1(320, 170, 200, 50, "查看规则");
-	button b2(320, 220, 200, 50, "查看信息");
-	button b3(320, 270, 200, 50, "创造模式");
-	button b4(320, 320, 200, 50, "挑战模式");
-	button b5(320, 370, 200, 50, "无尽模式");
-	button b6(320, 420, 200, 50, "退出游戏");
-	button b7(0, 0, 125,50, "返回");
-	this->buttonarr[0] = b0;
-	this->buttonarr[1] = b1;
-	this->buttonarr[2] = b2;
-	this->buttonarr[3] = b3;
-	this->buttonarr[4] = b4;
-	this->buttonarr[5] = b5;
-	this->buttonarr[6] = b6;
-	this->buttonarr[7] = b7;
-	createwindow();
-	createrule();
-
-}
 bool again() 
 {
 	int num1 = 0;
@@ -95,44 +73,6 @@ void Mananger::RunChoose()
 
 	}
 }
-void Mananger::ChangeChoose() 
-{
-	while (1) {
-		cleardevice();
-		putimage(0, 0, &this->img[0]);
-		for (int i = 0; i <= 6; i++)
-		{
-			this->buttonarr[i].drawbutton();
-		}
-		ExMessage msg = getmousemessage();
-		BeginBatchDraw();
-		if (ifinbutoon(this->buttonarr[0], msg)) 
-		{
-			EndBatchDraw();
-			this->choose = 1;
-			break;
-		}
-		if (ifinbutoon(this->buttonarr[1], msg)) 
-		{
-			EndBatchDraw(); this->choose = 2; break;
-		}
-		if (ifinbutoon(this->buttonarr[2], msg)) {
-			EndBatchDraw(); this->choose = 3; break;
-		}
-		if (ifinbutoon(this->buttonarr[3], msg)) {
-			EndBatchDraw(); this->choose = 4; break;
-		}
-		if (ifinbutoon(this->buttonarr[4], msg)) {
-			EndBatchDraw(); this->choose = 5; break;
-		}
-		if (ifinbutoon(this->buttonarr[5], msg)) {
-			EndBatchDraw(); this->choose = 6; break;
-		}
-		if (ifinbutoon(this->buttonarr[6], msg)) {
-			EndBatchDraw(); this->choose = 0; break;
-		}
-	}
-}
 void Mananger::ShowMenu() 
 {
 
@@ -147,22 +87,6 @@ void Mananger::ShowMenu()
 	cout << "********0退出游戏**********" << endl;
 	cout << "****************************" << endl;
 };
-void Mananger::ShowRule()
-{
-	cleardevice();
-	while (1) {
-		putimage(0, 0, &this->img[1]);
-		this->buttonarr[7].drawbutton1();
-		ExMessage msg = getmousemessage();
-		BeginBatchDraw();
-		if (ifinbutoon(this->buttonarr[7], msg))
-		{
-			EndBatchDraw();
-			cleardevice();
-			RunChoose(); 
-		}
-	}
-}
 void Mananger::Exitgame() 
 {
 	cout << "游戏已退出" << endl;
@@ -212,9 +136,6 @@ void Mananger::GameShowmess(game& g1)
 			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a);
 			cout << "挑战失败" << endl;
 			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
-
-
-			
 			if (!again()) 
 			{ 
 				cout << "放弃挑战" << endl;
@@ -295,33 +216,6 @@ void Mananger::GameShowmess1(game& g1)
 			}
 		}
 	
-}
-void Mananger::creatgame1()
-{
-	game g1;
-	g1.setrun(5);
-	g1.setzihzhen();
-	g1.getp1().SetPeopleBeginPos(30, 34);
-	g1.getp1array()[0] = g1.getp1();
-	g1.getp1().Movepeople(RIGHT);
-	g1.getp1array()[1] = g1.getp1();
-	g1.getp1().Movepeople(RIGHT);
-	g1.getp1array()[2] = g1.getp1();
-	g1.getp1().Movepeople(UP);
-	g1.getp1array()[3] = g1.getp1();
-	g1.getp1().Movepeople(RIGHT);
-	g1.getp1array()[4] = g1.getp1();
-	g1.getp2().SetPeopleBeginPos(35, 31);
-	g1.getp2array()[0] = g1.getp2();
-	g1.getp2().Movepeople(LEFT);
-	g1.getp2array()[1] = g1.getp2();
-	g1.getp2().Movepeople(LEFT);
-	g1.getp2array()[2] = g1.getp2();
-	g1.getp2().Movepeople(DOWN);
-	g1.getp2array()[3] = g1.getp2();
-	g1.getp2().Movepeople(DOWN);
-	g1.getp2array()[4] = g1.getp2();
-	GameShowmess(g1);
 }
 void Mananger::creatgame2()
 {
@@ -609,49 +503,6 @@ void Mananger::creatgame5()
 	g5.getp2().Movepeople(DOWN);
 	g5.getp2array()[20] = g5.getp2();
 	GameShowmess(g5);
-}
-void Mananger::ChooseGame() 
-{
-	cout << "请输入您要挑战的关卡:" << endl;
-	int num;
-	cin >> num;
-	this->level = num;
-	switch (getlevel())
-	{
-	case 1:
-	{
-		creatgame1();
-		break;
-	}
-	case 2:
-	{
-		creatgame2();
-		break;
-	}
-	case 3:
-	{
-		creatgame3();
-		break;
-	}
-	case 4:
-	{
-		creatgame4();
-		break;
-	}
-	case 5:
-	{
-		creatgame5();
-		break;
-	}
-	case 6:
-	{
-		randomcreatgame();
-		break;
-	}
-	default:
-		cout << "当前关卡不存在，请重新输入!"<<endl;
-		ChooseGame();
-	}
 }
 void Mananger::randomcreatgame() 
 {
@@ -1125,6 +976,36 @@ int button::returnheight()
 {
 	return this->height;
 }
+button::button() {}
+ExMessage Mananger::getmousemessage()
+{
+	ExMessage msg;
+	while (true)
+	{
+		if (peekmessage(&msg, EX_MOUSE))
+		{
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				return msg;
+			}
+		}
+	}
+}
+int Mananger::ifinbutoon(button& pb, ExMessage m)
+{
+	if (pb.returnx() < m.x && pb.returnx() + pb.returnwidth() > m.x && pb.returny() < m.y && pb.returny() + pb.returnheight() > m.y)
+	{
+		pb.changecolor();
+		pb.drawbutton();
+		return 1;
+
+	}
+	return 0;
+}
+void button::changecolor()
+{
+	this->color = RED;
+}
 void button::drawbutton()
 {
 	setfillcolor(this->color);
@@ -1149,51 +1030,270 @@ void button::drawbutton1()
 	setlinecolor(BLACK);
 	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
 }
-button::button() {}
-void button::changecolor() 
+void button::drawGQbutton() 
 {
-	this->color = RED;
+	setfillcolor(WHITE);
+	settextstyle(10, 10, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
 }
-void Mananger::createwindow()
+void button::drawchoosebutton()
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void Mananger::loadwindow()
+{
+
+	loadimage(&this->img[0], "C:/Users/pcuser/Desktop/实训/开始界面.jpg", 900, 600);
+}
+void Mananger::loadrule()
+{
+	loadimage(&this->img[1], "C:/Users/pcuser/Desktop/实训/规则介绍.jpg", 900, 600);
+}
+void Mananger::loadGamebk()
+{
+	loadimage(&this->img[3], "C:/Users/pcuser/Desktop/实训/关卡背景图.jpg", 1000, 729);
+
+}
+void Mananger::loadChooseGQmenu()
+{
+	loadimage(&this->img[2], "C:/Users/pcuser/Desktop/实训/关卡选择界面.jpg", 900, 600);
+
+
+}
+void Mananger::createGameP()
+{
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	while (1) 
+	{
+		BeginBatchDraw();
+		putimage(0, 0, &this->img[3]);
+		for (int i = 0; i < 625; i++) 
+		{
+			this->GQbutton[i].drawGQbutton();
+		}
+		EndBatchDraw();
+	}
+}
+Mananger::Mananger()
+{
+	button b0(320, 120, 200, 50, "开始游戏");
+	button b1(320, 170, 200, 50, "查看规则");
+	button b2(320, 220, 200, 50, "查看信息");
+	button b3(320, 270, 200, 50, "创造模式");
+	button b4(320, 320, 200, 50, "挑战模式");
+	button b5(320, 370, 200, 50, "无尽模式");
+	button b6(320, 420, 200, 50, "退出游戏");
+	button b7(0, 0, 125, 50, "返回");
+	button choose0(100, 100, 30, 30, "1");
+	button choose1(150, 100, 30, 30, "2");
+	button choose2(200, 100, 30, 30, "3");
+	button choose3(250, 100, 30, 30, "4");
+	button choose4(300, 100, 30, 30, "5");
+	button choose5(350, 100, 30, 30, "6");
+
+	this->buttonarr[0] = b0;
+	this->buttonarr[1] = b1;
+	this->buttonarr[2] = b2;
+	this->buttonarr[3] = b3;
+	this->buttonarr[4] = b4;
+	this->buttonarr[5] = b5;
+	this->buttonarr[6] = b6;
+	this->buttonarr[7] = b7;
+	this->GQChoosebutton[0] = choose0;
+	this->GQChoosebutton[1] = choose1;
+	this->GQChoosebutton[2] = choose2;
+	this->GQChoosebutton[3] = choose3;
+	this->GQChoosebutton[4] = choose4;
+	this->GQChoosebutton[5] = choose5;
+	loadwindow();
+	loadrule();
+	loadChooseGQmenu();
+	loadGamebk();
+	for (int i = 0; i < 25; i++) 
+	{
+		for (int j = 0; j < 25; j++) 
+		{
+			button b0(i*25+100,j*25+30,25,25,"");
+			this->GQbutton[i*25 + j] = b0;
+		}
+	}
+
+}
+void Mananger::ChangeChoose()
 {
 	initgraph(900, 600);
 	setbkmode(TRANSPARENT);
-	loadimage(&this->img[0], "C:/Users/pcuser/Desktop/实训/开始界面.jpg", 900, 600);
-	putimage(0, 0, &this->img[0]);
-	for (int i = 0; i <= 6; i++)
-	{
-		this->buttonarr[i].drawbutton();
+	while (1) {
+		cleardevice();
+		putimage(0, 0, &this->img[0]);
+		for (int i = 0; i <= 6; i++)
+		{
+			this->buttonarr[i].drawbutton();
+		}
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(this->buttonarr[0], msg))
+		{
+			EndBatchDraw();
+			this->choose = 1;
+			break;
+		}
+		else if (ifinbutoon(this->buttonarr[1], msg))
+		{
+			EndBatchDraw(); this->choose = 2; break;
+		}
+		else if (ifinbutoon(this->buttonarr[2], msg)) {
+			EndBatchDraw(); this->choose = 3; break;
+		}
+		else if (ifinbutoon(this->buttonarr[3], msg)) {
+			EndBatchDraw(); this->choose = 4; break;
+		}
+		else if (ifinbutoon(this->buttonarr[4], msg)) {
+			EndBatchDraw(); this->choose = 5; break;
+		}
+		else if (ifinbutoon(this->buttonarr[5], msg)) {
+			EndBatchDraw(); this->choose = 6; break;
+		}
+		else if (ifinbutoon(this->buttonarr[6], msg)) {
+			EndBatchDraw(); this->choose = 0; break;
+		}
 	}
+	closegraph();
 }
-void Mananger::createrule()
+void Mananger::ShowRule()
 {
 	cleardevice();
 	initgraph(900, 600);
 	setbkmode(TRANSPARENT);
-	loadimage(&this->img[1], "C:/Users/pcuser/Desktop/实训/规则介绍.jpg", 900, 600);
-}
-ExMessage Mananger::getmousemessage() 
-{
-	ExMessage msg;
-	while (true)
-	{
-		if (peekmessage(&msg, EX_MOUSE)) 
+	while (1) {
+		putimage(0, 0, &this->img[1]);
+		this->buttonarr[7].drawbutton1();
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(this->buttonarr[7], msg))
 		{
-			if (msg.message == WM_LBUTTONDOWN) 
-			{
-				return msg;
-			}
+			EndBatchDraw();
+			cleardevice();
+			break;
 		}
 	}
+	closegraph();
+	RunChoose();
 }
-int Mananger::ifinbutoon(button&pb, ExMessage m)
+void Mananger::ChooseGame()
 {
-	if (pb.returnx() < m.x && pb.returnx() + pb.returnwidth() > m.x && pb.returny() < m.y && pb.returny() + pb.returnheight() > m.y) 
-	{
-		pb.changecolor();
-		pb.drawbutton();
-		return 1;
 
+	cleardevice();
+	initgraph(900, 600);
+	setbkmode(TRANSPARENT);
+	bool x = 0;
+	while (1)
+	{
+		putimage(0, 0, &this->img[2]);
+		this->buttonarr[7].drawbutton();
+		for (int i = 0; i < 6; i++)
+		{
+			this->GQChoosebutton[i].drawchoosebutton();
+		}
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(this->buttonarr[7], msg))
+		{
+			EndBatchDraw();
+			closegraph();
+			x = 1;
+			break;
+		}
+		else if (ifinbutoon(this->GQChoosebutton[0], msg)) 
+		{
+			this->level = 1;
+			EndBatchDraw();
+			closegraph();
+			break;
+		}
 	}
-	return 0;
+	if (x)
+	{
+		RunChoose();
+	}
+	switch (getlevel())
+	{
+	case 1:
+	{
+		creatgame1();
+		break;
+	}
+	case 2:
+	{
+		creatgame2();
+		break;
+	}
+	case 3:
+	{
+		creatgame3();
+		break;
+	}
+	case 4:
+	{
+		creatgame4();
+		break;
+	}
+	case 5:
+	{
+		creatgame5();
+		break;
+	}
+	case 6:
+	{
+		randomcreatgame();
+		break;
+	}
+	default:
+		cout << "当前关卡不存在，请重新输入!" << endl;
+		ChooseGame();
+	}
+}
+void Mananger::creatgame1()
+{
+	game g1;
+	g1.setrun(5);
+	g1.setzihzhen();
+	g1.getp1().SetPeopleBeginPos(30, 34);
+	g1.getp1array()[0] = g1.getp1();
+	g1.getp1().Movepeople(RIGHT);
+	g1.getp1array()[1] = g1.getp1();
+	g1.getp1().Movepeople(RIGHT);
+	g1.getp1array()[2] = g1.getp1();
+	g1.getp1().Movepeople(UP);
+	g1.getp1array()[3] = g1.getp1();
+	g1.getp1().Movepeople(RIGHT);
+	g1.getp1array()[4] = g1.getp1();
+	g1.getp2().SetPeopleBeginPos(35, 31);
+	g1.getp2array()[0] = g1.getp2();
+	g1.getp2().Movepeople(LEFT);
+	g1.getp2array()[1] = g1.getp2();
+	g1.getp2().Movepeople(LEFT);
+	g1.getp2array()[2] = g1.getp2();
+	g1.getp2().Movepeople(DOWN);
+	g1.getp2array()[3] = g1.getp2();
+	g1.getp2().Movepeople(DOWN);
+	g1.getp2array()[4] = g1.getp2();
+	createGameP();
+	GameShowmess(g1);
 }
