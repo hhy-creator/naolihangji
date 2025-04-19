@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <iostream>
-#include <array>
+#include <vector>
 using namespace std;
 class player 
 {
@@ -9,24 +9,26 @@ public:
 	player();
 	player& SetName();
 	string GetName();
-	void AddRight(array<int, 10>&, const int&);
-	void AddWrong(array<int, 10>&, const int&);
-	void CalAccuracy(const array<int, 10>&,const array<int, 10>&, array<double, 10>&);
-	void CreatScore(array<int, 10>&score,const int&, const bool& x);
-	void ShowScore(const array<int, 10>&);
-	void ShowAccuracy(const array<double, 10>&);
-	array<int, 10>& Getscore();
-	array<double, 10>& Getaccuracy();
-	array<int, 10>& Getright();
-	array<int, 10>& Getwrong();
+	void AddRight(vector<int>&, const int&);
+	void AddWrong(vector<int>&, const int&);
+	void CalAccuracy(const vector<int>&,const vector<int>&, vector<double>&);
+	void CreatScore(vector<int>&, const int&, const bool& x,const vector<double>&time,const int&run);
+	void ShowScore(const vector<int>&);
+	void ShowAccuracy(const vector<double>&);
+	vector<int>& Getscore();
+	vector<double>& Getaccuracy();
+	vector<int>& Getright();
+	vector<int>& Getwrong();
+	vector<double>& gettime();
+	int& getnoendscore();
 private:
 	string name;
-	array<array<int, 10>, 10>time;
-	array<double, 10>accuracy;
-	array<int, 10>score;
-	array<int, 10>right;
-	array<int, 10>wrong;
-	int noendscore;
+	vector<double >time;
+	vector<double>accuracy;
+	vector<int>score;
+	vector<int>right;
+	vector<int>wrong;
+	int noendscore=0;
 
 
 

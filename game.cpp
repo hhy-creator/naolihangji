@@ -1,6 +1,7 @@
 #include "game.h"
 #include <iostream>
 #include <iomanip>
+#include <vector>
 using namespace std;
 void people::DisplayMessage(const people& p1)const 
 {

@@ -6,6 +6,7 @@
 #include <random>
 #include <easyx.h>
 #include <ctime>
+#include <vector>
 using namespace std;
 bool again() 
 {
@@ -110,6 +111,7 @@ void Mananger::CheckMessage( player&p1)
 	cout << p1.GetName() << ":"<<endl;
 	p1.ShowAccuracy(p1.Getaccuracy());
 	p1.ShowScore(p1.Getscore());
+	cout << "无尽挑战分数：" << p1.getnoendscore() << endl;
 }
 void Mananger::GameShowmess(game& g1) 
 {
@@ -123,7 +125,7 @@ void Mananger::GameShowmess(game& g1)
 			x = 0;
 			cout << "游戏挑战成功，棒棒的。" << endl;
 			bool a = 1;
-			getplayer().CreatScore(getplayer().Getscore(),getlevel(), a);
+			getplayer().CreatScore(getplayer().Getscore(),getlevel(), a,this->p1.gettime(),g1.getrun());
 			getplayer().AddRight(getplayer().Getright(), getlevel());
 			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(),getplayer().Getaccuracy());
 			break;
@@ -133,7 +135,7 @@ void Mananger::GameShowmess(game& g1)
 			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
 			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
 			bool a = 0;
-			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a);
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
 			cout << "挑战失败" << endl;
 			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
 			if (!again()) 
@@ -188,33 +190,19 @@ void Mananger::PlayerGameShowmess(game& g1)
 void Mananger::GameShowmess1(game& g1)
 {
 	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-		bool x = 1;
-		while (x) {
-			g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
-			bool a = g1.IfYes(g1.getrun(), g1.getp2array());
-			if (a)
-			{
-				x = 0;
-				cout << "游戏挑战成功，棒棒的。" << endl;
-				break;
-			}
-			else
-			{
-				cout << "挑战失败" << endl;
-				cout << "是否再次挑战？(1表示是，0表示否)" << endl;
+	g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
+	bool a = g1.IfYes(g1.getrun(), g1.getp2array());
+	if (a)
+	{
+		
+		cout << "游戏挑战成功，棒棒的。" << endl;
 
+	}
+	else{
+				cout << "挑战结束" << endl;
 
-
-				if (!again())
-				{
-					cout << "放弃挑战" << endl;
-					cout << "是否查看答案（1表示是，0表示否）" << endl;
-					if (again()) { g1.getanswer(g1.getp2array()); }
-					break;
-				}
-				else { system("cls"); }
-			}
 		}
+
 	
 }
 void Mananger::creatgame2()
@@ -630,8 +618,8 @@ void Mananger::randomcreatgame(int number1)
 	randomgame.setrun(number1);
 	randomgame.setzihzhen();
 	int xfinal = 0, yfinal = 0;
-	xfinal = rand() % 50 + 1;
-	yfinal = rand() % 50 + 1;
+	xfinal = rand() % 5 + 19;
+	yfinal = rand() % 5 + 10;
 	randomgame.getp1().SetPeopleBeginPos(xfinal, yfinal);
 	randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
 	randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
@@ -900,27 +888,35 @@ void Mananger::PlayerGreatgame()
 }
 void Mananger::challengegame() 
 {
-	cout << "请输入您要挑战的难度(1简单2困难3传奇)：" << endl;
+	cout << "请输入您要挑战的难度(1简单2中等3困难4专家5传奇)：" << endl;
 	int number;
 	cin >> number;
 	switch (number) 
 	{
 	case 1: 
 	{
-		int number1 = rand() % 10 + 1;
-		randomcreatgame(number1);
+		randomcreatgame(6);
 		break;
 	}
 	case 2:
 	{
-		int number1 = rand() % 10 + 15;
-		randomcreatgame(number1);
+		randomcreatgame(9);
 		break;
 	}
 	case 3: 
 	{
-		int number1 = rand() % 10 + 27;
-		randomcreatgame(number1);
+
+		randomcreatgame(12);
+		break;
+	}
+	case 4:
+	{
+		randomcreatgame(18);
+		break;
+	}
+	case 5: 
+	{
+		randomcreatgame(25);
 		break;
 	}
 	default:
@@ -944,10 +940,13 @@ void Mananger::noendchallenge()
 		cin >> a;
 		if (a) 
 		{
+			this->p1.getnoendscore() = 100 * i;
 			i++;
+			
 		}
 		else 
 		{
+			this->p1.getnoendscore() = 100 * i;
 			break;
 		}
 
@@ -1294,6 +1293,6 @@ void Mananger::creatgame1()
 	g1.getp2array()[3] = g1.getp2();
 	g1.getp2().Movepeople(DOWN);
 	g1.getp2array()[4] = g1.getp2();
-	createGameP();
+	//createGameP();
 	GameShowmess(g1);
 }

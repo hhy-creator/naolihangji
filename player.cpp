@@ -14,37 +14,54 @@ string player::GetName()
 {
 	return this->name;
 }
-player::player() : time{ 0 }, accuracy{ 0 }, score{ 0 }, right{ 0 }, wrong{0},noendscore(0)
+player::player() : noendscore(0)
 {
+	for (int i = 0; i < 10; i++) 
+	{
+		time.push_back(0);
+		accuracy.push_back(0);
+		score.push_back(0);
+		right.push_back(0);
+		wrong.push_back(0);
+	}
 	SetName();
 }
-void player::AddRight(array<int, 10>&right,const int&i)
+void player::AddRight(vector<int>&right,const int&i)
 {
 	right[i]++;
 }
-void player::AddWrong(array<int, 10>&wrong,const int&i) 
+void player::AddWrong(vector<int>&wrong,const int&i)
 {
 	wrong[i]++;
 }
-void player::CalAccuracy(const array<int, 10>&right, const array<int, 10>&wrong, array<double, 10>&) 
+void player::CalAccuracy(const vector<int>&right, const vector<int>&wrong, vector<double>&accurary)
 {
 	for (int i = 0; i < 10; i++) 
 	{
 		if(right[i]+wrong[i]!=0)accuracy[i] = double(right[i]) / (right[i] + wrong[i]);
 	}
 }
-void player::CreatScore(array<int, 10>& score, const int&i,const bool&x ) 
+int& player::getnoendscore() 
+{
+	return this->noendscore;
+}
+vector <double>&player:: gettime() 
+{
+	return this->time;
+}
+void player::CreatScore(vector<int>& score, const int&i,const bool&x,const vector<double>&time, const int& run)
 {
 	if (x) 
 	{
-		score[i] = 100;
+		if (time[i] < run * 5) { score[i] = 100; }
+		else { score[i] = 100 * ((time[i] / run) / 5); }
 	}
 	else 
 	{
 		score[i] = 0;
 	}
 }
-void player::ShowScore(const array<int, 10>&array1) 
+void player::ShowScore(const vector<int>&array1)
 {
 	cout << "关卡" << setw(8) << "分数" << endl;
 	for (int i = 1; i <= 5; i++) 
@@ -53,7 +70,7 @@ void player::ShowScore(const array<int, 10>&array1)
 	}
 	cout << endl;
 }
-void player::ShowAccuracy(const array<double, 10>&array1)
+void player::ShowAccuracy(const vector<double>&array1)
 {
 	cout << "关卡" << setw(8) << "正确率" << endl;
 	for (int i = 1; i <=5; i++)
@@ -62,19 +79,19 @@ void player::ShowAccuracy(const array<double, 10>&array1)
 	}
 	cout << endl;
 }
-array<int, 10>& player::Getscore() 
+vector<int>& player::Getscore()
 {
 	return this->score;
 }
-array<int, 10>& player::Getright()
+vector<int>& player::Getright()
 {
 	return this->right;
 }
-array<int, 10>& player::Getwrong()
+vector<int>& player::Getwrong()
 {
 	return this->wrong;
 }
-array<double, 10>& player::Getaccuracy()
+vector<double>& player::Getaccuracy()
 {
 	return this->accuracy;
 }
