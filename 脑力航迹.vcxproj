@@ -29,6 +29,9 @@
     <ClCompile Include="mananger.cpp" />
     <ClCompile Include="player.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="playermessgae.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

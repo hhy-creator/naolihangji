@@ -10,6 +10,61 @@
 #include <vector>
 #include <fstream>
 using namespace std;
+void Mananger::recordmessagetxt() 
+{
+	ofstream ofs("D:/脑力航迹/playermessgae.txt", ios::app);
+	if (!ofs.is_open())
+	{
+		cout << "文件打开失败" << endl;
+		return;
+	}
+	this->p1.serializetxt(ofs);
+	ofs.close();
+}
+void Mananger::readplayermessagetxt(){
+	ifstream is("D:/脑力航迹/playermessgae.txt");
+	if (!is.is_open())
+	{
+		cout << "文件打开失败" << endl;
+		return;
+	}
+	player p1(0);
+	string line;
+		while (getline(is, line)) 
+		{
+			string  id;
+			is >> id;
+			p1.GetName() = id;
+			for (int i = 0; i < p1.gettime().size(); i++)
+			{
+				is >> p1.gettime()[i];
+			}
+			for (int i = 0; i < p1.Getaccuracy().size(); i++)
+			{
+				is >> p1.Getaccuracy()[i];
+			}
+			for (int i = 0; i < p1.Getright().size(); i++)
+			{
+				is >> p1.Getright()[i];
+			}
+			for (int i = 0; i < p1.Getwrong().size(); i++)
+			{
+				is >> p1.Getwrong()[i];
+			}
+
+
+			for (int i = 0; i < p1.Getscore().size(); i++)
+			{
+				is >> p1.Getscore()[i];
+			}
+
+			is >> p1.getnoendscore();
+
+			p1.CheckMessage();
+		}
+	is.close();
+	return;
+}
 void Mananger::recordmessage()
 {
 	ofstream ofs("D:/脑力航迹/playermessgae.txt", ios::binary|ios::app);
@@ -30,10 +85,8 @@ void Mananger::readplayermessage()
 		cout << "文件打开失败" << endl;
 		return;
 	}
-	while (!ifs.eof()) {
-		player p1(0);
-		p1=p1.deserialize(ifs);
-		p1.CheckMessage();
+	while (ifs) {
+		p1.deserialize(ifs);
 	}
 	return;
 
@@ -123,8 +176,8 @@ void Mananger::ShowMenu()
 };
 void Mananger::Exitgame() 
 {
-	recordmessage();
-	readplayermessage();
+	recordmessagetxt();
+	readplayermessagetxt();
 	cout << "游戏已退出" << endl;
 	exit(0);
 }

@@ -70,6 +70,8 @@ public:
 	void loadGamebk();
 	void readplayermessage();
 	void recordmessage();
+	void recordmessagetxt();
+	void readplayermessagetxt();
 private:
 	int choose;
 	int level;

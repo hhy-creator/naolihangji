@@ -12,12 +12,13 @@ class player
 public:
 	player(int);
 	player();
-	//void operator=(player&);
 	void serialize(std::ostream& os) const;
-	player deserialize(std::istream& is);
+	void deserialize(std::istream& is);
+	void serializetxt(std::ostream& os) const;
+	void deserializetxt(std::istream& is);
 	void CheckMessage();
 	player& SetName();
-	string GetName();
+	string& GetName();
 	void AddRight(vector<int>&, const int&);
 	void AddWrong(vector<int>&, const int&);
 	void CalAccuracy(const vector<int>&,const vector<int>&, vector<double>&);
