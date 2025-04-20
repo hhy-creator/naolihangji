@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include <iostream>
-
+#include <iomanip>
 enum Direction { UP, DOWN, LEFT, RIGHT };
 class people
 {

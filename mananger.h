@@ -5,6 +5,9 @@
 #include"game.h"
 #include <easyx.h>
 #include <array>
+#include <iomanip>
+#include <stdexcept>
+#include <fstream>
 class button
 {
 public:
@@ -33,6 +36,7 @@ class Mananger
 {
 public:
 	Mananger();
+	~Mananger();
 	void ChangeChoose();
 	void ShowMenu();
 	void ShowRule();
@@ -43,6 +47,7 @@ public:
 	int getlevel()const;
 	void CheckMessage(player&);
 	void GameShowmess(game& g1);
+	void GameShowmess(game& g1,const int&i);
 	void GameShowmess1(game& g1);
 	player& getplayer();
 	void creatgame1();
@@ -63,7 +68,8 @@ public:
 	void loadChooseGQmenu();
 	void createGameP();
 	void loadGamebk();
-
+	void readplayermessage();
+	void recordmessage();
 private:
 	int choose;
 	int level;

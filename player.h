@@ -2,11 +2,19 @@
 #define PLAYER_H
 #include <iostream>
 #include <vector>
+#include <iomanip>
+#include <fstream>
+#include <stdexcept>
+#include <sstream>
 using namespace std;
 class player 
 {
 public:
+	player(int);
 	player();
+	void serialize(std::ostream& os) const;
+	void deserialize(std::istream& is);
+	void CheckMessage();
 	player& SetName();
 	string GetName();
 	void AddRight(vector<int>&, const int&);

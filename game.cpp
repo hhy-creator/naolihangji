@@ -112,7 +112,7 @@ void game::getanswer( people* &p2array)const
 	}
 	cout << endl;
 }
-bool game::IfYes( int number,  people*& p2array) 
+bool game::IfYes(int number, people*& p2array)
 {
 	cout << "需要提示请输入250 250" << endl;
 	people* p3array = new people[number];
@@ -150,6 +150,7 @@ bool game::IfYes( int number,  people*& p2array)
 		if (p2array[i].returnx() != p3array[i].returnx() || p2array[i].returny() != p3array[i].returny())
 		{
 			system("cls");
+		
 			return false;
 		}
 	}

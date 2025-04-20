@@ -4,10 +4,43 @@
 #include <iostream>
 #include <time.h>
 #include <random>
+#include <iomanip>
 #include <easyx.h>
 #include <ctime>
 #include <vector>
+#include <fstream>
 using namespace std;
+void Mananger::recordmessage()
+{
+	ofstream ofs("D:/脑力航迹/playermessgae.txt", ios::binary|ios::app);
+	if (!ofs.is_open())
+	{
+		cout << "文件打开失败" << endl;
+		return;
+	}
+	this->p1.serialize(ofs);
+	ofs.close();
+
+}
+void Mananger::readplayermessage() 
+{
+	ifstream ifs("D:/脑力航迹/playermessgae.txt", ios::binary);
+	if (!ifs.is_open())
+	{
+		cout << "文件打开失败" << endl;
+		return;
+	}
+	while (!ifs.eof()) {
+		player p1(0);
+		p1.deserialize(ifs);
+		p1.CheckMessage();
+	}
+	return;
+
+}
+Mananger::~Mananger() 
+{
+}
 bool again() 
 {
 	int num1 = 0;
@@ -90,6 +123,8 @@ void Mananger::ShowMenu()
 };
 void Mananger::Exitgame() 
 {
+	recordmessage();
+	readplayermessage();
 	cout << "游戏已退出" << endl;
 	exit(0);
 }
@@ -108,18 +143,68 @@ player& Mananger::getplayer()
 }
 void Mananger::CheckMessage( player&p1) 
 {
-	cout << p1.GetName() << ":"<<endl;
-	p1.ShowAccuracy(p1.Getaccuracy());
-	p1.ShowScore(p1.Getscore());
-	cout << "无尽挑战分数：" << p1.getnoendscore() << endl;
+	p1.CheckMessage();
 }
-void Mananger::GameShowmess(game& g1) 
+void Mananger::GameShowmess(game& g1)
 {
 	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
 	bool x = 1;
 	while (x) {
 		g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
+		int gamestarttime = 0;
+		int gameduration = 0;
+		gamestarttime = clock();
 		bool a = g1.IfYes(g1.getrun(), g1.getp2array());
+		gameduration = clock() - gamestarttime;
+		int secondall = gameduration / 1000;
+		int seconds = secondall % 60;
+		int minute = secondall / 60;
+		cout << "用时：" << setfill('0') << setw(2) << minute << ":" << setw(2) << seconds << endl;
+		if (a)
+		{
+			x = 0;
+			cout << "游戏挑战成功，棒棒的。" << endl;
+			bool a = 1;
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
+			getplayer().AddRight(getplayer().Getright(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
+			break;
+		}
+		else
+		{
+			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
+			bool a = 0;
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
+			cout << "挑战失败" << endl;
+			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
+			if (!again())
+			{
+				cout << "放弃挑战" << endl;
+				cout << "是否查看答案（1表示是，0表示否）" << endl;
+				if (again()) { g1.getanswer(g1.getp2array()); }
+				break;
+			}
+			else { system("cls"); }
+		}
+	}
+}
+void Mananger::GameShowmess(game& g1,const int &i) 
+{
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	bool x = 1;
+	while (x) {
+		g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
+		int gamestarttime = 0;
+		int gameduration = 0;
+		gamestarttime = clock();
+		bool a = g1.IfYes(g1.getrun(), g1.getp2array());
+		gameduration = clock() - gamestarttime;
+		int secondall = gameduration / 1000;
+		int seconds = secondall % 60;
+		int minute = secondall / 60;
+		this->p1.gettime()[i] = secondall;
+		cout << "用时：" << setfill('0') << setw(2) << minute << ":" << setw(2) << seconds<<endl;
 		if (a)
 		{
 			x = 0;
@@ -254,7 +339,7 @@ void Mananger::creatgame2()
 	g2.getp2array()[9] = g2.getp2();
 	g2.getp2().Movepeople(DOWN);
 	g2.getp2array()[10] = g2.getp2();
-	GameShowmess(g2);
+	GameShowmess(g2,1);
 }
 void Mananger::creatgame3()
 {
@@ -326,7 +411,7 @@ void Mananger::creatgame3()
 	g3.getp2().Movepeople(DOWN);
 	g3.getp2array()[15] = g3.getp2();
 
-	GameShowmess(g3);
+	GameShowmess(g3,2);
 }
 void Mananger::creatgame4()
 {
@@ -398,7 +483,7 @@ void Mananger::creatgame4()
 	g4.getp2array()[14] = g4.getp2();
 	g4.getp2().Movepeople(DOWN);
 	g4.getp2array()[15] = g4.getp2();
-	GameShowmess(g4);
+	GameShowmess(g4,3);
 }
 void Mananger::creatgame5()
 {
@@ -490,7 +575,7 @@ void Mananger::creatgame5()
 	g5.getp2array()[19] = g5.getp2();
 	g5.getp2().Movepeople(DOWN);
 	g5.getp2array()[20] = g5.getp2();
-	GameShowmess(g5);
+	GameShowmess(g5,4);
 }
 void Mananger::randomcreatgame() 
 {
@@ -1294,5 +1379,5 @@ void Mananger::creatgame1()
 	g1.getp2().Movepeople(DOWN);
 	g1.getp2array()[4] = g1.getp2();
 	//createGameP();
-	GameShowmess(g1);
+	GameShowmess(g1,0);
 }
