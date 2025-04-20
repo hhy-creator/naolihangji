@@ -32,7 +32,7 @@ void Mananger::readplayermessage()
 	}
 	while (!ifs.eof()) {
 		player p1(0);
-		p1.deserialize(ifs);
+		p1=p1.deserialize(ifs);
 		p1.CheckMessage();
 	}
 	return;

@@ -10,85 +10,107 @@ player& player::SetName()
 	this->name = name;
 	return *this;
 }
+//void player::operator=(player&) 
+//{}
 string player::GetName() 
 {
 	return this->name;
 }
 void player::serialize(std::ostream& os) const {
 	// 写入 name
-	size_t name_len = name.size();
-	os.write(reinterpret_cast<const char*>(&name_len), sizeof(name_len));
-	os.write(name.c_str(), name_len);
+	os.write(reinterpret_cast<const char*>(&this->name), sizeof(this->name));
+	os.write(name.c_str(), 32);
 
 	// 写入 time 向量
-	size_t time_size = time.size();
-	os.write(reinterpret_cast<const char*>(&time_size), sizeof(time_size));
-	os.write(reinterpret_cast<const char*>(time.data()), time_size * sizeof(double));
+	for (int i = 0; i < this->time.size(); i++) 
+	{
+		double m = time[i];
+		os.write(reinterpret_cast<const char*>(&m), sizeof(double));
+	}
 
 	// 写入 accuracy 向量
-	size_t accuracy_size = accuracy.size();
-	os.write(reinterpret_cast<const char*>(&accuracy_size), sizeof(accuracy_size));
-	os.write(reinterpret_cast<const char*>(accuracy.data()), accuracy_size * sizeof(double));
+	for (int i = 0; i < this->accuracy.size(); i++)
+	{
+		double m = accuracy[i];
+		os.write(reinterpret_cast<const char*>(&m), sizeof(double));
+	}
 
 	// 写入 score 向量
-	size_t score_size = score.size();
-	os.write(reinterpret_cast<const char*>(&score_size), sizeof(score_size));
-	os.write(reinterpret_cast<const char*>(score.data()), score_size * sizeof(int));
-
+	
+	for (int i = 0; i < this->score.size(); i++)
+	{
+		int m = score[i];
+		os.write(reinterpret_cast<const char*>(&m), sizeof(int));
+	}
 	// 写入 right 向量
-	size_t right_size = right.size();
-	os.write(reinterpret_cast<const char*>(&right_size), sizeof(right_size));
-	os.write(reinterpret_cast<const char*>(right.data()), right_size * sizeof(int));
-
+	
+	for (int i = 0; i < this->right.size(); i++)
+	{
+		int m = right[i];
+		os.write(reinterpret_cast<const char*>(&m), sizeof(int));
+	}
 	// 写入 wrong 向量
-	size_t wrong_size = wrong.size();
-	os.write(reinterpret_cast<const char*>(&wrong_size), sizeof(wrong_size));
-	os.write(reinterpret_cast<const char*>(wrong.data()), wrong_size * sizeof(int));
-
+	for (int i = 0; i < this->wrong.size(); i++)
+	{
+		int m = wrong[i];
+		os.write(reinterpret_cast<const char*>(&m), sizeof(int));
+	}
 	// 写入 noendscore
-	os.write(reinterpret_cast<const char*>(&noendscore), sizeof(noendscore));
+	os.write(reinterpret_cast<const char*>(&this->noendscore), sizeof(int));
 }
 
 // 新增反序列化方法
-void player::deserialize(std::istream& is) {
-	// 读取 name
-	size_t name_len;
-	is.read(reinterpret_cast<char*>(&name_len), sizeof(name_len));
-	name.resize(name_len);
-	is.read(&name[0], name_len);
+player player::deserialize(std::istream& is) {
+	player p1(0);
+    // 读取name
+	string name;
+	is.read(reinterpret_cast<char*>(&name), 32);
+	p1.GetName() = name;
 
-	// 读取 time 向量
-	size_t time_size;
-	is.read(reinterpret_cast<char*>(&time_size), sizeof(time_size));
-	time.resize(time_size);
-	is.read(reinterpret_cast<char*>(time.data()), time_size * sizeof(double));
+    // 读取vector<double> time
+	for (int i = 0; i < p1.gettime().size(); i++)
+	{
+		double m;
+		is.read(reinterpret_cast<char*>(&m), sizeof(double));
+		p1.gettime()[i] = m;
+	}
 
-	// 读取 accuracy 向量
-	size_t accuracy_size;
-	is.read(reinterpret_cast<char*>(&accuracy_size), sizeof(accuracy_size));
-	accuracy.resize(accuracy_size);
-	is.read(reinterpret_cast<char*>(accuracy.data()), accuracy_size * sizeof(double));
+    // 读取vector<double> accuracy
+	for (int i = 0; i < p1.Getaccuracy().size(); i++)
+	{
+		double m;
+		is.read(reinterpret_cast<char*>(&m), sizeof(double));
+		p1.Getaccuracy()[i] = m;
+	}
 
-	// 读取 score 向量
-	size_t score_size;
-	is.read(reinterpret_cast<char*>(&score_size), sizeof(score_size));
-	score.resize(score_size);
-	is.read(reinterpret_cast<char*>(score.data()), score_size * sizeof(int));
+    // 读取vector<int> score
+	for (int i = 0; i < p1.Getscore().size(); i++)
+	{
+		int m;
+		is.read(reinterpret_cast<char*>(&m), sizeof(int));
+		p1.Getscore()[i] = m;
+	}
 
-	// 读取 right 向量
-	size_t right_size;
-	is.read(reinterpret_cast<char*>(&right_size), sizeof(right_size));
-	right.resize(right_size);
-	is.read(reinterpret_cast<char*>(right.data()), right_size * sizeof(int));
+    // 读取vector<int> right
+	for (int i = 0; i < p1.Getright().size(); i++)
+	{
+		int m;
+		is.read(reinterpret_cast<char*>(&m), sizeof(int));
+		p1.Getright()[i] = m;
+	}
 
-	// 读取 wrong 向量
-	size_t wrong_size;
-	is.read(reinterpret_cast<char*>(&wrong_size), sizeof(wrong_size));
-	wrong.resize(wrong_size);
-	is.read(reinterpret_cast<char*>(wrong.data()), wrong_size * sizeof(int));
+    // 读取vector<int> wrong
+	for (int i = 0; i < p1.Getwrong().size(); i++)
+	{
+		int m;
+		is.read(reinterpret_cast<char*>(&m), sizeof(int));
+		p1.Getwrong()[i] = m;
+	}
 
-	// 读取 noendscore
-	is.read(reinterpret_cast<char*>(&noendscore), sizeof(noendscore));
+    // 读取noendscore
+	int m;
+	is.read(reinterpret_cast<char*>(&p1.noendscore), sizeof(int));
+	return p1;
 }
 
 player::player(int) :name("11"), noendscore(0)

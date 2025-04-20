@@ -12,8 +12,9 @@ class player
 public:
 	player(int);
 	player();
+	//void operator=(player&);
 	void serialize(std::ostream& os) const;
-	void deserialize(std::istream& is);
+	player deserialize(std::istream& is);
 	void CheckMessage();
 	player& SetName();
 	string GetName();
