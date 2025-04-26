@@ -2,6 +2,7 @@
 #include <iomanip>
 using namespace std;
 #include "player.h"
+#include <algorithm>
 player& player::SetName()
 {
 	string name;
@@ -10,9 +11,36 @@ player& player::SetName()
 	this->name = name;
 	return *this;
 }
+double player::returntimeall() 
+{
+	this->timeall = 0;
+	for (int i = 0; i < this->time.size(); i++) 
+	{
+		this->timeall += this->time[i];
+	}
+	return this->timeall;
+}
+
+int player::returnscoreall() 
+{
+	this->scoreall = 0;
+	for (int i = 0; i < this->score.size(); i++) 
+	{
+		this->scoreall += this->score[i];
+	}
+	return this->scoreall;
+}
 string& player::GetName() 
 {
 	return this->name;
+}
+vector<int> player::returnGetscore() const
+{
+	return this->score;
+}
+vector<double> player::returngettime() const
+{
+	return this->time;
 }
 void player::serialize(std::ostream& os) const {
 	// –¥»Î name
@@ -98,6 +126,10 @@ void player::serializetxt(std::ostream& os) const
 	}
 	// –¥»Î noendscore
 	os << noendscore << endl;
+}
+int player::getnoend() const
+{
+	return this->noendscore;
 }
 void player::deserializetxt(std::istream& is) 
 {

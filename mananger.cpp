@@ -9,7 +9,26 @@
 #include <ctime>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 using namespace std;
+bool wujinRankcmp(const player& p3, const player& p2)
+{
+	return p3.getnoend() > p2.getnoend();
+}
+bool putongRankcmp( player& p3,  player& p2)
+{
+	if (p3.returnscoreall()==p2.returnscoreall())return p3.returntimeall() < p2.returntimeall();
+	else return p3.returnscoreall() > p2.returnscoreall();
+}
+void Mananger::wujinRank(vector<player>& p1)
+{
+	cout << "***************无尽挑战排行榜*************" << endl;
+	sort(p1.begin(), p1.end(), wujinRankcmp);
+	for (int i = 0; i < p1.size(); i++)
+	{
+		cout << i + 1 << " " << p1[i].GetName() << " " << p1[i].getnoend()<<endl;
+	}
+}
 void Mananger::recordmessagetxt() 
 {
 	ofstream ofs("D:/脑力航迹/playermessgae.txt", ios::app);
@@ -21,19 +40,33 @@ void Mananger::recordmessagetxt()
 	this->p1.serializetxt(ofs);
 	ofs.close();
 }
-void Mananger::readplayermessagetxt(){
+void Mananger::PuTongRank(vector<player>& p1)
+{
+	cout << "***************普通挑战排行榜*************" << endl;
+	sort(p1.begin(), p1.end(), putongRankcmp);
+	for (int i = 0; i < 5; i++) 
+	{
+		cout << i + 1 << " " << p1[i].GetName() << " " << p1[i].returnscoreall() << " " << p1[i].returntimeall() << endl;
+	}
+}
+vector<player>& Mananger::readplayermessagetxt(){
+	if (this->rank.size() != 0) 
+	{
+		this->rank.resize(0);
+	}
 	ifstream is("D:/脑力航迹/playermessgae.txt");
 	if (!is.is_open())
 	{
 		cout << "文件打开失败" << endl;
-		return;
+		return this->rank;
 	}
-	player p1(0);
 	string line;
-		while (getline(is, line)) 
-		{
-			string  id;
-			is >> id;
+	while (getline(is, line) && !is.eof())
+	{
+		player p1(0);
+		string  id;
+		is >> id;
+		if (id != "") {
 			p1.GetName() = id;
 			for (int i = 0; i < p1.gettime().size(); i++)
 			{
@@ -60,10 +93,11 @@ void Mananger::readplayermessagetxt(){
 
 			is >> p1.getnoendscore();
 
-			p1.CheckMessage();
+			this->rank.push_back(p1);
 		}
+	}
 	is.close();
-	return;
+	return this->rank;
 }
 void Mananger::recordmessage()
 {
@@ -177,7 +211,8 @@ void Mananger::ShowMenu()
 void Mananger::Exitgame() 
 {
 	recordmessagetxt();
-	readplayermessagetxt();
+	wujinRank(readplayermessagetxt());
+	PuTongRank(readplayermessagetxt());
 	cout << "游戏已退出" << endl;
 	exit(0);
 }
@@ -1434,3 +1469,4 @@ void Mananger::creatgame1()
 	//createGameP();
 	GameShowmess(g1,0);
 }
+

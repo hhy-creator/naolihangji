@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <stdexcept>
 #include <fstream>
+#include <algorithm>
 class button
 {
 public:
@@ -71,7 +72,10 @@ public:
 	void readplayermessage();
 	void recordmessage();
 	void recordmessagetxt();
-	void readplayermessagetxt();
+	vector<player> &readplayermessagetxt();
+	void wujinRank(vector<player>& p1);
+	void PuTongRank(vector<player>& p1);
+
 private:
 	int choose;
 	int level;
@@ -80,5 +84,6 @@ private:
 	array<button, 10>GQChoosebutton;
 	IMAGE img[10];
 	array<button, 625>GQbutton;
+	vector<player>rank;
 };
 #endif // !MANANGER_H

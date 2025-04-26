@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <fstream>
 #include <stdexcept>
+#include <algorithm>
 using namespace std;
 
 int main() 
