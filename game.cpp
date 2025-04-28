@@ -209,7 +209,19 @@ people*& game::getp2relative()
 {
 	return this->p2relative;
 }
-
+people* game::returnp1arr() const
+{
+	
+	return this->p1array;
+}
+people* game::returnp2arr() const
+{
+	return this->p2array;
+}
+people* game::returnp2rearr() const
+{
+	return this->p2relative;
+};
 
 
 

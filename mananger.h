@@ -24,6 +24,10 @@ public:
 	void drawchoosebutton();
 	void drawGQbutton();
 	~button();
+	COLORREF &revisecolor();
+	void reviseyellowifpass();
+	void revisegreenifpass ();
+	void reviseredifpass() ;
 private:
 	int x;
 	int y;
@@ -32,6 +36,9 @@ private:
 	COLORREF color;
 	std::string text;
 	int passnumber = 0;
+	bool yellowifpass=0;
+	bool greenifpass=0;
+	bool redifpass = 0;
 };
 class Mananger
 {
@@ -67,7 +74,7 @@ public:
 	void loadrule();
 	ExMessage getmousemessage();
 	void loadChooseGQmenu();
-	void createGameP();
+	void createGameP( game& g1);
 	void loadGamebk();
 	void readplayermessage();
 	void recordmessage();
@@ -75,6 +82,9 @@ public:
 	vector<player> &readplayermessagetxt();
 	void wujinRank(vector<player>& p1);
 	void PuTongRank(vector<player>& p1);
+	void drawMyroad( people*&,const int&run, array<array<button, 25>, 25>&);
+	void drawYourroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
+	void drawanswerroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
 
 private:
 	int choose;
@@ -83,7 +93,7 @@ private:
 	array<button, 10>buttonarr;
 	array<button, 10>GQChoosebutton;
 	IMAGE img[10];
-	array<button, 625>GQbutton;
+	array<array<button,25>,25>GQbutton;
 	vector<player>rank;
 };
 #endif // !MANANGER_H

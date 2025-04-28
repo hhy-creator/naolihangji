@@ -38,6 +38,9 @@ public:
 	bool ifpass(people*&, const int&)const;
 	bool ifpass1(people*&, const int&)const;
 	void gettip(int&, people*&)const;
+	people* returnp1arr()const;
+	people* returnp2arr()const;
+	people* returnp2rearr()const;
 private:
 	people p1, p2;
 	int run;

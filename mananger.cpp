@@ -11,6 +11,8 @@
 #include <fstream>
 #include <algorithm>
 using namespace std;
+int	GQbuttonbeginlength = 100;
+int	GQbuttonbeginwidth = 30;
 bool wujinRankcmp(const player& p3, const player& p2)
 {
 	return p3.getnoend() > p2.getnoend();
@@ -272,51 +274,6 @@ void Mananger::GameShowmess(game& g1)
 				cout << "是否查看答案（1表示是，0表示否）" << endl;
 				if (again()) { g1.getanswer(g1.getp2array()); }
 				break;
-			}
-			else { system("cls"); }
-		}
-	}
-}
-void Mananger::GameShowmess(game& g1,const int &i) 
-{
-	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-	bool x = 1;
-	while (x) {
-		g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
-		int gamestarttime = 0;
-		int gameduration = 0;
-		gamestarttime = clock();
-		bool a = g1.IfYes(g1.getrun(), g1.getp2array());
-		gameduration = clock() - gamestarttime;
-		int secondall = gameduration / 1000;
-		int seconds = secondall % 60;
-		int minute = secondall / 60;
-		this->p1.gettime()[i] = secondall;
-		cout << "用时：" << setfill('0') << setw(2) << minute << ":" << setw(2) << seconds<<endl;
-		if (a)
-		{
-			x = 0;
-			cout << "游戏挑战成功，棒棒的。" << endl;
-			bool a = 1;
-			getplayer().CreatScore(getplayer().Getscore(),getlevel(), a,this->p1.gettime(),g1.getrun());
-			getplayer().AddRight(getplayer().Getright(), getlevel());
-			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(),getplayer().Getaccuracy());
-			break;
-		}
-		else
-		{
-			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
-			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
-			bool a = 0;
-			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
-			cout << "挑战失败" << endl;
-			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
-			if (!again()) 
-			{ 
-				cout << "放弃挑战" << endl;
-				cout << "是否查看答案（1表示是，0表示否）" << endl;
-				if (again()) { g1.getanswer(g1.getp2array()); }
-			    break; 
 			}
 			else { system("cls"); }
 		}
@@ -1246,7 +1203,7 @@ void Mananger::loadChooseGQmenu()
 
 
 }
-void Mananger::createGameP()
+void Mananger::createGameP( game&g1)
 {
 	cleardevice();
 	initgraph(1000, 729);
@@ -1255,10 +1212,13 @@ void Mananger::createGameP()
 	{
 		BeginBatchDraw();
 		putimage(0, 0, &this->img[3]);
-		for (int i = 0; i < 625; i++) 
+		for (int i = 0; i < 25; i++) 
 		{
-			this->GQbutton[i].drawGQbutton();
+			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
 		}
+		g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+		drawMyroad(g1.getp1array(), g1.getrun(), this->GQbutton);
+		drawYourroad(g1.getp2relative(), g1.getrun(), this->GQbutton);
 		EndBatchDraw();
 	}
 }
@@ -1301,8 +1261,8 @@ Mananger::Mananger()
 	{
 		for (int j = 0; j < 25; j++) 
 		{
-			button b0(i*25+100,j*25+30,25,25,"");
-			this->GQbutton[i*25 + j] = b0;
+			button b0(i*25+GQbuttonbeginlength,j*25+GQbuttonbeginwidth,25,25,"");
+			this->GQbutton[i][j] = b0;
 		}
 	}
 
@@ -1446,7 +1406,7 @@ void Mananger::creatgame1()
 	game g1;
 	g1.setrun(5);
 	g1.setzihzhen();
-	g1.getp1().SetPeopleBeginPos(30, 34);
+	g1.getp1().SetPeopleBeginPos(10, 14);
 	g1.getp1array()[0] = g1.getp1();
 	g1.getp1().Movepeople(RIGHT);
 	g1.getp1array()[1] = g1.getp1();
@@ -1456,7 +1416,7 @@ void Mananger::creatgame1()
 	g1.getp1array()[3] = g1.getp1();
 	g1.getp1().Movepeople(RIGHT);
 	g1.getp1array()[4] = g1.getp1();
-	g1.getp2().SetPeopleBeginPos(35, 31);
+	g1.getp2().SetPeopleBeginPos(15, 11);
 	g1.getp2array()[0] = g1.getp2();
 	g1.getp2().Movepeople(LEFT);
 	g1.getp2array()[1] = g1.getp2();
@@ -1466,7 +1426,94 @@ void Mananger::creatgame1()
 	g1.getp2array()[3] = g1.getp2();
 	g1.getp2().Movepeople(DOWN);
 	g1.getp2array()[4] = g1.getp2();
-	//createGameP();
+	createGameP(g1);
 	GameShowmess(g1,0);
 }
-
+void button::revisegreenifpass() 
+{
+	this->greenifpass = true;
+}
+void button::reviseyellowifpass() 
+{
+	this->yellowifpass = true;
+}
+void button::reviseredifpass() 
+{
+	this->redifpass = true;
+}
+void Mananger::drawMyroad( people*&p1, const int& run, array<array<button, 25>, 25>&b1)
+{
+	for (int i = 0; i < run; i++) 
+	{
+		b1[p1[i].returny()][p1[i].returnx()].revisecolor() = YELLOW;
+		b1[p1[i].returny()][p1[i].returnx()].drawbutton();
+		b1[p1[i].returny()][p1[i].returnx()].reviseyellowifpass();
+	}
+}
+void Mananger::drawYourroad( people*& p1, const int& run, array<array<button, 25>, 25>& b1) 
+{
+	for (int i = 0; i < run; i++)
+	{
+		b1[p1[i].returny()][p1[i].returnx()].revisecolor() = GREEN;
+		b1[p1[i].returny()][p1[i].returnx()].drawbutton();
+		b1[p1[i].returny()][p1[i].returnx()].revisegreenifpass();
+	}
+}
+void Mananger::drawanswerroad(people*& p1, const int& run, array<array<button, 25>, 25>& b1) 
+{
+	for (int i = 0; i < run; i++)
+	{
+		b1[p1[i].returny()][p1[i].returnx()].revisecolor() = RED;
+		b1[p1[i].returny()][p1[i].returnx()].drawbutton();
+		b1[p1[i].returny()][p1[i].returnx()].reviseredifpass();
+	}
+}
+COLORREF& button::revisecolor() 
+{
+	return this->color;
+}
+void Mananger::GameShowmess(game& g1, const int& i)
+{
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	bool x = 1;
+	while (x) {
+		g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
+		int gamestarttime = 0;
+		int gameduration = 0;
+		gamestarttime = clock();
+		bool a = g1.IfYes(g1.getrun(), g1.getp2array());
+		gameduration = clock() - gamestarttime;
+		int secondall = gameduration / 1000;
+		int seconds = secondall % 60;
+		int minute = secondall / 60;
+		this->p1.gettime()[i] = secondall;
+		cout << "用时：" << setfill('0') << setw(2) << minute << ":" << setw(2) << seconds << endl;
+		if (a)
+		{
+			x = 0;
+			cout << "游戏挑战成功，棒棒的。" << endl;
+			bool a = 1;
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
+			getplayer().AddRight(getplayer().Getright(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
+			break;
+		}
+		else
+		{
+			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
+			bool a = 0;
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
+			cout << "挑战失败" << endl;
+			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
+			if (!again())
+			{
+				cout << "放弃挑战" << endl;
+				cout << "是否查看答案（1表示是，0表示否）" << endl;
+				if (again()) { g1.getanswer(g1.getp2array()); }
+				break;
+			}
+			else { system("cls"); }
+		}
+	}
+}
