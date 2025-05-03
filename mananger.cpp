@@ -191,6 +191,11 @@ void Mananger::RunChoose()
 		noendchallenge();
 		break;
 	}
+	case 7: 
+	{
+		system("cls");
+
+	}
 	default:
 		cout << "输入的选择不符合要求，请重新输入：" << endl;
 
@@ -1159,6 +1164,47 @@ void button::drawbutton1()
 	setlinecolor(BLACK);
 	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
 }
+string& button::revisetext() 
+{
+	return this->text;
+}
+void button::drawgamebutton(const int &i, const COLORREF&textcolor)
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	settextcolor(textcolor);
+	this->text = to_string(i);
+	int hspace = (this->width - textwidth("1")) / 2;
+	int vspace = (this->height - textheight("1")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+int& button::returnrepeterun1() 
+{
+	return this->repeterun1;
+}
+int& button::returnrepeterun2() 
+{
+	return this->repeterun2;
+}
+void button::drawgamerepetebutton() 
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	int hspace = (this->width - textwidth("1")) / 2;
+	int vspace = (this->height - textheight("1")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+		settextcolor(BLACK);
+	this->revisetext() = to_string(this->repeterun1);
+	outtextxy(this->x + hspace-5, this->y + vspace, this->text.c_str());
+	this->revisetext() = to_string(this->repeterun2);
+	settextcolor(DARKGRAY);
+	outtextxy(this->x + hspace+5, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
 void button::drawGQbutton() 
 {
 	setfillcolor(WHITE);
@@ -1219,6 +1265,7 @@ void Mananger::createGameP( game&g1)
 		g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
 		drawMyroad(g1.getp1array(), g1.getrun(), this->GQbutton);
 		drawYourroad(g1.getp2relative(), g1.getrun(), this->GQbutton);
+		drawrepetebutton(this->GQbutton);
 		EndBatchDraw();
 	}
 }
@@ -1231,6 +1278,7 @@ Mananger::Mananger()
 	button b4(320, 320, 200, 50, "挑战模式");
 	button b5(320, 370, 200, 50, "无尽模式");
 	button b6(320, 420, 200, 50, "退出游戏");
+	button b8(320, 470, 200, 50, "关卡排行");
 	button b7(0, 0, 125, 50, "返回");
 	button choose0(100, 100, 30, 30, "1");
 	button choose1(150, 100, 30, 30, "2");
@@ -1247,6 +1295,7 @@ Mananger::Mananger()
 	this->buttonarr[5] = b5;
 	this->buttonarr[6] = b6;
 	this->buttonarr[7] = b7;
+	this->buttonarr[8] = b8;
 	this->GQChoosebutton[0] = choose0;
 	this->GQChoosebutton[1] = choose1;
 	this->GQChoosebutton[2] = choose2;
@@ -1446,8 +1495,9 @@ void Mananger::drawMyroad( people*&p1, const int& run, array<array<button, 25>, 
 	for (int i = 0; i < run; i++) 
 	{
 		b1[p1[i].returny()][p1[i].returnx()].revisecolor() = YELLOW;
-		b1[p1[i].returny()][p1[i].returnx()].drawbutton();
+		b1[p1[i].returny()][p1[i].returnx()].drawgamebutton(i+1, BLACK);
 		b1[p1[i].returny()][p1[i].returnx()].reviseyellowifpass();
+		b1[p1[i].returny()][p1[i].returnx()].returnrepeterun1() = i+1;
 	}
 }
 void Mananger::drawYourroad( people*& p1, const int& run, array<array<button, 25>, 25>& b1) 
@@ -1455,8 +1505,9 @@ void Mananger::drawYourroad( people*& p1, const int& run, array<array<button, 25
 	for (int i = 0; i < run; i++)
 	{
 		b1[p1[i].returny()][p1[i].returnx()].revisecolor() = GREEN;
-		b1[p1[i].returny()][p1[i].returnx()].drawbutton();
+		b1[p1[i].returny()][p1[i].returnx()].drawgamebutton(i+1, DARKGRAY);
 		b1[p1[i].returny()][p1[i].returnx()].revisegreenifpass();
+		b1[p1[i].returny()][p1[i].returnx()].returnrepeterun2() = i+1;
 	}
 }
 void Mananger::drawanswerroad(people*& p1, const int& run, array<array<button, 25>, 25>& b1) 
@@ -1464,9 +1515,28 @@ void Mananger::drawanswerroad(people*& p1, const int& run, array<array<button, 2
 	for (int i = 0; i < run; i++)
 	{
 		b1[p1[i].returny()][p1[i].returnx()].revisecolor() = RED;
-		b1[p1[i].returny()][p1[i].returnx()].drawbutton();
+		b1[p1[i].returny()][p1[i].returnx()].drawgamebutton(i+1,BLACK);
 		b1[p1[i].returny()][p1[i].returnx()].reviseredifpass();
 	}
+}
+void Mananger::drawrepetebutton(array<array<button, 25>, 25>& b1) 
+{
+	for (int i = 0; i < 25; i++) 
+	{
+		for (int j = 0; j < 25; j++) 
+		{
+			if (b1[i][j].ifrepete()) 
+			{
+				b1[i][j].revisecolor() = BROWN;
+				b1[i][j].drawgamerepetebutton();
+			}
+		}
+	}
+}
+bool button::ifrepete() 
+{
+	if (this->greenifpass == true && this->yellowifpass == true) { return true; }
+	else { return false; }
 }
 COLORREF& button::revisecolor() 
 {

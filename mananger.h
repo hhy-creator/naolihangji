@@ -16,6 +16,9 @@ public:
 	button(const int& x, const int& y, const int& width, const int& height, const std::string& text);
 	void drawbutton();
 	void drawbutton1();
+	void drawgamebutton(const int&,const COLORREF&);
+	std::string& revisetext();
+	void drawgamerepetebutton();
 	int returnx();
 	int returny();
 	int returnwidth();
@@ -28,9 +31,14 @@ public:
 	void reviseyellowifpass();
 	void revisegreenifpass ();
 	void reviseredifpass() ;
+	bool ifrepete();
+	int& returnrepeterun1();
+	int& returnrepeterun2();
 private:
 	int x;
 	int y;
+	int repeterun1;
+	int repeterun2;
 	int width;
 	int height;
 	COLORREF color;
@@ -85,7 +93,7 @@ public:
 	void drawMyroad( people*&,const int&run, array<array<button, 25>, 25>&);
 	void drawYourroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
 	void drawanswerroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
-
+	void drawrepetebutton(array<array<button, 25>, 25>& b1);
 private:
 	int choose;
 	int level;
