@@ -540,7 +540,7 @@ void Mananger::creatgame5()
 	game g5;
 	g5.setrun(21);
 	g5.setzihzhen();
-	g5.getp1().SetPeopleBeginPos(8,54);
+	g5.getp1().SetPeopleBeginPos(8,14);
 	g5.getp1array()[0] = g5.getp1();
 	g5.getp1().Movepeople(UP);
 	g5.getp1array()[1] = g5.getp1();
@@ -582,7 +582,7 @@ void Mananger::creatgame5()
 	g5.getp1array()[19] = g5.getp1();
 	g5.getp1().Movepeople(DOWN);
 	g5.getp1array()[20] = g5.getp1();
-	g5.getp2().SetPeopleBeginPos(10, 30);
+	g5.getp2().SetPeopleBeginPos(10, 0);
 	g5.getp2array()[0] = g5.getp2();
 	g5.getp2().Movepeople(DOWN);
 	g5.getp2array()[1] = g5.getp2();
@@ -633,8 +633,8 @@ void Mananger::randomcreatgame()
 	randomgame.setrun(number1);
 	randomgame.setzihzhen();
 	int xfinal = 0, yfinal = 0;
-	xfinal = rand() % 100 + 1;
-	yfinal = rand() % 100 + 1;
+	xfinal = rand() % 10 + 1;
+	yfinal = rand() % 10 + 1;
 	randomgame.getp1().SetPeopleBeginPos(xfinal, yfinal);
 	randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
 	randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
@@ -752,8 +752,8 @@ void Mananger::randomcreatgame(int number1)
 	randomgame.setrun(number1);
 	randomgame.setzihzhen();
 	int xfinal = 0, yfinal = 0;
-	xfinal = rand() % 5 + 19;
-	yfinal = rand() % 5 + 10;
+	xfinal = rand() % 5 + 9;
+	yfinal = rand() % 5 + 9;
 	randomgame.getp1().SetPeopleBeginPos(xfinal, yfinal);
 	randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
 	randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
@@ -1200,7 +1200,27 @@ int& button::returnrepeterun2()
 {
 	return this->repeterun2;
 }
-void button::drawgamerepetebutton() 
+void button::drawgamerepetebutton()
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	int hspace = (this->width - textwidth("1")) / 2;
+	int vspace = (this->height - textheight("1")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	settextcolor(BLACK);
+	this->revisetext() = to_string(this->repeterun1);
+	outtextxy(this->x + hspace , this->y + vspace - 8, this->text.c_str());
+	this->revisetext() = "";
+	for (int i = 0; i < this->repeter1.size(); i++)
+	{
+		this->revisetext() += to_string(this->repeter1[i]);
+	}
+	settextcolor(DARKGRAY);
+	outtextxy(this->x + hspace, this->y + vspace + 3, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawgamerepetebutton1() 
 {
 	setfillcolor(this->color);
 	settextstyle(10, 10, "宋体");
@@ -1209,10 +1229,15 @@ void button::drawgamerepetebutton()
 	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
 		settextcolor(BLACK);
 	this->revisetext() = to_string(this->repeterun1);
-	outtextxy(this->x + hspace-3, this->y + vspace-5, this->text.c_str());
-	this->revisetext() = to_string(this->repeterun2);
+	outtextxy(this->x + hspace-3, this->y + vspace-8, this->text.c_str());
+	this->revisetext() = "";
+	settextstyle(9, 9, "宋体");
+	for (int i = 0; i < this->repeter1.size(); i++)
+	{
+		this->revisetext() += to_string(this->repeter1[i]);
+	}
 	settextcolor(DARKGRAY);
-	outtextxy(this->x + hspace-3, this->y + vspace+5, this->text.c_str());
+	outtextxy(this->x + hspace-7, this->y + vspace+3, this->text.c_str());
 	setlinecolor(BLACK);
 	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
 }
@@ -1540,57 +1565,70 @@ void button::drawmyrepete( const COLORREF& textcolor)
 	setfillcolor(this->color);
 	settextstyle(10, 10, "宋体");
 	settextcolor(textcolor);
-	for (int i = 0; i < repeter1.size(); i++)
+	for (int i = 0; i < repeter1.size()/2; i++)
 	{
 		this->text += to_string(repeter1[i]);
 	}
 	int hspace = (this->width - textwidth("10")) / 2;
 	int vspace = (this->height - textheight("10")) / 2;
 	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	outtextxy(this->x + hspace-1, this->y + vspace-6, this->text.c_str());
+	this->text = "";
+	for (int i = repeter1.size() / 2; i < repeter1.size(); i++)
+	{
+		this->text += to_string(repeter1[i]);
+	}
+	outtextxy(this->x + hspace-3 , this->y + vspace - -3, this->text.c_str());
 	setlinecolor(BLACK);
 	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
 }
+bool button::returnyellowifpass() 
+{
+	return this->yellowifpass;
+}
 void Mananger::drawYourroad( people*& p2, const int& run, array<array<button, 25>, 25>& b1) 
 {
-	for (int i = 0; i < run; i++) 
-	{
-		b1[p2[i].returnx()][p2[i].returny()].repeter1.push_back(i+1);
-	}
+
 	for (int i = 0; i < run; i++)
 	{
 		for (int j = 0; j < i; j++)
 		{
 			if (p2[i].returnx() == p2[j].returnx() && p2[i].returny() == p2[j].returny())
 			{
-				b1[p2[i].returnx()][p2[i].returny()].repeter1.push_back(j + 1);
-			}
-		}
-	}
-	for (int i = 0; i < run; i++)
-	{
-		for (int k = 0; k < b1[p2[i].returnx()][p2[i].returny()].repeter1.size(); k++)
-		{
-			for (int m = 0; m < k; m++)
-			{
-				if (b1[p2[i].returnx()][p2[i].returny()].repeter1[k] == b1[p2[i].returnx()][p2[i].returny()].repeter1[m])
+				bool x = 1;
+				for (int k = 0; k < b1[p2[i].returnx()][p2[i].returny()].repeter1.size(); k++)
 				{
-					vector<int>::iterator it = b1[p2[i].returnx()][p2[i].returny()].repeter1.begin();
-					b1[p2[i].returnx()][p2[i].returny()].repeter1.erase(it + k);
+					if (b1[p2[i].returnx()][p2[i].returny()].repeter1[k] == b1[p2[i].returnx()][p2[i].returny()].repeter1[j]) 
+					{
+						x = 0;
+						break;
+					}
+				}
+				if (!x) 
+				{
+					b1[p2[i].returnx()][p2[i].returny()].repeter1.push_back(j + 1);
 				}
 			}
 		}
 	}
 	for (int i = 0; i < run; i++)
 	{
+		b1[p2[i].returnx()][p2[i].returny()].repeter1.push_back(i + 1);
+	}
+	for (int i = 0; i < run; i++)
+	{
 		b1[p2[i].returnx()][p2[i].returny()].revisecolor() = GREEN;
-		if (b1[p2[i].returnx()][p2[i].returny()].repeter1.size() == 1)
+		if (b1[p2[i].returnx()][p2[i].returny()].repeter1.size() == 1 && b1[p2[i].returnx()][p2[i].returny()].returnyellowifpass() != true)
 		{
 			b1[p2[i].returnx()][p2[i].returny()].drawgamebutton(i + 1, BLACK);
 		}
 		else
 		{
-			b1[p2[i].returnx()][p2[i].returny()].drawmyrepete(BLACK);
+			if (b1[p2[i].returnx()][p2[i].returny()].drawnumber == 0&& b1[p2[i].returnx()][p2[i].returny()].returnyellowifpass()!=true)
+			{
+				b1[p2[i].returnx()][p2[i].returny()].drawmyrepete(BLACK);
+				b1[p2[i].returnx()][p2[i].returny()].drawnumber++;
+			}
 		}
 		b1[p2[i].returnx()][p2[i].returny()].revisegreenifpass();
 		b1[p2[i].returnx()][p2[i].returny()].returnrepeterun2() = i+1;
@@ -1614,7 +1652,8 @@ void Mananger::drawrepetebutton(array<array<button, 25>, 25>& b1)
 			if (b1[i][j].ifrepete()) 
 			{
 				b1[i][j].revisecolor() = BROWN;
-				b1[i][j].drawgamerepetebutton();
+				if (b1[i][j].repeter1.size() == 1) { b1[i][j].drawgamerepetebutton(); }
+				else { b1[i][j].drawgamerepetebutton1(); }
 			}
 		}
 	}

@@ -21,6 +21,7 @@ public:
 	void drawgamebutton(const int&,const COLORREF&);
 	std::string& revisetext();
 	void drawgamerepetebutton();
+	void drawgamerepetebutton1();
 	void drawmyrepete( const COLORREF& textcolor);
 	int returnx();
 	int returny();
@@ -34,10 +35,12 @@ public:
 	void reviseyellowifpass();
 	void revisegreenifpass ();
 	void reviseredifpass() ;
+	bool returnyellowifpass();
 	bool ifrepete();
 	int& returnrepeterun1();
 	int& returnrepeterun2();
 	vector<int>repeter1;
+	int drawnumber = 0;
 private:
 	int x;
 	int y;
