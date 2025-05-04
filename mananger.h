@@ -80,9 +80,10 @@ public:
 	void loadwindow();
 	int ifinbutoon(button&,ExMessage );
 	void loadrule();
+	void loadgameP();
 	ExMessage getmousemessage();
 	void loadChooseGQmenu();
-	void createGameP( game& g1);
+	void createGameP( game& g1, const int& i);
 	void loadGamebk();
 	void readplayermessage();
 	void recordmessage();
@@ -90,10 +91,14 @@ public:
 	vector<player> &readplayermessagetxt();
 	void wujinRank(vector<player>& p1);
 	void PuTongRank(vector<player>& p1);
-	void drawMyroad( people*&,const int&run, array<array<button, 25>, 25>&);
-	void drawYourroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
-	void drawanswerroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
-	void drawrepetebutton(array<array<button, 25>, 25>& b1);
+	void drawMyroad( people*&,const int&run, array<array<button, 25>, 25>);
+	void drawYourroad( people*&, const int& run, array<array<button, 25>, 25>b1);
+	void drawanswerroad( people*&, const int& run, array<array<button, 25>, 25>b1);
+	void drawrepetebutton(array<array<button, 25>, 25> b1);
+	bool clickanswer( game&, array<array<button, 25>, 25> b1);
+	void drawYesP(const int& i);
+	void dawNoP(const int& i);
+	void gameprogress();
 private:
 	int choose;
 	int level;
@@ -103,5 +108,6 @@ private:
 	IMAGE img[10];
 	array<array<button,25>,25>GQbutton;
 	vector<player>rank;
+
 };
 #endif // !MANANGER_H

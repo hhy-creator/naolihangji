@@ -1243,31 +1243,15 @@ void Mananger::loadGamebk()
 	loadimage(&this->img[3], "C:/Users/pcuser/Desktop/实训/关卡背景图.jpg", 1000, 729);
 
 }
+void Mananger::loadgameP() 
+{
+	loadimage(&this->img[4], "C:/Users/pcuser/Desktop/实训/芙宁娜胜利.jpg", 400, 400);
+}
 void Mananger::loadChooseGQmenu()
 {
 	loadimage(&this->img[2], "C:/Users/pcuser/Desktop/实训/关卡选择界面.jpg", 900, 600);
 
 
-}
-void Mananger::createGameP( game&g1)
-{
-	cleardevice();
-	initgraph(1000, 729);
-	setbkmode(TRANSPARENT);
-	while (1) 
-	{
-		BeginBatchDraw();
-		putimage(0, 0, &this->img[3]);
-		for (int i = 0; i < 25; i++) 
-		{
-			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
-		}
-		g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-		drawMyroad(g1.getp1array(), g1.getrun(), this->GQbutton);
-		drawYourroad(g1.getp2relative(), g1.getrun(), this->GQbutton);
-		drawrepetebutton(this->GQbutton);
-		EndBatchDraw();
-	}
 }
 Mananger::Mananger()
 {
@@ -1306,6 +1290,7 @@ Mananger::Mananger()
 	loadrule();
 	loadChooseGQmenu();
 	loadGamebk();
+	loadgameP();
 	for (int i = 0; i < 25; i++) 
 	{
 		for (int j = 0; j < 25; j++) 
@@ -1475,8 +1460,7 @@ void Mananger::creatgame1()
 	g1.getp2array()[3] = g1.getp2();
 	g1.getp2().Movepeople(DOWN);
 	g1.getp2array()[4] = g1.getp2();
-	createGameP(g1);
-	GameShowmess(g1,0);
+	createGameP(g1,0);
 }
 void button::revisegreenifpass() 
 {
@@ -1490,36 +1474,36 @@ void button::reviseredifpass()
 {
 	this->redifpass = true;
 }
-void Mananger::drawMyroad( people*&p1, const int& run, array<array<button, 25>, 25>&b1)
+void Mananger::drawMyroad( people*&p1, const int& run, array<array<button, 25>, 25>b1)
 {
 	for (int i = 0; i < run; i++) 
 	{
-		b1[p1[i].returny()][p1[i].returnx()].revisecolor() = YELLOW;
-		b1[p1[i].returny()][p1[i].returnx()].drawgamebutton(i+1, BLACK);
-		b1[p1[i].returny()][p1[i].returnx()].reviseyellowifpass();
-		b1[p1[i].returny()][p1[i].returnx()].returnrepeterun1() = i+1;
+		b1[p1[i].returnx()][p1[i].returny()].revisecolor() = YELLOW;
+		b1[p1[i].returnx()][p1[i].returny()].drawgamebutton(i+1, BLACK);
+		b1[p1[i].returnx()][p1[i].returny()].reviseyellowifpass();
+		b1[p1[i].returnx()][p1[i].returny()].returnrepeterun1() = i+1;
 	}
 }
-void Mananger::drawYourroad( people*& p1, const int& run, array<array<button, 25>, 25>& b1) 
+void Mananger::drawYourroad( people*& p1, const int& run, array<array<button, 25>, 25> b1) 
 {
 	for (int i = 0; i < run; i++)
 	{
-		b1[p1[i].returny()][p1[i].returnx()].revisecolor() = GREEN;
-		b1[p1[i].returny()][p1[i].returnx()].drawgamebutton(i+1, DARKGRAY);
-		b1[p1[i].returny()][p1[i].returnx()].revisegreenifpass();
-		b1[p1[i].returny()][p1[i].returnx()].returnrepeterun2() = i+1;
+		b1[p1[i].returnx()][p1[i].returny()].revisecolor() = GREEN;
+		b1[p1[i].returnx()][p1[i].returny()].drawgamebutton(i+1, DARKGRAY);
+		b1[p1[i].returnx()][p1[i].returny()].revisegreenifpass();
+		b1[p1[i].returnx()][p1[i].returny()].returnrepeterun2() = i+1;
 	}
 }
-void Mananger::drawanswerroad(people*& p1, const int& run, array<array<button, 25>, 25>& b1) 
+void Mananger::drawanswerroad(people*& p1, const int& run, array<array<button, 25>, 25> b1) 
 {
 	for (int i = 0; i < run; i++)
 	{
-		b1[p1[i].returny()][p1[i].returnx()].revisecolor() = RED;
-		b1[p1[i].returny()][p1[i].returnx()].drawgamebutton(i+1,BLACK);
-		b1[p1[i].returny()][p1[i].returnx()].reviseredifpass();
+		b1[p1[i].returnx()][p1[i].returny()].revisecolor() = RED;
+		b1[p1[i].returnx()][p1[i].returny()].drawgamebutton(i+1,BLACK);
+		b1[p1[i].returnx()][p1[i].returny()].reviseredifpass();
 	}
 }
-void Mananger::drawrepetebutton(array<array<button, 25>, 25>& b1) 
+void Mananger::drawrepetebutton(array<array<button, 25>, 25> b1) 
 {
 	for (int i = 0; i < 25; i++) 
 	{
@@ -1533,6 +1517,47 @@ void Mananger::drawrepetebutton(array<array<button, 25>, 25>& b1)
 		}
 	}
 }
+bool Mananger::clickanswer( game&g1, array<array<button, 25>, 25> b1)
+{
+	people* p3array = new people[g1.getrun()];
+	for (int i = 0; i < g1.getrun(); i++) 
+	{
+		ExMessage msg;
+		while (true) 
+		{
+			if (peekmessage(&msg, EX_MOUSE)) 
+			{
+				if (msg.message == WM_LBUTTONDOWN) 
+				{
+					int k = (msg.x - GQbuttonbeginlength) / 25;
+					int j = (msg.y - GQbuttonbeginwidth) / 25;
+					p3array[i].getx() = k;
+					p3array[i].gety() = j;
+					if (j >= 0 && j <= 25 && k >= 0 && k <= 25 && b1[k][j].revisecolor() != CYAN) {
+						b1[k][j].revisecolor() = CYAN;
+						b1[k][j].drawgamebutton(i + 1, BLACK);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < g1.getrun(); i++)
+	{
+		if (g1.getp2array()[i].returnx() != p3array[i].returnx() || g1.getp2array()[i].returny() != p3array[i].returny())
+		{
+			system("cls");
+			delete[]p3array;
+
+			return false;
+		}
+	}
+	system("cls");
+	delete[]p3array;
+	return true;
+
+}
 bool button::ifrepete() 
 {
 	if (this->greenifpass == true && this->yellowifpass == true) { return true; }
@@ -1541,6 +1566,10 @@ bool button::ifrepete()
 COLORREF& button::revisecolor() 
 {
 	return this->color;
+}
+void Mananger::gameprogress() 
+{
+
 }
 void Mananger::GameShowmess(game& g1, const int& i)
 {
@@ -1586,4 +1615,107 @@ void Mananger::GameShowmess(game& g1, const int& i)
 			else { system("cls"); }
 		}
 	}
+}
+void Mananger::createGameP(game& g1, const int& i)
+{
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	bool x = 1;
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	while (x)
+	{
+		BeginBatchDraw();
+		putimage(0, 0, &this->img[3]);
+		for (int i = 0; i < 25; i++)
+		{
+			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+		}
+		drawMyroad(g1.getp1array(), g1.getrun(), this->GQbutton);
+		drawYourroad(g1.getp2relative(), g1.getrun(), this->GQbutton);
+		drawrepetebutton(this->GQbutton);
+		EndBatchDraw();
+		int gamestarttime = 0;
+		int gameduration = 0;
+		gamestarttime = clock();
+		bool a = clickanswer(g1, this->GQbutton);
+		gameduration = clock() - gamestarttime;
+		int secondall = gameduration / 1000;
+		int seconds = secondall % 60;
+		int minute = secondall / 60;
+		this->p1.gettime()[i] = secondall;
+		if (a)
+		{
+			x = 0;
+			drawYesP(i);
+			bool a = 1;
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
+			getplayer().AddRight(getplayer().Getright(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
+			break;
+		}
+		else
+		{
+			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
+			bool a = 0;
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
+			cout << "挑战失败" << endl;
+			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
+			if (!again())
+			{
+				cout << "放弃挑战" << endl;
+				cout << "是否查看答案（1表示是，0表示否）" << endl;
+				if (again()) { g1.getanswer(g1.getp2array()); }
+				break;
+			}
+			else { system("cls"); }
+		}
+	}
+}
+void Mananger::drawYesP(const int&i) 
+{
+	cleardevice();
+	initgraph(800, 600);
+	setbkmode(TRANSPARENT);
+	setbkcolor(WHITE);
+	cleardevice();
+	string s = "用时：";
+	int timeall = p1.gettime()[i];
+	if (timeall < 10)
+	{
+		s += to_string(0);
+		s += to_string(timeall / 60);
+	}
+	else 
+	{
+		s += to_string(timeall / 60);
+	}
+	s += ":";
+	if (timeall % 60 < 10)
+	{
+		s += to_string(0);
+		s += to_string(timeall % 60);
+	}
+	else
+	{
+		s += to_string(timeall % 60);
+	}
+	button b1(300, 0, 300, 50, "VICTORY");
+	button b2 (300, 50, 300, 50, s);
+	while (1) {
+		BeginBatchDraw();
+		putimage(200, 200, &this->img[4]);
+		b1.drawbutton();
+		b2.drawbutton();
+		EndBatchDraw();
+		
+		
+	}
+	closegraph();
+
+}
+void Mananger::dawNoP(const int& i)
+{
+
 }

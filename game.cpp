@@ -150,6 +150,7 @@ bool game::IfYes(int number, people*& p2array)
 		if (p2array[i].returnx() != p3array[i].returnx() || p2array[i].returny() != p3array[i].returny())
 		{
 			system("cls");
+			delete[]p3array;
 		
 			return false;
 		}
