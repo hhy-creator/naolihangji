@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <fstream>
 #include <algorithm>
+#include <set>
 class button
 {
 public:
@@ -16,9 +17,11 @@ public:
 	button(const int& x, const int& y, const int& width, const int& height, const std::string& text);
 	void drawbutton();
 	void drawbutton1();
+	void drawbuttontxtBig(const int& txtsh,const int& txtsw,const int&txth,const int&txtw,const  COLORREF&);
 	void drawgamebutton(const int&,const COLORREF&);
 	std::string& revisetext();
 	void drawgamerepetebutton();
+	void drawmyrepete( const COLORREF& textcolor);
 	int returnx();
 	int returny();
 	int returnwidth();
@@ -34,6 +37,7 @@ public:
 	bool ifrepete();
 	int& returnrepeterun1();
 	int& returnrepeterun2();
+	vector<int>repeter1;
 private:
 	int x;
 	int y;
@@ -91,14 +95,15 @@ public:
 	vector<player> &readplayermessagetxt();
 	void wujinRank(vector<player>& p1);
 	void PuTongRank(vector<player>& p1);
-	void drawMyroad( people*&,const int&run, array<array<button, 25>, 25>);
-	void drawYourroad( people*&, const int& run, array<array<button, 25>, 25>b1);
-	void drawanswerroad( people*&, const int& run, array<array<button, 25>, 25>b1);
-	void drawrepetebutton(array<array<button, 25>, 25> b1);
-	bool clickanswer( game&, array<array<button, 25>, 25> b1);
+	void drawMyroad( people*&,const int&run, array<array<button, 25>, 25>&b1);
+	void drawYourroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
+	void drawanswerroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
+	void drawrepetebutton(array<array<button, 25>, 25>& b1);
+	bool clickanswer( game&, array<array<button, 25>, 25>& b1);
 	void drawYesP(const int& i);
-	void dawNoP(const int& i);
+	void drawNoP(game& g1, const int& i);
 	void gameprogress();
+	void setbutton();
 private:
 	int choose;
 	int level;
