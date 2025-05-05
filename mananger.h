@@ -41,6 +41,7 @@ public:
 	int& returnrepeterun2();
 	vector<int>repeter1;
 	int drawnumber = 0;
+	button& operator=(const button&b1);
 private:
 	int x;
 	int y;
@@ -59,6 +60,7 @@ class Mananger
 {
 public:
 	Mananger();
+	bool ifOKCreat(const game&g1);
 	~Mananger();
 	void ChangeChoose();
 	void ShowMenu();
@@ -91,6 +93,7 @@ public:
 	ExMessage getmousemessage();
 	void loadChooseGQmenu();
 	void createGameP( game& g1, const int& i);
+	void createGameP(game& g1);
 	void loadGamebk();
 	void readplayermessage();
 	void recordmessage();
@@ -98,15 +101,18 @@ public:
 	vector<player> &readplayermessagetxt();
 	void wujinRank(vector<player>& p1);
 	void PuTongRank(vector<player>& p1);
-	void drawMyroad( people*&,const int&run, array<array<button, 25>, 25>&b1);
-	void drawYourroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
-	void drawanswerroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
-	void drawrepetebutton(array<array<button, 25>, 25>& b1);
-	bool clickanswer( game&, array<array<button, 25>, 25>& b1);
+	array<array<button, 25>, 25> drawMyroad( people*&,const int&run,  array<array<button, 25>, 25>&b1);
+	array<array<button, 25>, 25> drawYourroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
+	void drawanswerroad( people*&, const int& run,const array<array<button, 25>, 25>&b1);
+	array<array<button, 25>, 25> drawrepetebutton(array<array<button, 25>, 25>& b1);
+	bool clickanswer( game&, array<array<button, 25>, 25>&b1);
 	void drawYesP(const int& i);
 	void drawNoP(game& g1, const int& i);
+	void drawYesP(game&g1);
+	void drawNoP(game& g1);
 	void gameprogress();
 	void setbutton();
+	bool ifinimage(ExMessage,IMAGE&, const int& wb, const int& hb);
 private:
 	int choose;
 	int level;
