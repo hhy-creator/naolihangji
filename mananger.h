@@ -101,11 +101,11 @@ public:
 	vector<player> &readplayermessagetxt();
 	void wujinRank(vector<player>& p1);
 	void PuTongRank(vector<player>& p1);
-	array<array<button, 25>, 25> drawMyroad( people*&,const int&run,  array<array<button, 25>, 25>&b1);
-	array<array<button, 25>, 25> drawYourroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
-	void drawanswerroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
-	array<array<button, 25>, 25> drawrepetebutton( array<array<button, 25>, 25>& b1);
-	bool clickanswer( game&, array<array<button, 25>, 25>&b1);
+	button**& drawMyroad( people*&,const int&run,  button**&);
+	button**& drawYourroad( people*&, const int& run, button**& b1);
+	void drawanswerroad( people*&, const int& run, button**& b1);
+	button**& drawrepetebutton(button**& b1);
+	bool clickanswer( game&, button**& b1);
 	void drawYesP(const int& i);
 	void drawNoP(game& g1, const int& i);
 	void drawYesP(game&g1);

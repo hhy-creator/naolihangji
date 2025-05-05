@@ -1571,7 +1571,7 @@ void button::reviseredifpass()
 {
 	this->redifpass = true;
 }
-array<array<button, 25>, 25> Mananger::drawMyroad( people*&p2, const int& run, array<array<button, 25>, 25>&b1)
+button**& Mananger::drawMyroad(people*&p2, const int& run, button**&b1)
 {
 	for (int i = 0; i < run; i++) 
 	{
@@ -1608,7 +1608,7 @@ bool button::returnyellowifpass()
 {
 	return this->yellowifpass;
 }
-array<array<button, 25>, 25> Mananger::drawYourroad( people*& p2, const int& run, array<array<button, 25>, 25>& b1)
+button**& Mananger::drawYourroad( people*& p2, const int& run, button**& b1)
 {
 	for (int i = 0; i < run; i++)
 	{
@@ -1656,7 +1656,7 @@ array<array<button, 25>, 25> Mananger::drawYourroad( people*& p2, const int& run
 	}
 	return b1;
 }
-void Mananger::drawanswerroad(people*& p2, const int& run, array<array<button, 25>, 25>& b1) 
+void Mananger::drawanswerroad(people*& p2, const int& run, button**& b1)
 {
 	for (int i = 0; i < run; i++)
 	{
@@ -1665,7 +1665,7 @@ void Mananger::drawanswerroad(people*& p2, const int& run, array<array<button, 2
 		b1[p2[i].returnx()][p2[i].returny()].reviseredifpass();
 	}
 }
-array<array<button, 25>, 25> Mananger::drawrepetebutton(array<array<button, 25>, 25>& b1)
+button**& Mananger::drawrepetebutton(button**& b1)
 {
 	for (int i = 0; i < 25; i++) 
 	{
@@ -1681,7 +1681,7 @@ array<array<button, 25>, 25> Mananger::drawrepetebutton(array<array<button, 25>,
 	}
 	return b1;
 }
-bool Mananger::clickanswer( game&g1, array<array<button, 25>, 25>& b1)
+bool Mananger::clickanswer( game&g1, button**& b1)
 {
 
 	putimage(0, 679, &this->img[6]);
@@ -1824,16 +1824,21 @@ void Mananger::createGameP(game& g1, const int& i)
 		putimage(0, 0, &this->img[3]);
 		for (int i = 0; i < 25; i++)
 		{
-			for (int j = 0; j < 25; j++) {this->GQbutton[i][j].drawGQbutton(); }
+			for (int j = 0; j < 25; j++) {b1[i][j].drawGQbutton(); }
 		}
-		drawMyroad(g1.getp1array(), g1.getrun(), this->GQbutton);
-		drawYourroad(g1.getp2relative(), g1.getrun(), this->GQbutton);
-		drawrepetebutton(this->GQbutton);
+		drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		drawrepetebutton(b1);
 		EndBatchDraw();
 		int gamestarttime = 0;
 		int gameduration = 0;
 		gamestarttime = clock();
-		bool a = clickanswer(g1, this->GQbutton);
+		bool a = clickanswer(g1, b1);
+		for (int i = 0; i < 25; i++) 
+		{
+			delete[]b1[i];
+		}
+		delete[] b1;
 		gameduration = clock() - gamestarttime;
 		setbutton();
 		int secondall = gameduration / 1000;
@@ -1871,6 +1876,18 @@ void Mananger::createGameP(game& g1)
 	setbkmode(TRANSPARENT);
 	bool x = 1;
 	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
 	while (x)
 	{
 		BeginBatchDraw();
@@ -1879,11 +1896,16 @@ void Mananger::createGameP(game& g1)
 		{
 			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
 		}
-		drawMyroad(g1.getp1array(), g1.getrun(), this->GQbutton);
-		drawYourroad(g1.getp2relative(), g1.getrun(), this->GQbutton);
-		drawrepetebutton(this->GQbutton);
+		drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		drawrepetebutton(b1);
 		EndBatchDraw();
-		bool a = clickanswer(g1, this->GQbutton);
+		bool a = clickanswer(g1, b1);
+		for (int i = 0; i < 25; i++)
+		{
+			delete[]b1[i];
+		}
+		delete[] b1;
 		setbutton();
 
 		if (a)
@@ -1981,15 +2003,27 @@ void Mananger::drawNoP(game& g1)
 			initgraph(1000, 729);
 			setbkmode(TRANSPARENT);
 			button b3(0, 0, 75, 75, "返回");
+			button** b1 = new button * [25];
+			for (int i = 0; i < 25; i++)
+			{
+				b1[i] = new button[25];
+			}
+			for (int i = 0; i < 25; i++)
+			{
+				for (int j = 0; j < 25; j++)
+				{
+					b1[i][j] = this->GQbutton[i][j];
+				}
+			}
 			bool m = 1;
 			while (m) {
 				BeginBatchDraw();
 				putimage(0, 0, &this->img[3]);
 				for (int i = 0; i < 25; i++)
 				{
-					for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+					for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
 				}
-				drawanswerroad(g1.getp2array(), g1.getrun(), this->GQbutton);
+				drawanswerroad(g1.getp2array(), g1.getrun(), b1);
 				b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
 				EndBatchDraw();
 				ExMessage msg = getmousemessage();
@@ -1997,6 +2031,11 @@ void Mananger::drawNoP(game& g1)
 				if (ifinbutoon(b3, msg))
 				{
 					closegraph();
+					for (int i = 0; i < 25; i++)
+					{
+						delete[]b1[i];
+					}
+					delete[] b1;
 					m = 0;
 					createGameP(g1);
 				}
@@ -2082,18 +2121,30 @@ void Mananger::drawNoP(game& g1, const int& i)
 	{
 		s += to_string(timeall % 60);
 	}
-	button b1(250, 0, 300, 50, "DEFEAT");
+	button b11(250, 0, 300, 50, "DEFEAT");
 	button b2(250, 50, 300, 50, s);
 	button b3(0, 0, 75, 75, "返回");
 	button b4(250, 100, 300, 50, "再次挑战");
 	button b5(250, 150, 300, 50, "查看答案");
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
 	bool x = 0;
 	while (!x)
 	{
 		int number = 0;
 		BeginBatchDraw();
 		putimage(200, 200, &this->img[5]);
-		b1.drawbutton();
+		b11.drawbutton();
 		b2.drawbutton();
 		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
 		b4.drawbutton();
@@ -2132,9 +2183,9 @@ void Mananger::drawNoP(game& g1, const int& i)
 				putimage(0, 0, &this->img[3]);
 				for (int i = 0; i < 25; i++)
 				{
-					for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+					for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
 				}
-				drawanswerroad(g1.getp2array(), g1.getrun(), this->GQbutton);
+				drawanswerroad(g1.getp2array(), g1.getrun(), b1);
 				b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
 				EndBatchDraw();
 				ExMessage msg = getmousemessage();
@@ -2142,6 +2193,11 @@ void Mananger::drawNoP(game& g1, const int& i)
 				if (ifinbutoon(b3, msg)) 
 				{
 					closegraph();
+					for (int i = 0; i < 25; i++)
+					{
+						delete[]b1[i];
+					}
+					delete[] b1;
 					m = 0;
 					ChooseGame();
 				}
