@@ -1687,6 +1687,19 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 	putimage(0, 679, &this->img[6]);
 	putimage(50, 679, &this->img[7]);
 	people* p3array = new people[g1.getrun()];
+	button** b2 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b2[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b2[i][j] = b1[i][j];
+		}
+	}
+
 	for (int i = 0; i < g1.getrun(); i++) 
 	{
 		ExMessage msg;
@@ -1716,7 +1729,7 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 					}
 					else if (ifinimage(msg, this->img[7], 50, 679)&&i>=1) 
 					{
-						b1[p3array[i - 1].returnx()][p3array[i - 1].returny()] = this->GQbutton[p3array[i - 1].returnx()][p3array[i - 1].returny()];
+						b1[p3array[i - 1].returnx()][p3array[i - 1].returny()] = b2[p3array[i - 1].returnx()][p3array[i - 1].returny()];
 						b1[p3array[i - 1].returnx()][p3array[i - 1].returny()].drawGQbutton();
 						i--;
 						continue;
@@ -1738,6 +1751,11 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 	}
 	system("cls");
 	delete[]p3array;
+	for (int i = 0; i < 25; i++) 
+	{
+		delete[]b2[i];
+	}
+	delete[]b2;
 	return true;
 
 }
@@ -1826,9 +1844,9 @@ void Mananger::createGameP(game& g1, const int& i)
 		{
 			for (int j = 0; j < 25; j++) {b1[i][j].drawGQbutton(); }
 		}
-		drawMyroad(g1.getp1array(), g1.getrun(), b1);
-		drawYourroad(g1.getp2relative(), g1.getrun(), b1);
-		drawrepetebutton(b1);
+		b1=drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		b1=drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		b1=drawrepetebutton(b1);
 		EndBatchDraw();
 		int gamestarttime = 0;
 		int gameduration = 0;
@@ -1896,9 +1914,9 @@ void Mananger::createGameP(game& g1)
 		{
 			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
 		}
-		drawMyroad(g1.getp1array(), g1.getrun(), b1);
-		drawYourroad(g1.getp2relative(), g1.getrun(), b1);
-		drawrepetebutton(b1);
+		b1 = drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		b1 = drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		b1 = drawrepetebutton(b1);
 		EndBatchDraw();
 		bool a = clickanswer(g1, b1);
 		for (int i = 0; i < 25; i++)
