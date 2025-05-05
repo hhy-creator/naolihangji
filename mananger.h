@@ -103,8 +103,8 @@ public:
 	void PuTongRank(vector<player>& p1);
 	array<array<button, 25>, 25> drawMyroad( people*&,const int&run,  array<array<button, 25>, 25>&b1);
 	array<array<button, 25>, 25> drawYourroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
-	void drawanswerroad( people*&, const int& run,const array<array<button, 25>, 25>&b1);
-	array<array<button, 25>, 25> drawrepetebutton(array<array<button, 25>, 25>& b1);
+	void drawanswerroad( people*&, const int& run, array<array<button, 25>, 25>&b1);
+	array<array<button, 25>, 25> drawrepetebutton( array<array<button, 25>, 25>& b1);
 	bool clickanswer( game&, array<array<button, 25>, 25>&b1);
 	void drawYesP(const int& i);
 	void drawNoP(game& g1, const int& i);
