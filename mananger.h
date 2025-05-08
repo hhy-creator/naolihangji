@@ -45,6 +45,7 @@ public:
 	int drawnumber = 0;
 	button& operator=(const button&b1);
 	int& returnbushu();
+	bool& reviseifokclick();
 private:
 	int x;
 	int y;
@@ -59,6 +60,7 @@ private:
 	bool greenifpass=0;
 	bool redifpass = 0;
 	int bushu;
+	bool ifokclick=1;
 };
 class Mananger
 {

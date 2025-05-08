@@ -1105,6 +1105,10 @@ int button::returnheight()
 	return this->height;
 }
 button::button() {}
+bool& button::reviseifokclick() 
+{
+	return this->ifokclick;
+}
 button& button::operator=(const button& b1)
 {
 	this->color = b1.color;
@@ -1122,6 +1126,7 @@ button& button::operator=(const button& b1)
 	this->repeter1 = b1.repeter1;
 	this->bushu = b1.bushu;
 	this->drawnumber = b1.drawnumber;
+	this->ifokclick = b1.ifokclick;
 	return *this;
 }
 ExMessage Mananger::getmousemessage()
@@ -1711,13 +1716,13 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 				{
 					int k = (msg.x - GQbuttonbeginlength) / 25;
 					int j = (msg.y - GQbuttonbeginwidth) / 25;
-					if (j >= 0 && j <= 25 && k >= 0 && k <= 25 && b1[k][j].revisecolor() != CYAN) 
+					if (j >= 0 && j <= 25 && k >= 0 && k <= 25 && b1[k][j].reviseifokclick())
 					{
 						p3array[i].getx() = k;
 						p3array[i].gety() = j;
 						b1[k][j].revisecolor() = CYAN;
 						b1[k][j].drawgamebutton(i + 1, BLACK,1);
-
+						b1[k][j].reviseifokclick() = false;
 						i++;
 						break;
 					}
@@ -1754,7 +1759,7 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 						{
 							this->GQbutton[p3array[i].returnx()][p3array[i].returny()].drawGQbutton();
 						}
-						b1[p3array[i].returnx()][p3array[i].returny()] = b2[p3array[i].returnx()][p3array[i].returny()];
+						b1[p3array[i].returnx()][p3array[i].returny()].reviseifokclick() = true;
 						break;
 					}
 				}
