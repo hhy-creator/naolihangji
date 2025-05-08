@@ -1198,6 +1198,10 @@ string& button::revisetext()
 {
 	return this->text;
 }
+int& button::returnbushu() 
+{
+	return this->bushu;
+};
 void button::drawgamebutton(const int &i, const COLORREF&textcolor)
 {
 	setfillcolor(this->color);
@@ -1210,6 +1214,7 @@ void button::drawgamebutton(const int &i, const COLORREF&textcolor)
 	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
 	setlinecolor(BLACK);
 	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	this->bushu = i;
 }
 int& button::returnrepeterun1() 
 {
@@ -1691,16 +1696,18 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 	for (int i = 0; i < 25; i++)
 	{
 		b2[i] = new button[25];
+	
 	}
 	for (int i = 0; i < 25; i++)
 	{
 		for (int j = 0; j < 25; j++)
 		{
 			b2[i][j] = b1[i][j];
+	
 		}
 	}
 
-	for (int i = 0; i < g1.getrun(); i++) 
+	for (int i = 0; i < g1.getrun();) 
 	{
 		ExMessage msg;
 		while (true) 
@@ -1711,28 +1718,56 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 				{
 					int k = (msg.x - GQbuttonbeginlength) / 25;
 					int j = (msg.y - GQbuttonbeginwidth) / 25;
-					p3array[i].getx() = k;
-					p3array[i].gety() = j;
 					if (j >= 0 && j <= 25 && k >= 0 && k <= 25 && b1[k][j].revisecolor() != CYAN) 
 					{
+						p3array[i].getx() = k;
+						p3array[i].gety() = j;
 						b1[k][j].revisecolor() = CYAN;
 						b1[k][j].drawgamebutton(i + 1, BLACK);
+						b2[k][j].returnbushu() = b1[k][j].returnbushu();
+						b2[k][j].revisetext() = b1[k][j].revisetext();
+
+						i++;
 						break;
 					}
 					else if (ifinimage(msg, this->img[6], 0, 679))
 					{
 						b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].revisecolor() = CYAN;
 						b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].drawgamebutton(i + 1, BLACK);
+
+						b2[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].returnbushu() = b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].returnbushu();
+						b2[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].revisetext() = b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].revisetext();
 						p3array[i].getx() = g1.getp2array()[i].returnx();
 						p3array[i].gety() = g1.getp2array()[i].returny();
+						i++;
 						break;
 					}
 					else if (ifinimage(msg, this->img[7], 50, 679)&&i>=1) 
 					{
-						b1[p3array[i - 1].returnx()][p3array[i - 1].returny()] = b2[p3array[i - 1].returnx()][p3array[i - 1].returny()];
-						b1[p3array[i - 1].returnx()][p3array[i - 1].returny()].drawGQbutton();
 						i--;
-						continue;
+						if (b2[p3array[i].returnx()][p3array[i].returny()].returnyellowifpass() == true && b2[p3array[i].returnx()][p3array[i].returny()].returngreenifpass() == false)
+						{
+							b2[p3array[i].returnx()][p3array[i].returny()].drawgamebutton(b2[p3array[i].returnx()][p3array[i].returny()].returnbushu(), BLACK);
+						}
+						else if (b2[p3array[i].returnx()][p3array[i].returny()].returngreenifpass() == true && b2[p3array[i].returnx()][p3array[i].returny()].returnyellowifpass() == false)
+						{
+							if (b2[p3array[i].returnx()][p3array[i].returny()].repeter1.size() == 1) 
+							{
+								b2[p3array[i].returnx()][p3array[i].returny()].drawgamebutton(b2[p3array[i].returnx()][p3array[i].returny()].returnbushu(), BLACK);
+							}
+							else { b2[p3array[i].returnx()][p3array[i].returny()].drawmyrepete(BLACK); }
+						}
+						else if(b2[p3array[i].returnx()][p3array[i].returny()].returngreenifpass()==true&& b2[p3array[i].returnx()][p3array[i].returny()].returnyellowifpass()==true)
+						{
+							if (b2[p3array[i].returnx()][p3array[i].returny()].repeter1.size() == 1) { b2[p3array[i].returnx()][p3array[i].returny()].drawgamerepetebutton(); }
+							else { b2[p3array[i].returnx()][p3array[i ].returny()].drawgamerepetebutton1(); }
+						}
+						else
+						{
+							this->GQbutton[p3array[i].returnx()][p3array[i].returny()].drawGQbutton();
+						}
+						b1[p3array[i].returnx()][p3array[i].returny()] = b2[p3array[i].returnx()][p3array[i].returny()];
+						break;
 					}
 				}
 			}
@@ -1744,6 +1779,11 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 		if (g1.getp2array()[i].returnx() != p3array[i].returnx() || g1.getp2array()[i].returny() != p3array[i].returny())
 		{
 			system("cls");
+			for (int i = 0; i < 25; i++)
+			{
+				delete[]b2[i];
+			}
+			delete[]b2;
 			delete[]p3array;
 
 			return false;
@@ -1816,6 +1856,10 @@ void Mananger::GameShowmess(game& g1, const int& i)
 			else { system("cls"); }
 		}
 	}
+}
+bool button::returngreenifpass() 
+{
+	return this->greenifpass;
 }
 void Mananger::createGameP(game& g1, const int& i)
 {

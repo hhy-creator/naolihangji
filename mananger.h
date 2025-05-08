@@ -36,12 +36,14 @@ public:
 	void revisegreenifpass ();
 	void reviseredifpass() ;
 	bool returnyellowifpass();
+	bool returngreenifpass();
 	bool ifrepete();
 	int& returnrepeterun1();
 	int& returnrepeterun2();
 	vector<int>repeter1;
 	int drawnumber = 0;
 	button& operator=(const button&b1);
+	int& returnbushu();
 private:
 	int x;
 	int y;
@@ -55,6 +57,7 @@ private:
 	bool yellowifpass=0;
 	bool greenifpass=0;
 	bool redifpass = 0;
+	int bushu;
 };
 class Mananger
 {
