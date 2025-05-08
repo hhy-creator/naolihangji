@@ -19,6 +19,7 @@ public:
 	void drawbutton1();
 	void drawbuttontxtBig(const int& txtsh,const int& txtsw,const int&txth,const int&txtw,const  COLORREF&);
 	void drawgamebutton(const int&,const COLORREF&);
+	void drawgamebutton(const int&, const COLORREF&,const bool& x);
 	std::string& revisetext();
 	void drawgamerepetebutton();
 	void drawgamerepetebutton1();

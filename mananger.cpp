@@ -1119,6 +1119,9 @@ button& button::operator=(const button& b1)
 	this-> passnumber = b1.passnumber;
 	this-> greenifpass = b1.greenifpass;
 	this-> redifpass = b1.redifpass;
+	this->repeter1 = b1.repeter1;
+	this->bushu = b1.bushu;
+	this->drawnumber = b1.drawnumber;
 	return *this;
 }
 ExMessage Mananger::getmousemessage()
@@ -1202,11 +1205,25 @@ int& button::returnbushu()
 {
 	return this->bushu;
 };
+void button::drawgamebutton(const int& i, const COLORREF& textcolor, const bool& x)
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "ËÎÌå");
+	settextcolor(textcolor);
+	this->text = to_string(i);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
 void button::drawgamebutton(const int &i, const COLORREF&textcolor)
 {
 	setfillcolor(this->color);
 	settextstyle(10, 10, "ËÎÌå");
 	settextcolor(textcolor);
+	this->text = "";
 	this->text = to_string(i);
 	int hspace = (this->width - textwidth("10")) / 2;
 	int vspace = (this->height - textheight("10")) / 2;
@@ -1587,11 +1604,35 @@ button**& Mananger::drawMyroad(people*&p2, const int& run, button**&b1)
 	}
 	return b1;
 }
+button**& Mananger::drawYourroad(people*& p2, const int& run, button**& b1)
+{
+	for (int i = 0; i < run; i++)
+	{
+		b1[p2[i].returnx()][p2[i].returny()].repeter1.push_back(i+ 1);
+	}
+	for (int i = 0; i < run; i++)
+	{
+		b1[p2[i].returnx()][p2[i].returny()].revisecolor() = GREEN;
+		if (b1[p2[i].returnx()][p2[i].returny()].repeter1.size() == 1 && b1[p2[i].returnx()][p2[i].returny()].returnyellowifpass() != true)
+		{
+			b1[p2[i].returnx()][p2[i].returny()].drawgamebutton(b1[p2[i].returnx()][p2[i].returny()].repeter1[0], BLACK);
+		}
+		else
+		{
+
+				b1[p2[i].returnx()][p2[i].returny()].drawmyrepete(BLACK);
+		}
+		b1[p2[i].returnx()][p2[i].returny()].revisegreenifpass();
+		b1[p2[i].returnx()][p2[i].returny()].returnrepeterun2() = i + 1;
+	}
+	return b1;
+}
 void button::drawmyrepete( const COLORREF& textcolor)
 {
 	setfillcolor(this->color);
 	settextstyle(10, 10, "ËÎÌå");
 	settextcolor(textcolor);
+	this->text = "";
 	for (int i = 0; i < repeter1.size()/2; i++)
 	{
 		this->text += to_string(repeter1[i]);
@@ -1612,54 +1653,6 @@ void button::drawmyrepete( const COLORREF& textcolor)
 bool button::returnyellowifpass() 
 {
 	return this->yellowifpass;
-}
-button**& Mananger::drawYourroad( people*& p2, const int& run, button**& b1)
-{
-	for (int i = 0; i < run; i++)
-	{
-		for (int j = 0; j < i; j++)
-		{
-			if (p2[i].returnx() == p2[j].returnx() && p2[i].returny() == p2[j].returny())
-			{
-				bool x = 1;
-				for (int k = 0; k < b1[p2[i].returnx()][p2[i].returny()].repeter1.size(); k++)
-				{
-					if (b1[p2[i].returnx()][p2[i].returny()].repeter1[k] == b1[p2[i].returnx()][p2[i].returny()].repeter1[j]) 
-					{
-						x = 0;
-						break;
-					}
-				}
-				if (!x) 
-				{
-					b1[p2[i].returnx()][p2[i].returny()].repeter1.push_back(j + 1);
-				}
-			}
-		}
-	}
-	for (int i = 0; i < run; i++)
-	{
-		b1[p2[i].returnx()][p2[i].returny()].repeter1.push_back(i + 1);
-	}
-	for (int i = 0; i < run; i++)
-	{
-		b1[p2[i].returnx()][p2[i].returny()].revisecolor() = GREEN;
-		if (b1[p2[i].returnx()][p2[i].returny()].repeter1.size() == 1 && b1[p2[i].returnx()][p2[i].returny()].returnyellowifpass() != true)
-		{
-			b1[p2[i].returnx()][p2[i].returny()].drawgamebutton(i + 1, BLACK);
-		}
-		else
-		{
-			if (b1[p2[i].returnx()][p2[i].returny()].drawnumber == 0&& b1[p2[i].returnx()][p2[i].returny()].returnyellowifpass()!=true)
-			{
-				b1[p2[i].returnx()][p2[i].returny()].drawmyrepete(BLACK);
-				b1[p2[i].returnx()][p2[i].returny()].drawnumber++;
-			}
-		}
-		b1[p2[i].returnx()][p2[i].returny()].revisegreenifpass();
-		b1[p2[i].returnx()][p2[i].returny()].returnrepeterun2() = i+1;
-	}
-	return b1;
 }
 void Mananger::drawanswerroad(people*& p2, const int& run, button**& b1)
 {
@@ -1723,9 +1716,7 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 						p3array[i].getx() = k;
 						p3array[i].gety() = j;
 						b1[k][j].revisecolor() = CYAN;
-						b1[k][j].drawgamebutton(i + 1, BLACK);
-						b2[k][j].returnbushu() = b1[k][j].returnbushu();
-						b2[k][j].revisetext() = b1[k][j].revisetext();
+						b1[k][j].drawgamebutton(i + 1, BLACK,1);
 
 						i++;
 						break;
@@ -1733,10 +1724,7 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 					else if (ifinimage(msg, this->img[6], 0, 679))
 					{
 						b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].revisecolor() = CYAN;
-						b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].drawgamebutton(i + 1, BLACK);
-
-						b2[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].returnbushu() = b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].returnbushu();
-						b2[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].revisetext() = b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].revisetext();
+						b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].drawgamebutton(i + 1, BLACK,1);
 						p3array[i].getx() = g1.getp2array()[i].returnx();
 						p3array[i].gety() = g1.getp2array()[i].returny();
 						i++;
@@ -1747,13 +1735,13 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 						i--;
 						if (b2[p3array[i].returnx()][p3array[i].returny()].returnyellowifpass() == true && b2[p3array[i].returnx()][p3array[i].returny()].returngreenifpass() == false)
 						{
-							b2[p3array[i].returnx()][p3array[i].returny()].drawgamebutton(b2[p3array[i].returnx()][p3array[i].returny()].returnbushu(), BLACK);
+							b2[p3array[i].returnx()][p3array[i].returny()].drawgamebutton(b2[p3array[i].returnx()][p3array[i].returny()].returnrepeterun1(), BLACK, 1);
 						}
 						else if (b2[p3array[i].returnx()][p3array[i].returny()].returngreenifpass() == true && b2[p3array[i].returnx()][p3array[i].returny()].returnyellowifpass() == false)
 						{
 							if (b2[p3array[i].returnx()][p3array[i].returny()].repeter1.size() == 1) 
 							{
-								b2[p3array[i].returnx()][p3array[i].returny()].drawgamebutton(b2[p3array[i].returnx()][p3array[i].returny()].returnbushu(), BLACK);
+								b2[p3array[i].returnx()][p3array[i].returny()].drawgamebutton(b2[p3array[i].returnx()][p3array[i].returny()].repeter1[0], BLACK, 1);
 							}
 							else { b2[p3array[i].returnx()][p3array[i].returny()].drawmyrepete(BLACK); }
 						}
@@ -1888,9 +1876,9 @@ void Mananger::createGameP(game& g1, const int& i)
 		{
 			for (int j = 0; j < 25; j++) {b1[i][j].drawGQbutton(); }
 		}
-		b1=drawMyroad(g1.getp1array(), g1.getrun(), b1);
-		b1=drawYourroad(g1.getp2relative(), g1.getrun(), b1);
-		b1=drawrepetebutton(b1);
+		drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		drawrepetebutton(b1);
 		EndBatchDraw();
 		int gamestarttime = 0;
 		int gameduration = 0;
