@@ -9,6 +9,8 @@
 #include <fstream>
 #include <stdexcept>
 #include <algorithm>
+#include <conio.h>
+#include <graphics.h>
 #include <set>
 using namespace std;
 

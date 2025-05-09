@@ -9,7 +9,14 @@
 #include <stdexcept>
 #include <fstream>
 #include <algorithm>
+#include <conio.h>
 #include <set>
+#include <graphics.h>
+struct gameku 
+{
+	game g1;
+	std::string name;
+};
 class button
 {
 public:
@@ -122,15 +129,17 @@ public:
 	void gameprogress();
 	void setbutton();
 	bool ifinimage(ExMessage,IMAGE&, const int& wb, const int& hb);
+	vector<gameku>& readgamekutxt();
 private:
 	int choose;
 	int level;
 	player p1;
 	array<button, 10>buttonarr;
 	array<button, 10>GQChoosebutton;
-	IMAGE img[10];
+	IMAGE img[15];
 	array<array<button,25>,25>GQbutton;
 	vector<player>rank;
+	vector<gameku>gameall;
 
 };
 #endif // !MANANGER_H

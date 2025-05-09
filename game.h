@@ -2,6 +2,7 @@
 #define GAME_H
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 enum Direction { UP, DOWN, LEFT, RIGHT };
 class people
 {
@@ -41,6 +42,8 @@ public:
 	people* returnp1arr()const;
 	people* returnp2arr()const;
 	people* returnp2rearr()const;
+	void writegame(const std::string&);
+	void readgame(const std::string,game&);
 private:
 	people p1, p2;
 	int run;

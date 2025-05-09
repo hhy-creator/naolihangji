@@ -10,6 +10,8 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
+#include <conio.h>
+#include <graphics.h>
 using namespace std;
 int	GQbuttonbeginlength = 100;
 int	GQbuttonbeginwidth = 30;
@@ -101,6 +103,7 @@ vector<player>& Mananger::readplayermessagetxt(){
 	is.close();
 	return this->rank;
 }
+vector<gameku>& Mananger::readgamekutxt();
 void Mananger::recordmessage()
 {
 	ofstream ofs("D:/脑力航迹/playermessgae.txt", ios::binary|ios::app);
@@ -149,11 +152,11 @@ void Mananger::RunChoose()
 	switch (choose) 
 	{
 	case 1:
-		{
+	{
 			system("cls");
 			BeginGame();
 			break;
-		}
+	}
 	case 2: 
 	{
 		system("cls");
@@ -1008,157 +1011,101 @@ void Mananger::PlayerGreatgame()
 {
 	game playergame;
 	int number1 = 0;
-	cout << "请输入移动步数：" << endl;
+	cout << "请输入行动步数（不包括起点）:" << endl;
 	cin >> number1;
 	playergame.setrun(number1+1);
 	playergame.setzihzhen();
-	int xstart1 = 0, ystart1 = 0;
-	cout << "请输入您的起始坐标：" << endl;
-	cin >> xstart1 >> ystart1;
-	playergame.getp1().SetPeopleBeginPos(xstart1, ystart1);
-	playergame.getp1array()[0].SetPeopleBeginPos(xstart1, ystart1);
-	cout << "请输入您的移动(0上1下2左3右):" << endl;
-	int number2 = 0;
-	for (int i = 1; i<playergame.getrun();)
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
 	{
-		cin >> number2;
-		switch (number2)
-		{
-		case 0:
-		{
-			playergame.getp1().Movepeople(UP);
-			playergame.getp1array()[i] = playergame.getp1();
-			if (playergame.ifpass1(playergame.getp1array(), i))
-			{
-				i++;
-			}
-			else
-			{
-				cout << "该地方已经经过，请重新输入：" << endl;
-				playergame.getp1().Movepeople(DOWN);
-
-			}
-			break;
-		}
-		case 1:
-		{
-			playergame.getp1().Movepeople(DOWN);
-			playergame.getp1array()[i] = playergame.getp1();
-			if (playergame.ifpass1(playergame.getp1array(), i))
-			{
-				i++;
-			}
-			else
-			{
-				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp1().Movepeople(UP);
-
-			}
-			break;
-		}
-		case 2:
-		{
-			playergame.getp1().Movepeople(LEFT);
-			playergame.getp1array()[i] = playergame.getp1();
-			if (playergame.ifpass1(playergame.getp1array(), i))
-			{
-				i++;
-			}
-			else {
-				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp1().Movepeople(RIGHT);
-			}
-			break;
-		}
-		case 3:
-		{
-			playergame.getp1().Movepeople(RIGHT);
-			playergame.getp1array()[i] = playergame.getp1();
-			if (playergame.ifpass1(playergame.getp1array(), i))
-			{
-				i++;
-			}
-			else
-			{
-				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp1().Movepeople(LEFT);
-			}
-			break;
-		}
-		}
-
+		b1[i] = new button[25];
 	}
-	int xstart2, ystart2 = 0;
-	cout << "请输入别人的起始坐标：" << endl;
-	cin >> xstart2 >> ystart2;
-	playergame.getp2().SetPeopleBeginPos(xstart2, ystart2);
-	playergame.getp2array()[0].SetPeopleBeginPos(xstart2, ystart2);
-	cout << "请输入别人的移动(0上1下2左3右):" << endl;
-	for (int i = 1; i < playergame.getrun();)
+	for (int i = 0; i < 25; i++)
 	{
-		int number2 = 0;
-		cin >> number2;
-		switch (number2)
+		for (int j = 0; j < 25; j++)
 		{
-		case 0:
-		{
-			playergame.getp2().Movepeople(UP);
-			playergame.getp2array()[i] = playergame.getp2();
-			if (playergame.ifpass1(playergame.getp2array(), i))
-			{
-				i++;
-			}
-			else
-			{
-				cout << "该地方已经经过，请重新输入：" << endl;
-				playergame.getp2().Movepeople(DOWN);
-
-			}
-			break;
+			b1[i][j] = this->GQbutton[i][j];
 		}
-		case 1:
-		{
-			playergame.getp2().Movepeople(DOWN);
-			playergame.getp2array()[i] = playergame.getp2();
-			if (playergame.ifpass1(playergame.getp2array(), i))
-			{
-				i++;
-			}
-			else
-			{
-				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp2().Movepeople(UP);
-
-			}
-			break;
-		}
-		case 2:
-		{
-			playergame.getp2().Movepeople(LEFT);
-			playergame.getp2array()[i] = playergame.getp2();
-			if (playergame.ifpass1(playergame.getp2array(), i))
-			{
-				i++;
-			}
-			else {
-				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp2().Movepeople(RIGHT);
-			}
-			break;
-		}
-		case 3:
-		{
-			playergame.getp2().Movepeople(RIGHT);
-			playergame.getp2array()[i] = playergame.getp2();
-			if (playergame.ifpass1(playergame.getp2array(), i))
-			{
-				i++;
-			}
-			else
-			{
-				cout << "该地方已经经过，请重新输入：" << endl; playergame.getp2().Movepeople(LEFT);
-			}
-			break;
-		}
-		}
-
 	}
-	PlayerGameShowmess(playergame);
+	BeginBatchDraw();
+	putimage(0, 0, &this->img[3]);
+	for (int i = 0; i < 25; i++)
+	{
+			for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
+	}
+	EndBatchDraw();
+	for (int i = 0; i < playergame.getrun(); i++)
+	{
+		ExMessage msg;
+		while (true)
+		{
+			if (peekmessage(&msg, EX_MOUSE))
+			{
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					int k = (msg.x - GQbuttonbeginlength) / 25;
+					int j = (msg.y - GQbuttonbeginwidth) / 25;
+					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
+					{
+						playergame.getp1array()[i].getx() = k;
+						playergame.getp1array()[i].gety() = j;
+						b1[k][j].revisecolor() = YELLOW;
+						b1[k][j].drawgamebutton(i + 1, BLACK);
+						b1[k][j].reviseyellowifpass();
+						b1[k][j].returnrepeterun1() = i + 1;
+						break;
+					}
+				}
+			}
+		}
+	}
+	for (int i = 0; i < playergame.getrun(); i++)
+	{
+		ExMessage msg;
+		while (true)
+		{
+			if (peekmessage(&msg, EX_MOUSE))
+			{
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					int k = (msg.x - GQbuttonbeginlength) / 25;
+					int j = (msg.y - GQbuttonbeginwidth) / 25;
+					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
+					{
+						playergame.getp2array()[i].getx() = k;
+						playergame.getp2array()[i].gety() = j;
+						b1[k][j].repeter1.push_back(i + 1);
+						b1[k][j].revisecolor() = GREEN;
+						b1[k][j].revisegreenifpass();
+						b1[k][j].returnrepeterun2() = i + 1;
+						if (b1[k][j].repeter1.size() == 1 && b1[k][j].returnyellowifpass() != true)
+						{
+							b1[k][j].drawgamebutton(b1[k][j].repeter1[0], BLACK);
+						}
+						else
+						{
+
+						b1[k][j].drawmyrepete(BLACK);
+						}
+						}
+					break;
+				}
+			}
+		}
+	}
+	closegraph();
+	if (ifOKCreat(playergame))
+	{
+		creatrGameChallenge(playergame);
+	}
+	else 
+	{
+		cout << "您创造的游戏因技术有限越界了，请重新创建，两路径坐标差不要太大" << endl;
+		PlayerGreatgame();
+	}
 }
 void Mananger::challengegame() 
 {
@@ -1509,6 +1456,7 @@ void Mananger::loadgameP()
 	loadimage(&this->img[6], "C:/Users/pcuser/Desktop/实训/提示图片.jpg",50,50);
 	loadimage(&this->img[7], "C:/Users/pcuser/Desktop/实训/撤回图片.jpg", 50, 50);
 	loadimage(&this->img[8], "C:/Users/pcuser/Desktop/实训/挑战模式.jpg", 400, 600);
+	loadimage(&this->img[9], "C:/Users/pcuser/Desktop/实训/创造模式背景.jpg", 600, 600);
 }
 void Mananger::loadChooseGQmenu()
 {
@@ -2271,7 +2219,7 @@ void Mananger::drawYesPChallenge(game& g1)
 		if (ifinbutoon(b3, msg))
 		{
 			closegraph();
-			challengegame();
+			RunChoose();
 			x = 1;
 		}
 	}

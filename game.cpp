@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <fstream>
 using namespace std;
 void people::DisplayMessage(const people& p1)const 
 {
@@ -223,6 +224,30 @@ people* game::returnp2rearr() const
 {
 	return this->p2relative;
 };
+void game::writegame(const std::string&name) 
+{
+	ofstream os("D:/脑力航迹/game.txt",ios::app);
+	if (!os.is_open())
+	{
+		cout << "文件打开失败" << endl;
+		return;
+	}
+	for (int i = 0; i < name.size(); i++)
+	{
+		os <<name[i];
+	}
+	os << endl;
+	os << this->run << endl;
+	for (int i = 0; i < this->run; i++)
+	{
+		os << this->p1array[i].getx() << " " << this->p1array[i].gety()<<" ";
+	}
+	for (int i = 0; i < this->run; i++)
+	{
+		os << this->p2array[i].getx() << " " << this->p2array[i].gety() << " ";
+	}
+	os.close();
+}
 
 
 
