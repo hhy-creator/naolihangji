@@ -878,6 +878,132 @@ void Mananger::randomcreatgame(int number1)
 		randomcreatgame(number1);
 	}
 }
+void Mananger::randomcreatgame(int number1,bool x)
+{
+
+	game randomgame;
+	randomgame.setrun(number1);
+	randomgame.setzihzhen();
+	int xfinal = 0, yfinal = 0;
+	xfinal = rand() % 5 + 9;
+	yfinal = rand() % 5 + 9;
+	randomgame.getp1().SetPeopleBeginPos(xfinal, yfinal);
+	randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
+	randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+	randomgame.getp2array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+	for (int i = number1 - 2; i >= 0;)
+	{
+		int number1 = rand() % 4;
+		switch (number1)
+		{
+		case 0:
+		{
+			randomgame.getp1().Movepeople(UP);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(DOWN);
+			break;
+		}
+		case 1:
+		{
+			randomgame.getp1().Movepeople(DOWN);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(UP);
+			break;
+		}
+		case 2:
+		{
+			randomgame.getp1().Movepeople(LEFT);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(RIGHT);
+			break;
+		}
+		case 3:
+		{
+			randomgame.getp1().Movepeople(RIGHT);
+			randomgame.getp1array()[i] = randomgame.getp1();
+			if (randomgame.ifpass(randomgame.getp1array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp1().Movepeople(LEFT);
+			break;
+		}
+		}
+
+	}
+	for (int i = number1 - 2; i >= 0;)
+	{
+		int number1 = rand() % 4;
+		bool c2 = 0;
+		switch (number1)
+		{
+		case 0:
+		{
+			randomgame.getp2().Movepeople(UP);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(DOWN);
+			break;
+		}
+		case 1:
+		{
+			randomgame.getp2().Movepeople(DOWN);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(UP);
+			break;
+		}
+		case 2:
+		{
+			randomgame.getp2().Movepeople(LEFT);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(RIGHT);
+			break;
+		}
+		case 3:
+		{
+			randomgame.getp2().Movepeople(RIGHT);
+			randomgame.getp2array()[i] = randomgame.getp2();
+			if (randomgame.ifpass(randomgame.getp2array(), i))
+			{
+				i--;
+			}
+			else randomgame.getp2().Movepeople(LEFT);
+			break;
+		}
+		}
+	}
+	if (ifOKCreat(randomgame))
+	{
+		creatrGameChallenge(randomgame);
+	}
+	else
+	{
+		randomcreatgame(number1,1);
+	}
+}
 void Mananger::PlayerGreatgame() 
 {
 	game playergame;
@@ -1036,35 +1162,86 @@ void Mananger::PlayerGreatgame()
 }
 void Mananger::challengegame() 
 {
-	cout << "请输入您要挑战的难度(1简单2中等3困难4专家5传奇)：" << endl;
+	cleardevice();
+	initgraph(400, 600);
+	setbkmode(TRANSPARENT);
+	putimage(0,0,&this->img[8]);
+	button b0(150, 120, 100, 50, "简单");
+	button b1(150, 170, 100, 50, "普通");
+	button b2(150, 220, 100, 50, "困难");
+	button b3(150, 270, 100, 50, "史诗");
+	button b4(150, 320, 100, 50, "传说");
+	b0.drawbutton1();
+	b1.drawbutton1();
+	b2.drawbutton1();
+	b3.drawbutton1();
+	b4.drawbutton1();
 	int number;
-	cin >> number;
+	putimage(0, 0, &this->img[7]);
+	while (1) {
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(b0, msg))
+		{
+			EndBatchDraw();
+			number = 1;
+			break;
+		}
+		else if (ifinbutoon(b1, msg))
+		{
+			EndBatchDraw(); 
+			number = 2;
+			break;
+		}
+		else if (ifinbutoon(b2, msg)) {
+			EndBatchDraw();
+			number = 3;
+			break;
+		}
+		else if (ifinbutoon(b3, msg)) {
+			EndBatchDraw();
+			number = 4; 
+			break;
+		}
+		else if (ifinbutoon(b4, msg)) {
+			EndBatchDraw(); 
+			number = 5; 
+			break;
+		}
+		else if (ifinimage(msg,this->img[7], 0, 0)) 
+		{
+			EndBatchDraw(); 
+			RunChoose();
+			break;
+		}
+	}
+	closegraph();
 	switch (number) 
 	{
 	case 1: 
 	{
-		randomcreatgame(6);
+		randomcreatgame(6,1);
 		break;
 	}
 	case 2:
 	{
-		randomcreatgame(9);
+		randomcreatgame(9,1);
 		break;
 	}
 	case 3: 
 	{
 
-		randomcreatgame(12);
+		randomcreatgame(12,1);
 		break;
 	}
 	case 4:
 	{
-		randomcreatgame(18);
+		randomcreatgame(18,1);
 		break;
 	}
 	case 5: 
 	{
-		randomcreatgame(25);
+		randomcreatgame(25,1);
 		break;
 	}
 	default:
@@ -1331,6 +1508,7 @@ void Mananger::loadgameP()
 	loadimage(&this->img[5], "C:/Users/pcuser/Desktop/实训/芙宁娜失败.jpg", 400, 400);
 	loadimage(&this->img[6], "C:/Users/pcuser/Desktop/实训/提示图片.jpg",50,50);
 	loadimage(&this->img[7], "C:/Users/pcuser/Desktop/实训/撤回图片.jpg", 50, 50);
+	loadimage(&this->img[8], "C:/Users/pcuser/Desktop/实训/挑战模式.jpg", 400, 600);
 }
 void Mananger::loadChooseGQmenu()
 {
@@ -1981,6 +2159,62 @@ void Mananger::createGameP(game& g1)
 		}
 	}
 }
+void Mananger::creatrGameChallenge(game& g1) 
+{
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	bool x = 1;
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	while (x)
+	{
+		BeginBatchDraw();
+		putimage(0, 0, &this->img[3]);
+		for (int i = 0; i < 25; i++)
+		{
+			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+		}
+		b1 = drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		b1 = drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		b1 = drawrepetebutton(b1);
+		EndBatchDraw();
+		bool a = clickanswer(g1, b1);
+		for (int i = 0; i < 25; i++)
+		{
+			delete[]b1[i];
+		}
+		delete[] b1;
+		setbutton();
+
+		if (a)
+		{
+			x = 0;
+			closegraph();
+			drawYesPChallenge(g1);
+			bool a = 1;
+			break;
+		}
+		else
+		{
+			closegraph();
+			bool a = 0;
+			drawNoP(g1);
+			break;
+		}
+	}
+}
 void Mananger::drawYesP(game& g1)
 {
 	cleardevice();
@@ -2015,6 +2249,32 @@ void Mananger::drawYesP(game& g1)
 
 	}
 
+}
+void Mananger::drawYesPChallenge(game& g1) 
+{
+	cleardevice();
+	initgraph(800, 600);
+	setbkmode(TRANSPARENT);
+	setbkcolor(WHITE);
+	cleardevice();
+	button b1(250, 0, 300, 50, "VICTORY");
+	button b3(0, 0, 75, 75, "返回");
+	bool x = 0;
+	while (!x)
+	{
+		BeginBatchDraw();
+		putimage(200, 200, &this->img[4]);
+		b1.drawbutton();
+		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
+		EndBatchDraw();
+		ExMessage msg = getmousemessage();
+		if (ifinbutoon(b3, msg))
+		{
+			closegraph();
+			challengegame();
+			x = 1;
+		}
+	}
 }
 void Mananger::drawNoP(game& g1) 
 {

@@ -89,7 +89,8 @@ public:
 	void randomcreatgame();
 	void PlayerGreatgame();
 	void challengegame();
-	void randomcreatgame(int number1);
+	void randomcreatgame(int number1);//无尽挑战
+	void randomcreatgame(int number1, bool x);//挑战模式
 	void PlayerGameShowmess(game& g1);
 	void noendchallenge();
 	void loadwindow();
@@ -100,6 +101,7 @@ public:
 	void loadChooseGQmenu();
 	void createGameP( game& g1, const int& i);
 	void createGameP(game& g1);
+	void creatrGameChallenge(game& g1);
 	void loadGamebk();
 	void readplayermessage();
 	void recordmessage();
@@ -115,6 +117,7 @@ public:
 	void drawYesP(const int& i);
 	void drawNoP(game& g1, const int& i);
 	void drawYesP(game&g1);
+	void drawYesPChallenge(game& g1);
 	void drawNoP(game& g1);
 	void gameprogress();
 	void setbutton();
