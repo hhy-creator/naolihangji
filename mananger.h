@@ -75,6 +75,7 @@ public:
 	Mananger();
 	bool ifOKCreat(const game&g1);
 	~Mananger();
+	void rankP();
 	void ChangeChoose();
 	void ShowMenu();
 	void ShowRule();
@@ -134,12 +135,15 @@ public:
 	bool ifinimage(ExMessage,IMAGE&, const int& wb, const int& hb);
 	vector<gameku>& readgamekutxt();
 	void checkmessageP();
+	void PTrankP();
+	void WJrankP();
+	void DGrankP();
 private:
 	int choose;
 	int level;
 	player p1;
-	array<button, 10>buttonarr;
-	array<button, 10>GQChoosebutton;
+	array<button, 15>buttonarr;
+	array<button, 15>GQChoosebutton;
 	IMAGE img[15];
 	array<array<button,25>,25>GQbutton;
 	vector<player>rank;

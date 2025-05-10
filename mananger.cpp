@@ -26,12 +26,11 @@ bool putongRankcmp( player& p3,  player& p2)
 }
 void Mananger::wujinRank(vector<player>& p1)
 {
-	cout << "***************无尽挑战排行榜*************" << endl;
 	sort(p1.begin(), p1.end(), wujinRankcmp);
-	for (int i = 0; i < p1.size(); i++)
-	{
-		cout << i + 1 << " " << p1[i].GetName() << " " << p1[i].getnoend()<<endl;
-	}
+}
+void Mananger::PuTongRank(vector<player>& p1)
+{
+	sort(p1.begin(), p1.end(), putongRankcmp);
 }
 void Mananger::recordmessagetxt() 
 {
@@ -44,14 +43,94 @@ void Mananger::recordmessagetxt()
 	this->p1.serializetxt(ofs);
 	ofs.close();
 }
-void Mananger::PuTongRank(vector<player>& p1)
+void Mananger::PTrankP() 
 {
-	cout << "***************普通挑战排行榜*************" << endl;
-	sort(p1.begin(), p1.end(), putongRankcmp);
-	for (int i = 0; i < 5; i++) 
+	cleardevice();
+	initgraph(600, 700);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[12]);
+	putimage(0, 0, &this->img[7]);
+	string text;
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	text = "  姓名";
+	outtextxy(50, 100, text.c_str());
+	text = "  总得分";
+	outtextxy(150, 100, text.c_str());
+	text = "  总用时";
+	outtextxy(275, 100, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < rank.size(); i++) 
 	{
-		cout << i + 1 << " " << p1[i].GetName() << " " << p1[i].returnscoreall() << " " << p1[i].returntimeall() << endl;
+		text = to_string(i + 1);
+		outtextxy(25, 125 + i * 25, text.c_str());
+		text = rank[i].GetName();
+	    outtextxy(75, 125+i*25, text.c_str());
+		text = to_string(rank[i].returnscoreall());
+		outtextxy(225, 125 + i * 25, text.c_str());
+		text = to_string(int(rank[i].returntimeall()));
+		outtextxy(350, 125 + i * 25, text.c_str());
 	}
+	while (1)
+	{
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			rankP();
+			break;
+		}
+	}
+}
+void Mananger::rankP()
+{
+	cleardevice();
+	initgraph(600, 700);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[11]);
+	putimage(0, 0, &this->img[7]);
+	button b1(200, 100, 200, 50, "普通排行");
+	button b2(200, 150, 200, 50, "无尽排行");
+	button b3(200, 200, 200, 50, "单关排行");
+	b1.drawbutton();
+	b2.drawbutton();
+	b3.drawbutton();
+	while (1) 
+	{
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(b1, msg))
+		{
+			EndBatchDraw();
+			PuTongRank(readplayermessagetxt());
+			PTrankP();
+			break;
+		}
+		else if (ifinbutoon(b2, msg)) 
+		{
+			EndBatchDraw();
+			wujinRank(readplayermessagetxt());
+			WJrankP();
+			break;
+		}
+		else if (ifinbutoon(b3, msg))
+		{
+			EndBatchDraw();
+			wujinRank(readplayermessagetxt());
+			DGrankP();
+			break;
+		}
+		else if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			RunChoose();
+			break;
+		}
+	}
+	closegraph();
 }
 vector<player>& Mananger::readplayermessagetxt(){
 	if (this->rank.size() != 0) 
@@ -187,15 +266,14 @@ bool again()
 }
 void Mananger::RunChoose() 
 {
-	ShowMenu();
 	ChangeChoose();
 	switch (choose) 
 	{
 	case 1:
 	{
-			system("cls");
-			BeginGame();
-			break;
+		system("cls");
+		BeginGame();
+		break;
 	}
 	case 2: 
 	{
@@ -214,7 +292,6 @@ void Mananger::RunChoose()
 	{
 		system("cls");
 		checkmessageP();
-		CheckMessage(p1);
 		break;
 	}
 	case 4:
@@ -238,10 +315,14 @@ void Mananger::RunChoose()
 	case 7: 
 	{
 		system("cls");
-
+		rankP();
+		break;
 	}
-	default:
-		cout << "输入的选择不符合要求，请重新输入：" << endl;
+	case 8:
+	{
+		system("cls");
+		break;
+	}
 
 	}
 }
@@ -253,6 +334,7 @@ void Mananger::CreateMode()
 	button b1(200, 200, 200, 50, "自建关卡");
 	button b2(200, 250, 200, 50, "创意工房");
 	putimage(0, 0, &this->img[9]);
+	putimage(0, 0, &this->img[7]);
 	b1.drawbutton();
 	b2.drawbutton();
 	while (1) {
@@ -294,6 +376,13 @@ void Mananger::CreateMode()
 			
 			break;
 		}
+		else if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			RunChoose();
+			break;
+		}
 	}
 	closegraph();
 }
@@ -314,10 +403,92 @@ void Mananger::ShowMenu()
 void Mananger::Exitgame() 
 {
 	recordmessagetxt();
-	wujinRank(readplayermessagetxt());
-	PuTongRank(readplayermessagetxt());
 	cout << "游戏已退出" << endl;
 	exit(0);
+}
+void Mananger::WJrankP() 
+{
+	cleardevice();
+	initgraph(600, 700);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[12]);
+	putimage(0, 0, &this->img[7]);
+	string text;
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	text = "  姓名";
+	outtextxy(200, 100, text.c_str());
+	text = "  得分";
+	outtextxy(350, 100, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < rank.size(); i++)
+	{
+		text = to_string(i + 1);
+		outtextxy(75, 125 + i * 25, text.c_str());
+		text = rank[i].GetName();
+		outtextxy(175, 125 + i * 25, text.c_str());
+		text = to_string(rank[i].getnoendscore());
+		outtextxy(375, 125 + i * 25, text.c_str());
+	}
+	while (1)
+	{
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			rankP();
+			break;
+		}
+	}
+}
+void Mananger::DGrankP()
+{
+	cleardevice();
+	initgraph(600, 700);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[12]);
+	putimage(0, 0, &this->img[7]);
+	string text;
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	text = "  姓名";
+	outtextxy(50, 100, text.c_str());
+	text = "  得分";
+	outtextxy(150, 100, text.c_str());
+	text = "  用时";
+	outtextxy(275, 100, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < 6; i++)
+	{
+		sort(this->rank.begin(), this->rank.end(), [i](const player& p1, const player& p2)
+			{
+				if (p1.returnGetscore()[i] == p2.returnGetscore()[i])return p1.returngettime()[i] < p2.returngettime()[i];
+				else return p1.returnGetscore()[i] > p2.returnGetscore()[i];
+			}
+		);
+		text = to_string(i + 1);
+		outtextxy(25, 125 + i * 25, text.c_str());
+		text = rank[0].GetName();
+		outtextxy(75, 125 + i * 25, text.c_str());
+		text = to_string(rank[0].Getscore()[i]);
+		outtextxy(225, 125 + i * 25, text.c_str());
+		text = to_string(int(rank[0].gettime()[i]));
+		outtextxy(350, 125 + i * 25, text.c_str());
+	}
+	while (1)
+	{
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			rankP();
+			break;
+		}
+	}
 }
 void Mananger::BeginGame() 
 {
@@ -377,12 +548,22 @@ void Mananger::checkmessageP()
 		text = to_string(this->p1.Getscore()[i]);
 		outtextxy(150 + i * 60, 225, text.c_str());
 	}
-	//cout << "无尽挑战分数：" << this->getnoendscore() << endl;
+	settextstyle(20, 20, "宋体");
+	text = "无尽得分：";
+	outtextxy(0, 250, text.c_str());
+	text = to_string(this->p1.getnoendscore());
+	outtextxy(250, 250, text.c_str());
+	putimage(0, 0, &this->img[7]);
 	while (1) 
 	{
-
+		ExMessage msg = getmousemessage();
+		if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			closegraph();
+			RunChoose();
+			break;
+		}
 	}
-	closegraph();
 }
 void Mananger::GameShowmess(game& g1)
 {
@@ -1599,6 +1780,8 @@ void Mananger::loadgameP()
 	loadimage(&this->img[8], "C:/Users/pcuser/Desktop/实训/挑战模式.jpg", 400, 600);
 	loadimage(&this->img[9], "C:/Users/pcuser/Desktop/实训/创造模式背景.jpg", 600, 600);
 	loadimage(&this->img[10], "C:/Users/pcuser/Desktop/实训/查看信息背景.jpg", 750, 750);
+	loadimage(&this->img[11], "C:/Users/pcuser/Desktop/实训/查看信息背景.jpg", 600, 700);
+	loadimage(&this->img[12], "C:/Users/pcuser/Desktop/实训/排行榜.jpg", 600, 700);
 }
 void Mananger::loadChooseGQmenu()
 {
@@ -1608,14 +1791,15 @@ void Mananger::loadChooseGQmenu()
 }
 Mananger::Mananger()
 {
-	button b0(320, 120, 200, 50, "开始游戏");
-	button b1(320, 170, 200, 50, "查看规则");
-	button b2(320, 220, 200, 50, "查看信息");
-	button b3(320, 270, 200, 50, "创造模式");
-	button b4(320, 320, 200, 50, "挑战模式");
-	button b5(320, 370, 200, 50, "无尽模式");
-	button b6(320, 420, 200, 50, "退出游戏");
-	button b8(320, 470, 200, 50, "关卡排行");
+	button b0(320, 100, 200, 50, "开始游戏");
+	button b1(320, 150, 200, 50, "查看规则");
+	button b2(320, 200, 200, 50, "查看信息");
+	button b3(320, 250, 200, 50, "创造模式");
+	button b4(320, 300, 200, 50, "挑战模式");
+	button b5(320, 350, 200, 50, "无尽模式");
+	button b6(320, 400, 200, 50, "退出游戏");
+	button b8(320, 450, 200, 50, " 排行榜");
+	button b9(320, 500, 200, 50, "创意模式");
 	button b7(0, 0, 150, 75, "返回");
 	button choose0(100, 100, 30, 30, "1");
 	button choose1(150, 100, 30, 30, "2");
@@ -1633,6 +1817,7 @@ Mananger::Mananger()
 	this->buttonarr[6] = b6;
 	this->buttonarr[7] = b7;
 	this->buttonarr[8] = b8;
+	this->buttonarr[9] = b9;
 	this->GQChoosebutton[0] = choose0;
 	this->GQChoosebutton[1] = choose1;
 	this->GQChoosebutton[2] = choose2;
@@ -1669,6 +1854,8 @@ void Mananger::ChangeChoose()
 		{
 			this->buttonarr[i].drawbutton();
 		}
+		this->buttonarr[8].drawbutton();
+		this->buttonarr[9].drawbutton();
 		ExMessage msg = getmousemessage();
 		BeginBatchDraw();
 		if (ifinbutoon(this->buttonarr[0], msg))
@@ -1692,6 +1879,12 @@ void Mananger::ChangeChoose()
 		}
 		else if (ifinbutoon(this->buttonarr[5], msg)) {
 			EndBatchDraw(); this->choose = 6; break;
+		}
+		else if (ifinbutoon(this->buttonarr[8], msg)) {
+			EndBatchDraw(); this->choose = 7; break;
+		}
+		else if (ifinbutoon(this->buttonarr[9], msg)) {
+			EndBatchDraw(); this->choose = 8; break;
 		}
 		else if (ifinbutoon(this->buttonarr[6], msg)) {
 			EndBatchDraw(); this->choose = 0; break;
