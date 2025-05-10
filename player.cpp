@@ -20,7 +20,6 @@ double player::returntimeall()
 	}
 	return this->timeall;
 }
-
 int player::returnscoreall() 
 {
 	this->scoreall = 0;

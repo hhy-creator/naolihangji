@@ -237,7 +237,7 @@ void game::writegame(const std::string&name)
 		os <<name[i];
 	}
 	os << endl;
-	os << this->run << endl;
+	os << this->run<<" ";
 	for (int i = 0; i < this->run; i++)
 	{
 		os << this->p1array[i].getx() << " " << this->p1array[i].gety()<<" ";
@@ -248,8 +248,21 @@ void game::writegame(const std::string&name)
 	}
 	os.close();
 }
-
-
+game& game::operator=(const game& g1) 
+{
+	this->run = g1.run;
+	this->setzihzhen();
+	for (int i = 0; i < this->run; i++) 
+	{
+		this->p1array[i].getx() = g1.returnp1arr()[i].returnx();
+		this->p1array[i].gety() = g1.returnp1arr()[i].returny();
+		this->p2array[i].getx() = g1.returnp2arr()[i].returnx();
+		this->p2array[i].gety() = g1.returnp2arr()[i].returny();
+		this->p2relative[i].getx() = g1.returnp2rearr()[i].returnx();
+		this->p2relative[i].gety() = g1.returnp2rearr()[i].returny();
+	}
+	return *this;
+}
 
 
 

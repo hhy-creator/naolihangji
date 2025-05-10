@@ -24,6 +24,7 @@ class game
 
 public:
 	~game();
+	game& operator=(const game&g1);
 	void DisplayRelativeMove(people*&, people*&)const;
 	bool IfYes(int, people*&);
 	void setrun(const int&);

@@ -103,7 +103,47 @@ vector<player>& Mananger::readplayermessagetxt(){
 	is.close();
 	return this->rank;
 }
-vector<gameku>& Mananger::readgamekutxt();
+vector<gameku>& Mananger::readgamekutxt() 
+{
+	if (this->gameall.size() != 0)
+	{
+		this->gameall.resize(0);
+	}
+	ifstream is("D:/脑力航迹/game.txt");
+	if (!is.is_open())
+	{
+		cout << "文件打开失败" << endl;
+		return this->gameall;
+	}
+	string line;
+	int gamenumber = 1;
+	while (getline(is, line) && !is.eof())
+	{
+		gameku g2;
+		string  id;
+		is >> id;
+		int number1;
+		if (id != "") {
+			g2.name = id;
+			is >> number1;
+			g2.g1.setrun(number1);
+			g2.g1.setzihzhen();
+			for (int i = 0; i <number1; i++)
+			{
+				is >>g2.g1.getp1array()[i].getx() >> g2.g1.getp1array()[i].gety();
+			}
+			for (int i = 0; i < number1; i++)
+			{
+				is >> g2.g1.getp2array()[i].getx() >> g2.g1.getp2array()[i].gety();
+			}
+			this->gameall.resize(gamenumber);
+			this->gameall[gamenumber - 1] = g2;
+			gamenumber++;
+		}
+	}
+	is.close();
+	return this->gameall;
+}
 void Mananger::recordmessage()
 {
 	ofstream ofs("D:/脑力航迹/playermessgae.txt", ios::binary|ios::app);
@@ -173,13 +213,14 @@ void Mananger::RunChoose()
 	case 3:
 	{
 		system("cls");
+		checkmessageP();
 		CheckMessage(p1);
 		break;
 	}
 	case 4:
 	{
 		system("cls");
-		PlayerGreatgame();
+		CreateMode();
 		break;
 	}
 	case 5:
@@ -203,6 +244,58 @@ void Mananger::RunChoose()
 		cout << "输入的选择不符合要求，请重新输入：" << endl;
 
 	}
+}
+void Mananger::CreateMode()
+{
+	cleardevice();
+	initgraph(600, 600);
+	setbkmode(TRANSPARENT);
+	button b1(200, 200, 200, 50, "自建关卡");
+	button b2(200, 250, 200, 50, "创意工房");
+	putimage(0, 0, &this->img[9]);
+	b1.drawbutton();
+	b2.drawbutton();
+	while (1) {
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(b1, msg))
+		{
+			EndBatchDraw();
+			PlayerGreatgame();
+			break;
+		}
+		else if (ifinbutoon(b2, msg))
+		{
+			EndBatchDraw(); 
+			readgamekutxt();
+			cout << "请输入想要玩的关卡的名字：" << endl;
+			cout << "已有自建关卡:" << "  ";
+			for (int i = 0; i < this->gameall.size(); i++) 
+			{
+				cout << gameall[i].name << " ";
+			}
+			cout << endl;
+			bool x = 1;
+			while (x) 
+			{
+				string name1;
+				cin >> name1;
+				for (int i = 0; i < gameall.size(); i++) 
+				{
+					if (gameall[i].name == name1) 
+					{
+						PlayercreatrGame(gameall[i].g1);
+						x = 0;
+						break;
+					}
+				}
+				cout << "名字不正确，请再次输入" << endl;
+			}
+			
+			break;
+		}
+	}
+	closegraph();
 }
 void Mananger::ShowMenu() 
 {
@@ -242,6 +335,54 @@ player& Mananger::getplayer()
 void Mananger::CheckMessage( player&p1) 
 {
 	p1.CheckMessage();
+}
+void Mananger::checkmessageP() 
+{
+	cleardevice();
+	initgraph(750, 750);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[10]);
+	setfillcolor(WHITE);
+	fillrectangle(0, 0, 750, 750);
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	string text;
+	text = "  名字：";
+	outtextxy(0, 150,text.c_str());
+	text = this->p1.GetName();
+	outtextxy(150, 150, text.c_str());
+	text = "  关卡：";
+	outtextxy(0, 175, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < 10; i++) 
+	{
+		outtextxy(150 + i * 60, 175, to_string(i+1).c_str());
+	}
+	settextstyle(20, 20, "宋体");
+	text = "准确率：";
+	outtextxy(0, 200, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < this->p1.Getaccuracy().size(); i++)
+	{
+		int num = this->p1.Getaccuracy()[i] * 100;
+		text = to_string(num)+"%";
+		outtextxy(150 + i * 60, 200,text.c_str());
+	}
+	settextstyle(20, 20, "宋体");
+	text = "  得分：";
+	outtextxy(0, 225, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < this->p1.Getscore().size(); i++)
+	{
+		text = to_string(this->p1.Getscore()[i]);
+		outtextxy(150 + i * 60, 225, text.c_str());
+	}
+	//cout << "无尽挑战分数：" << this->getnoendscore() << endl;
+	while (1) 
+	{
+
+	}
+	closegraph();
 }
 void Mananger::GameShowmess(game& g1)
 {
@@ -1099,7 +1240,7 @@ void Mananger::PlayerGreatgame()
 	closegraph();
 	if (ifOKCreat(playergame))
 	{
-		creatrGameChallenge(playergame);
+		PlayercreatrGame(playergame);
 	}
 	else 
 	{
@@ -1457,6 +1598,7 @@ void Mananger::loadgameP()
 	loadimage(&this->img[7], "C:/Users/pcuser/Desktop/实训/撤回图片.jpg", 50, 50);
 	loadimage(&this->img[8], "C:/Users/pcuser/Desktop/实训/挑战模式.jpg", 400, 600);
 	loadimage(&this->img[9], "C:/Users/pcuser/Desktop/实训/创造模式背景.jpg", 600, 600);
+	loadimage(&this->img[10], "C:/Users/pcuser/Desktop/实训/查看信息背景.jpg", 750, 750);
 }
 void Mananger::loadChooseGQmenu()
 {
@@ -2163,6 +2305,62 @@ void Mananger::creatrGameChallenge(game& g1)
 		}
 	}
 }
+void Mananger::PlayercreatrGame(game& g1)
+{
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	bool x = 1;
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	while (x)
+	{
+		BeginBatchDraw();
+		putimage(0, 0, &this->img[3]);
+		for (int i = 0; i < 25; i++)
+		{
+			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+		}
+		b1 = drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		b1 = drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		b1 = drawrepetebutton(b1);
+		EndBatchDraw();
+		bool a = clickanswer(g1, b1);
+		for (int i = 0; i < 25; i++)
+		{
+			delete[]b1[i];
+		}
+		delete[] b1;
+		setbutton();
+
+		if (a)
+		{
+			x = 0;
+			closegraph();
+			drawYesPPlayerCreate(g1);
+			bool a = 1;
+			break;
+		}
+		else
+		{
+			closegraph();
+			bool a = 0;
+			drawNoP(g1);
+			break;
+		}
+	}
+}
 void Mananger::drawYesP(game& g1)
 {
 	cleardevice();
@@ -2221,6 +2419,43 @@ void Mananger::drawYesPChallenge(game& g1)
 			closegraph();
 			RunChoose();
 			x = 1;
+		}
+	}
+}
+void Mananger::drawYesPPlayerCreate(game& g1)
+{
+	cleardevice();
+	initgraph(800, 600);
+	setbkmode(TRANSPARENT);
+	setbkcolor(WHITE);
+	cleardevice();
+	button b1(250, 0, 300, 50, "VICTORY");
+	button b2(250, 50, 300, 50, "保存");
+	button b3(0, 0, 75, 75, "返回"); 
+	bool x = 0;
+	while (!x)
+	{
+		BeginBatchDraw();
+		putimage(200, 200, &this->img[4]);
+		b1.drawbutton();
+		b2.drawbutton();
+		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
+		EndBatchDraw();
+		ExMessage msg = getmousemessage();
+		if (ifinbutoon(b3, msg))
+		{
+			closegraph();
+			RunChoose();
+			x = 1;
+		}
+		else if (ifinbutoon(b2,msg)) 
+		{
+			closegraph();
+			string name;
+			cout << "请为游戏取个名字:" << endl;
+			cin >> name;
+			g1.writegame(name);
+			RunChoose();
 		}
 	}
 }

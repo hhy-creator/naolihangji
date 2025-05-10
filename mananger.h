@@ -82,6 +82,7 @@ public:
 	void BeginGame();
 	void ChooseGame();
 	void RunChoose();
+	void CreateMode();
 	int getlevel()const;
 	void CheckMessage(player&);
 	void GameShowmess(game& g1);
@@ -95,6 +96,8 @@ public:
 	void creatgame5();
 	void randomcreatgame();
 	void PlayerGreatgame();
+	void drawYesPPlayerCreate(game& g1);
+	void PlayercreatrGame(game& g1);
 	void challengegame();
 	void randomcreatgame(int number1);//无尽挑战
 	void randomcreatgame(int number1, bool x);//挑战模式
@@ -130,6 +133,7 @@ public:
 	void setbutton();
 	bool ifinimage(ExMessage,IMAGE&, const int& wb, const int& hb);
 	vector<gameku>& readgamekutxt();
+	void checkmessageP();
 private:
 	int choose;
 	int level;
