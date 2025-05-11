@@ -17,6 +17,23 @@ struct gameku
 	game g1;
 	std::string name;
 };
+class ship 
+{
+public:
+	ship(const int& bx, const int& by);
+	int& reviseMyx();
+	int& reviseMyy();
+	people*& revisepath();
+	void createMypath(const int& bx, const int& by);
+	bool ifOKPath();
+	bool ifpass(people*& p1, const int& num,const int& run)const;
+	int getrun();
+private:
+	int Myx;
+	int Myy;
+	people* path;
+	int run;
+};
 class button
 {
 public:
@@ -53,6 +70,8 @@ public:
 	button& operator=(const button&b1);
 	int& returnbushu();
 	bool& reviseifokclick();
+	bool& revisecreateifpass();
+	bool& reviseMycreateifpass();
 private:
 	int x;
 	int y;
@@ -68,6 +87,8 @@ private:
 	bool redifpass = 0;
 	int bushu;
 	bool ifokclick=1;
+	bool createifpass=0;
+	bool Mycreateifpass = 0;
 };
 class Mananger
 {
@@ -90,6 +111,7 @@ public:
 	void GameShowmess(game& g1,const int&i);
 	void GameShowmess1(game& g1);
 	player& getplayer();
+	void Mycreate();
 	void creatgame1();
 	void creatgame2();
 	void creatgame3();
@@ -112,6 +134,7 @@ public:
 	void loadChooseGQmenu();
 	void createGameP( game& g1, const int& i);
 	void createGameP(game& g1);
+	void MyCreateGameP(game& g1);
 	void creatrGameChallenge(game& g1);
 	void loadGamebk();
 	void readplayermessage();
@@ -121,7 +144,9 @@ public:
 	void wujinRank(vector<player>& p1);
 	void PuTongRank(vector<player>& p1);
 	button**& drawMyroad( people*&,const int&run,  button**&);
+	button**& drawMyCreate(people*&, const int& run, button**&);
 	button**& drawYourroad( people*&, const int& run, button**& b1);
+	button**& drawOtherPath(people*& p2, const int& run, button**& b1);
 	void drawanswerroad( people*&, const int& run, button**& b1);
 	button**& drawrepetebutton(button**& b1);
 	bool clickanswer( game&, button**& b1);
@@ -130,6 +155,7 @@ public:
 	void drawYesP(game&g1);
 	void drawYesPChallenge(game& g1);
 	void drawNoP(game& g1);
+	void drawNoMyCreate();
 	void gameprogress();
 	void setbutton();
 	bool ifinimage(ExMessage,IMAGE&, const int& wb, const int& hb);
@@ -145,6 +171,7 @@ private:
 	array<button, 15>buttonarr;
 	array<button, 15>GQChoosebutton;
 	IMAGE img[15];
+	IMAGE Move[4];
 	array<array<button,25>,25>GQbutton;
 	vector<player>rank;
 	vector<gameku>gameall;

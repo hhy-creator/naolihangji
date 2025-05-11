@@ -15,6 +15,109 @@
 using namespace std;
 int	GQbuttonbeginlength = 100;
 int	GQbuttonbeginwidth = 30;
+int ship::getrun() 
+{
+	return this->run;
+}
+people*& ship::revisepath()
+{
+	return this->path;
+}
+ship::ship(const int& bx,const int&by):Myx(0),Myy(0)
+{
+	createMypath(bx, by);
+}
+int& ship::reviseMyx() 
+{
+	return this->Myx;
+}
+int& ship::reviseMyy() 
+{
+	return this->Myy;
+}
+bool ship::ifpass(people*& p1, const int& num,const int& run)const
+{
+	for (int i = run - 1; i > num; i--)
+	{
+		if ((p1[i].returnx() == p1[num].returnx()) && p1[i].returny() == p1[num].returny())
+		{
+			return false;
+		}
+	}
+	return true;
+}
+void ship::createMypath(const int&bx,const int& by) 
+{
+	int number1 = rand() % 2 + 8;
+	this->run = number1;
+	this->path = new people[number1];
+	people p1;
+	int xfinal = 0, yfinal = 0;
+	xfinal = bx;
+	yfinal = by;
+	p1.SetPeopleBeginPos(xfinal, yfinal);
+	this->path[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+	bool x = 1;
+	while (x) 
+	{
+		for (int i = number1 - 2; i >= 0;)
+		{
+			int number1 = rand() % 4;
+			switch (number1)
+			{
+			case 0:
+			{
+				p1.Movepeople(UP);
+				this->path[i] = p1;
+				if (this->ifpass(this->path, i, number1))
+				{
+					i--;
+				}
+				else p1.Movepeople(DOWN);
+				break;
+			}
+			case 1:
+			{
+				p1.Movepeople(DOWN);
+				this->path[i] = p1;
+				if (this->ifpass(this->path, i, number1))
+				{
+					i--;
+				}
+				else p1.Movepeople(UP);
+				break;
+			}
+			case 2:
+			{
+				p1.Movepeople(LEFT);
+				this->path[i] = p1;
+				if (this->ifpass(this->path, i, number1))
+				{
+					i--;
+				}
+				else p1.Movepeople(RIGHT);
+				break;
+			}
+			case 3:
+			{
+				p1.Movepeople(RIGHT);
+				this->path[i] = p1;
+				if (this->ifpass(this->path, i, number1))
+				{
+					i--;
+				}
+				else p1.Movepeople(LEFT);
+				break;
+			}
+			}
+
+		}
+		if (ifOKPath()) 
+		{
+			break;
+		}
+	}
+}
 bool wujinRankcmp(const player& p3, const player& p2)
 {
 	return p3.getnoend() > p2.getnoend();
@@ -321,9 +424,333 @@ void Mananger::RunChoose()
 	case 8:
 	{
 		system("cls");
+		Mycreate();
 		break;
 	}
 
+	}
+}
+void Mananger::Mycreate()
+{
+
+	game randomgame;
+	int number1 = 7;
+	randomgame.setrun(number1);
+	randomgame.setzihzhen();
+	while (1) {
+		int xfinal = 0, yfinal = 0;
+		xfinal = rand() % 10 + 8;
+		yfinal = rand() % 10 + 8;
+		randomgame.getp1().SetPeopleBeginPos(xfinal, yfinal);
+		randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
+		randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+		randomgame.getp2array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+		for (int i = number1 - 2; i >= 0;)
+		{
+			int number1 = rand() % 4;
+			switch (number1)
+			{
+			case 0:
+			{
+				randomgame.getp1().Movepeople(UP);
+				randomgame.getp1array()[i] = randomgame.getp1();
+				if (randomgame.ifpass(randomgame.getp1array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp1().Movepeople(DOWN);
+				break;
+			}
+			case 1:
+			{
+				randomgame.getp1().Movepeople(DOWN);
+				randomgame.getp1array()[i] = randomgame.getp1();
+				if (randomgame.ifpass(randomgame.getp1array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp1().Movepeople(UP);
+				break;
+			}
+			case 2:
+			{
+				randomgame.getp1().Movepeople(LEFT);
+				randomgame.getp1array()[i] = randomgame.getp1();
+				if (randomgame.ifpass(randomgame.getp1array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp1().Movepeople(RIGHT);
+				break;
+			}
+			case 3:
+			{
+				randomgame.getp1().Movepeople(RIGHT);
+				randomgame.getp1array()[i] = randomgame.getp1();
+				if (randomgame.ifpass(randomgame.getp1array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp1().Movepeople(LEFT);
+				break;
+			}
+			}
+
+		}
+		for (int i = number1 - 2; i >= 0;)
+		{
+			int number1 = rand() % 4;
+			bool c2 = 0;
+			switch (number1)
+			{
+			case 0:
+			{
+				randomgame.getp2().Movepeople(UP);
+				randomgame.getp2array()[i] = randomgame.getp2();
+				if (randomgame.ifpass(randomgame.getp2array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp2().Movepeople(DOWN);
+				break;
+			}
+			case 1:
+			{
+				randomgame.getp2().Movepeople(DOWN);
+				randomgame.getp2array()[i] = randomgame.getp2();
+				if (randomgame.ifpass(randomgame.getp2array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp2().Movepeople(UP);
+				break;
+			}
+			case 2:
+			{
+				randomgame.getp2().Movepeople(LEFT);
+				randomgame.getp2array()[i] = randomgame.getp2();
+				if (randomgame.ifpass(randomgame.getp2array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp2().Movepeople(RIGHT);
+				break;
+			}
+			case 3:
+			{
+				randomgame.getp2().Movepeople(RIGHT);
+				randomgame.getp2array()[i] = randomgame.getp2();
+				if (randomgame.ifpass(randomgame.getp2array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp2().Movepeople(LEFT);
+				break;
+			}
+			}
+		}
+		if (ifOKCreat(randomgame))
+		{
+			break;
+		}
+
+	}
+	MyCreateGameP(randomgame);
+	people* Pall = new people[2*number1-1];
+	for (int i = 0; i < number1; i++)
+	{
+		Pall[i].getx() = randomgame.getp1array()[i].returnx();
+		Pall[i].gety() = randomgame.getp1array()[i].returny();
+	}
+	for (int i = number1; i < 2 * number1 - 1; i++)
+	{
+		Pall[i].getx() = randomgame.getp2array()[2*number1-2- i].returnx();
+		Pall[i].gety() = randomgame.getp2array()[2 * number1 - 2 - i].returny();
+	}
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	ship s1(Pall[4].returnx(), Pall[4].returny());
+	ship s2(Pall[9].returnx(), Pall[9].returny());
+	s1.reviseMyx() = b1[Pall[4].returnx()][Pall[4].returny()].returnx();
+	s1.reviseMyy() = b1[Pall[4].returnx()][Pall[4].returny()].returny();
+	bool s1AddOrO = 0;
+	int s1run = s1.getrun();
+	BeginBatchDraw();
+	putimage(0, 0, &this->img[3]);
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+	}
+	drawMyCreate(Pall, 2 * number1-1, b1);
+	drawOtherPath(s1.revisepath(),s1.getrun(), b1);
+	drawOtherPath(s2.revisepath(), s2.getrun(), b1);
+	int shipx = b1[Pall[0].returnx()][Pall[0].returny()].returnx();
+	int shipy = b1[Pall[0].returnx()][Pall[0].returny()].returny();
+	putimage(800, 500, &this->Move[0]);
+	putimage(750, 500, &this->Move[1]);
+	putimage(850, 500, &this->Move[2]);
+	putimage(800, 450, &this->Move[3]);
+	int k = Pall[0].returnx();
+	int j = Pall[0].returny();
+	EndBatchDraw();
+	while (1)
+	{
+		putimage(shipx, shipy, &this->img[13]);
+		putimage(s1.reviseMyx(), s1.reviseMyy(), &this->img[14]);
+		s1.reviseMyx() = b1[s1.revisepath()[s1run - 1].getx()][s1.revisepath()[s1run - 1].gety()].returnx();
+		s1.reviseMyy() = b1[s1.revisepath()[s1run - 1].getx()][s1.revisepath()[s1run - 1].gety()].returny();
+		if (!s1AddOrO) 
+		{
+			s1run -= 1;
+			if (s1run < 0)
+			{
+				s1run = 1;
+				s1AddOrO = 1;
+			}
+		}
+		else 
+		{
+			s1run += 1;
+			if (s1run > s1.getrun())
+			{
+				s1run = s1.getrun()-1;
+				s1AddOrO = 0;
+			}
+		}
+		b1[k][j].reviseMycreateifpass() = true;
+		if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass()) 
+		{
+			
+			drawNoMyCreate();
+			break;
+		}
+		bool x = 1;
+		for(int k=0;k<25;k++)
+		{
+			for (int j = 0; j < 25; j++) 
+			{
+				if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass())
+				{
+					x = 0;
+				}
+			}
+		}
+		if (x&& k == Pall[2 * number1 - 2].returnx()&& j == Pall[2 * number1 - 2].returny())
+		{
+			drawYesPChallenge(randomgame);
+			break;
+		}
+		ExMessage msg;
+		if (peekmessage(&msg, EX_MOUSE))
+		{
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (ifinimage(msg, this->Move[0], 800, 500)) 
+				{
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					j += 1;
+					shipy += 25;
+					putimage(shipx, shipy, &this->img[13]);
+				}
+				else if (ifinimage(msg, this->Move[1], 750, 500))
+				{
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					k -= 1;
+					shipx -= 25;
+					putimage(shipx, shipy, &this->img[13]);
+				}
+				else if (ifinimage(msg, this->Move[2], 850, 500))
+				{
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					k+=1;
+					shipx += 25;
+					putimage(shipx, shipy, &this->img[13]);
+				}
+				else if (ifinimage(msg, this->Move[3], 800, 450))
+				{
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					j -= 1;
+					shipy -= 25;
+					putimage(shipx, shipy, &this->img[13]);
+				}
+			}
+		}
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		delete[]b1[i];
+	}
+	delete[] b1;
+	setbutton();
+		
+}
+void Mananger::MyCreateGameP(game& g1) 
+{
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	bool x = 1;
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	while (x)
+	{
+		BeginBatchDraw();
+		putimage(0, 0, &this->img[3]);
+		for (int i = 0; i < 25; i++)
+		{
+			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+		}
+		b1 = drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		b1 = drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		b1 = drawrepetebutton(b1);
+		EndBatchDraw();
+		bool a = clickanswer(g1, b1);
+		for (int i = 0; i < 25; i++)
+		{
+			delete[]b1[i];
+		}
+		delete[] b1;
+		setbutton();
+		if (a)
+		{
+			x = 0;
+			closegraph();
+			break;
+		}
+		else
+		{
+			closegraph();
+			drawNoP(g1);
+			break;
+		}
 	}
 }
 void Mananger::CreateMode()
@@ -1782,6 +2209,12 @@ void Mananger::loadgameP()
 	loadimage(&this->img[10], "C:/Users/pcuser/Desktop/实训/查看信息背景.jpg", 750, 750);
 	loadimage(&this->img[11], "C:/Users/pcuser/Desktop/实训/查看信息背景.jpg", 600, 700);
 	loadimage(&this->img[12], "C:/Users/pcuser/Desktop/实训/排行榜.jpg", 600, 700);
+	loadimage(&this->img[13], "C:/Users/pcuser/Desktop/实训/创意小船.jpg", 25, 25);
+	loadimage(&this->img[14], "C:/Users/pcuser/Desktop/实训/创意炸弹.jpg", 25, 25);
+	loadimage(&this->Move[0], "C:/Users/pcuser/Desktop/实训/创下.jpg", 50, 50);
+	loadimage(&this->Move[1], "C:/Users/pcuser/Desktop/实训/创左.jpg", 50, 50);
+	loadimage(&this->Move[2], "C:/Users/pcuser/Desktop/实训/创右.jpg", 50, 50);
+	loadimage(&this->Move[3], "C:/Users/pcuser/Desktop/实训/创上.jpg", 50, 50);
 }
 void Mananger::loadChooseGQmenu()
 {
@@ -2059,6 +2492,14 @@ void button::reviseredifpass()
 {
 	this->redifpass = true;
 }
+bool& button::revisecreateifpass() 
+{
+	return this->createifpass;
+}
+bool& button::reviseMycreateifpass() 
+{
+	return this->Mycreateifpass;
+}
 button**& Mananger::drawMyroad(people*&p2, const int& run, button**&b1)
 {
 	for (int i = 0; i < run; i++) 
@@ -2067,6 +2508,24 @@ button**& Mananger::drawMyroad(people*&p2, const int& run, button**&b1)
 		b1[p2[i].returnx()][p2[i].returny()].drawgamebutton(i + 1, BLACK);
 		b1[p2[i].returnx()][p2[i].returny()].reviseyellowifpass();
 		b1[p2[i].returnx()][p2[i].returny()].returnrepeterun1() = i+1;
+	}
+	return b1;
+}
+button**& Mananger::drawMyCreate(people*&p2, const int& run, button**&b1) 
+{
+	for (int i = 0; i < run; i++)
+	{
+		b1[p2[i].returnx()][p2[i].returny()].revisecreateifpass() = true;
+	}
+	return b1;
+}
+button**& Mananger::drawOtherPath(people*& p2, const int& run, button**& b1)
+{
+	for (int i = 0; i < run; i++)
+	{
+		b1[p2[i].returnx()][p2[i].returny()].revisecolor() = BLUE;
+		b1[p2[i].returnx()][p2[i].returny()].drawbutton();
+		b1[p2[i].returnx()][p2[i].returny()].revisecreateifpass() = true;
 	}
 	return b1;
 }
@@ -2652,6 +3111,33 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 		}
 	}
 }
+void Mananger::drawNoMyCreate() 
+{
+	cleardevice();
+	initgraph(800, 600);
+	setbkmode(TRANSPARENT);
+	setbkcolor(WHITE);
+	cleardevice();
+	button b1(250, 0, 300, 50, "DEFEAT");
+	button b3(0, 0, 75, 75, "返回");
+	bool x = 0;
+	while (!x)
+	{
+		int number = 0;
+		BeginBatchDraw();
+		putimage(200, 200, &this->img[5]);
+		b1.drawbutton();
+		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
+		EndBatchDraw();
+		ExMessage msg = getmousemessage();
+		if (ifinbutoon(b3, msg))
+		{
+			closegraph();
+			x = 1;
+			RunChoose();
+		}
+	}
+}
 void Mananger::drawNoP(game& g1) 
 {
 	cleardevice();
@@ -2914,4 +3400,15 @@ bool Mananger::ifOKCreat(const game& g1)
 		}
 	}
 	return true;
+}
+bool ship::ifOKPath() 
+{
+		for (int i = 0; i < this->getrun(); i++)
+		{
+			if (this->path[i].getx() > 25 || this->path[i].getx() < 0 || this->path[i].gety() > 25 || this->path[i].gety() < 0)
+			{
+				return false;
+			}
+		}
+		return true;
 }
