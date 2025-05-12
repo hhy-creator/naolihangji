@@ -12,6 +12,7 @@
 #include <conio.h>
 #include <graphics.h>
 #include <set>
+#include <time.h>
 using namespace std;
 
 int main() 

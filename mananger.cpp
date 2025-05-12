@@ -13,6 +13,9 @@
 #include <conio.h>
 #include <graphics.h>
 using namespace std;
+const clock_t FPS = 1000;
+int starttime = 0;
+int freamtime = 0;
 int	GQbuttonbeginlength = 100;
 int	GQbuttonbeginwidth = 30;
 int ship::getrun() 
@@ -58,55 +61,57 @@ void ship::createMypath(const int&bx,const int& by)
 	p1.SetPeopleBeginPos(xfinal, yfinal);
 	this->path[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
 	bool x = 1;
+	int number2 = rand() % 4;
 	while (x) 
 	{
 		for (int i = number1 - 2; i >= 0;)
 		{
-			int number1 = rand() % 4;
-			switch (number1)
+			switch (number2)
 			{
 			case 0:
 			{
 				p1.Movepeople(UP);
-				this->path[i] = p1;
 				if (this->ifpass(this->path, i, number1))
 				{
+					this->path[i] = p1;
 					i--;
 				}
-				else p1.Movepeople(DOWN);
+				else { p1.Movepeople(DOWN); }
 				break;
 			}
 			case 1:
 			{
 				p1.Movepeople(DOWN);
-				this->path[i] = p1;
 				if (this->ifpass(this->path, i, number1))
 				{
+					this->path[i] = p1;
 					i--;
 				}
-				else p1.Movepeople(UP);
+				else { p1.Movepeople(UP); }
 				break;
 			}
 			case 2:
 			{
 				p1.Movepeople(LEFT);
-				this->path[i] = p1;
+				
 				if (this->ifpass(this->path, i, number1))
 				{
+					this->path[i] = p1;
 					i--;
 				}
-				else p1.Movepeople(RIGHT);
+				else { p1.Movepeople(RIGHT); }
 				break;
 			}
 			case 3:
 			{
 				p1.Movepeople(RIGHT);
-				this->path[i] = p1;
+				
 				if (this->ifpass(this->path, i, number1))
 				{
+					this->path[i] = p1;
 					i--;
 				}
-				else p1.Movepeople(LEFT);
+				else { p1.Movepeople(LEFT); }
 				break;
 			}
 			}
@@ -430,6 +435,10 @@ void Mananger::RunChoose()
 
 	}
 }
+bool& button::revisebombpass() 
+{
+	return this->bombpass;
+}
 void Mananger::Mycreate()
 {
 
@@ -587,7 +596,7 @@ void Mananger::Mycreate()
 	s1.reviseMyx() = b1[Pall[4].returnx()][Pall[4].returny()].returnx();
 	s1.reviseMyy() = b1[Pall[4].returnx()][Pall[4].returny()].returny();
 	bool s1AddOrO = 0;
-	int s1run = s1.getrun();
+	int s1run = 0;
 	BeginBatchDraw();
 	putimage(0, 0, &this->img[3]);
 	for (int i = 0; i < 25; i++)
@@ -596,7 +605,7 @@ void Mananger::Mycreate()
 	}
 	drawMyCreate(Pall, 2 * number1-1, b1);
 	drawOtherPath(s1.revisepath(),s1.getrun(), b1);
-	drawOtherPath(s2.revisepath(), s2.getrun(), b1);
+	//drawOtherPath(s2.revisepath(), s2.getrun(), b1);
 	int shipx = b1[Pall[0].returnx()][Pall[0].returny()].returnx();
 	int shipy = b1[Pall[0].returnx()][Pall[0].returny()].returny();
 	putimage(800, 500, &this->Move[0]);
@@ -608,28 +617,13 @@ void Mananger::Mycreate()
 	EndBatchDraw();
 	while (1)
 	{
+		starttime = clock();
 		putimage(shipx, shipy, &this->img[13]);
+		s1.reviseMyx() = b1[s1.revisepath()[s1run].getx()][s1.revisepath()[s1run].gety()].returnx();
+		s1.reviseMyy() = b1[s1.revisepath()[s1run].getx()][s1.revisepath()[s1run].gety()].returny();
+		int s1x= (s1.reviseMyx() - GQbuttonbeginlength) / 25; 
+		int s1y= (s1.reviseMyy() - GQbuttonbeginwidth) / 25;
 		putimage(s1.reviseMyx(), s1.reviseMyy(), &this->img[14]);
-		s1.reviseMyx() = b1[s1.revisepath()[s1run - 1].getx()][s1.revisepath()[s1run - 1].gety()].returnx();
-		s1.reviseMyy() = b1[s1.revisepath()[s1run - 1].getx()][s1.revisepath()[s1run - 1].gety()].returny();
-		if (!s1AddOrO) 
-		{
-			s1run -= 1;
-			if (s1run < 0)
-			{
-				s1run = 1;
-				s1AddOrO = 1;
-			}
-		}
-		else 
-		{
-			s1run += 1;
-			if (s1run > s1.getrun())
-			{
-				s1run = s1.getrun()-1;
-				s1AddOrO = 0;
-			}
-		}
 		b1[k][j].reviseMycreateifpass() = true;
 		if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass()) 
 		{
@@ -665,6 +659,7 @@ void Mananger::Mycreate()
 					j += 1;
 					shipy += 25;
 					putimage(shipx, shipy, &this->img[13]);
+					
 				}
 				else if (ifinimage(msg, this->Move[1], 750, 500))
 				{
@@ -672,7 +667,9 @@ void Mananger::Mycreate()
 					else { this->GQbutton[k][j].drawGQbutton(); }
 					k -= 1;
 					shipx -= 25;
+
 					putimage(shipx, shipy, &this->img[13]);
+					
 				}
 				else if (ifinimage(msg, this->Move[2], 850, 500))
 				{
@@ -680,7 +677,9 @@ void Mananger::Mycreate()
 					else { this->GQbutton[k][j].drawGQbutton(); }
 					k+=1;
 					shipx += 25;
+
 					putimage(shipx, shipy, &this->img[13]);
+					
 				}
 				else if (ifinimage(msg, this->Move[3], 800, 450))
 				{
@@ -689,7 +688,39 @@ void Mananger::Mycreate()
 					j -= 1;
 					shipy -= 25;
 					putimage(shipx, shipy, &this->img[13]);
+					
 				}
+			}
+		}
+		freamtime = clock() - starttime;
+		if (b1[s1x][s1y].revisebombpass()) 
+		{
+			b1[s1x][s1y].drawbutton();
+		}
+		else 
+		{
+			this->GQbutton[s1x][s1y].drawGQbutton(); 
+		}
+		if (freamtime > 0)
+		{
+			Sleep(FPS - freamtime);
+		}
+		if (!s1AddOrO)
+		{
+			s1run -= 1;
+			if (s1run < 0)
+			{
+				s1run = 1;
+				s1AddOrO = 1;
+			}
+		}
+		else
+		{
+			s1run += 1;
+			if (s1run == s1.getrun()-1)
+			{
+				s1run = s1.getrun()-2 ;
+				s1AddOrO = 0;
 			}
 		}
 	}
@@ -2525,7 +2556,8 @@ button**& Mananger::drawOtherPath(people*& p2, const int& run, button**& b1)
 	{
 		b1[p2[i].returnx()][p2[i].returny()].revisecolor() = BLUE;
 		b1[p2[i].returnx()][p2[i].returny()].drawbutton();
-		b1[p2[i].returnx()][p2[i].returny()].revisecreateifpass() = true;
+		b1[p2[i].returnx()][p2[i].returny()].revisebombpass() = true;
+
 	}
 	return b1;
 }

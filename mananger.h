@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <conio.h>
 #include <set>
+#include<time.h>
 #include <graphics.h>
 struct gameku 
 {
@@ -72,6 +73,7 @@ public:
 	bool& reviseifokclick();
 	bool& revisecreateifpass();
 	bool& reviseMycreateifpass();
+	bool& revisebombpass();
 private:
 	int x;
 	int y;
@@ -89,6 +91,7 @@ private:
 	bool ifokclick=1;
 	bool createifpass=0;
 	bool Mycreateifpass = 0;
+	bool bombpass = 0;
 };
 class Mananger
 {
