@@ -137,7 +137,7 @@ public:
 	void loadChooseGQmenu();
 	void createGameP( game& g1, const int& i);
 	void createGameP(game& g1);
-	void MyCreateGameP(game& g1);
+	void MyCreateGameP(game& g1, people*& p1);
 	void creatrGameChallenge(game& g1);
 	void loadGamebk();
 	void readplayermessage();
@@ -158,6 +158,8 @@ public:
 	void drawYesP(game&g1);
 	void drawYesPChallenge(game& g1);
 	void drawNoP(game& g1);
+	void createmiddle(people*& p1,game& g1);
+	void drawcreate(people*& p2, const int& run, button**& b1);
 	void drawNoMyCreate();
 	void gameprogress();
 	void setbutton();
