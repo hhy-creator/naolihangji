@@ -13,7 +13,7 @@
 #include <conio.h>
 #include <graphics.h>
 using namespace std;
-const clock_t FPS = 1000/3;
+const clock_t FPS = 1000/60;
 int starttime = 0;
 int freamtime = 0;
 int	GQbuttonbeginlength = 100;
@@ -150,95 +150,6 @@ void Mananger::recordmessagetxt()
 	this->p1.serializetxt(ofs);
 	ofs.close();
 }
-void Mananger::PTrankP() 
-{
-	cleardevice();
-	initgraph(600, 700);
-	setbkmode(TRANSPARENT);
-	putimage(0, 0, &this->img[12]);
-	putimage(0, 0, &this->img[7]);
-	string text;
-	settextstyle(20, 20, "宋体");
-	settextcolor(BLACK);
-	text = "  姓名";
-	outtextxy(50, 100, text.c_str());
-	text = "  总得分";
-	outtextxy(150, 100, text.c_str());
-	text = "  总用时";
-	outtextxy(275, 100, text.c_str());
-	settextstyle(15, 15, "宋体");
-	for (int i = 0; i < rank.size(); i++) 
-	{
-		text = to_string(i + 1);
-		outtextxy(25, 125 + i * 25, text.c_str());
-		text = rank[i].GetName();
-	    outtextxy(75, 125+i*25, text.c_str());
-		text = to_string(rank[i].returnscoreall());
-		outtextxy(225, 125 + i * 25, text.c_str());
-		text = to_string(int(rank[i].returntimeall()));
-		outtextxy(350, 125 + i * 25, text.c_str());
-	}
-	while (1)
-	{
-		ExMessage msg = getmousemessage();
-		BeginBatchDraw();
-		if (ifinimage(msg, this->img[7], 0, 0))
-		{
-			EndBatchDraw();
-			closegraph();
-			rankP();
-			break;
-		}
-	}
-}
-void Mananger::rankP()
-{
-	cleardevice();
-	initgraph(600, 700);
-	setbkmode(TRANSPARENT);
-	putimage(0, 0, &this->img[11]);
-	putimage(0, 0, &this->img[7]);
-	button b1(200, 100, 200, 50, "普通排行");
-	button b2(200, 150, 200, 50, "无尽排行");
-	button b3(200, 200, 200, 50, "单关排行");
-	b1.drawbutton();
-	b2.drawbutton();
-	b3.drawbutton();
-	while (1) 
-	{
-		ExMessage msg = getmousemessage();
-		BeginBatchDraw();
-		if (ifinbutoon(b1, msg))
-		{
-			EndBatchDraw();
-			PuTongRank(readplayermessagetxt());
-			PTrankP();
-			break;
-		}
-		else if (ifinbutoon(b2, msg)) 
-		{
-			EndBatchDraw();
-			wujinRank(readplayermessagetxt());
-			WJrankP();
-			break;
-		}
-		else if (ifinbutoon(b3, msg))
-		{
-			EndBatchDraw();
-			wujinRank(readplayermessagetxt());
-			DGrankP();
-			break;
-		}
-		else if (ifinimage(msg, this->img[7], 0, 0))
-		{
-			EndBatchDraw();
-			closegraph();
-			RunChoose();
-			break;
-		}
-	}
-	closegraph();
-}
 vector<player>& Mananger::readplayermessagetxt(){
 	if (this->rank.size() != 0) 
 	{
@@ -330,32 +241,6 @@ vector<gameku>& Mananger::readgamekutxt()
 	is.close();
 	return this->gameall;
 }
-void Mananger::recordmessage()
-{
-	ofstream ofs("D:/脑力航迹/playermessgae.txt", ios::binary|ios::app);
-	if (!ofs.is_open())
-	{
-		cout << "文件打开失败" << endl;
-		return;
-	}
-	this->p1.serialize(ofs);
-	ofs.close();
-
-}
-void Mananger::readplayermessage() 
-{
-	ifstream ifs("D:/脑力航迹/playermessgae.txt", ios::binary);
-	if (!ifs.is_open())
-	{
-		cout << "文件打开失败" << endl;
-		return;
-	}
-	while (ifs) {
-		p1.deserialize(ifs);
-	}
-	return;
-
-}
 Mananger::~Mananger() 
 {
 }
@@ -379,7 +264,7 @@ void Mananger::RunChoose()
 	case 1:
 	{
 		system("cls");
-		BeginGame();
+		ChooseGame();
 		break;
 	}
 	case 2: 
@@ -438,739 +323,11 @@ bool& button::revisebombpass()
 {
 	return this->bombpass;
 }
-void Mananger::Mycreate()
-{
-
-	game randomgame;
-	int number1 = 5;
-	randomgame.setrun(number1);
-	randomgame.setzihzhen();
-	while (1) {
-		int xfinal = 0, yfinal = 0;
-		xfinal = rand() % 10 + 8;
-		yfinal = rand() % 10 + 8;
-		randomgame.getp1().SetPeopleBeginPos(xfinal, yfinal);
-		randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
-		randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
-		randomgame.getp2array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
-		for (int i = number1 - 2; i >= 0;)
-		{
-			int number1 = rand() % 4;
-			switch (number1)
-			{
-			case 0:
-			{
-				randomgame.getp1().Movepeople(UP);
-				randomgame.getp1array()[i] = randomgame.getp1();
-				if (randomgame.ifpass(randomgame.getp1array(), i))
-				{
-					i--;
-				}
-				else randomgame.getp1().Movepeople(DOWN);
-				break;
-			}
-			case 1:
-			{
-				randomgame.getp1().Movepeople(DOWN);
-				randomgame.getp1array()[i] = randomgame.getp1();
-				if (randomgame.ifpass(randomgame.getp1array(), i))
-				{
-					i--;
-				}
-				else randomgame.getp1().Movepeople(UP);
-				break;
-			}
-			case 2:
-			{
-				randomgame.getp1().Movepeople(LEFT);
-				randomgame.getp1array()[i] = randomgame.getp1();
-				if (randomgame.ifpass(randomgame.getp1array(), i))
-				{
-					i--;
-				}
-				else randomgame.getp1().Movepeople(RIGHT);
-				break;
-			}
-			case 3:
-			{
-				randomgame.getp1().Movepeople(RIGHT);
-				randomgame.getp1array()[i] = randomgame.getp1();
-				if (randomgame.ifpass(randomgame.getp1array(), i))
-				{
-					i--;
-				}
-				else randomgame.getp1().Movepeople(LEFT);
-				break;
-			}
-			}
-
-		}
-		for (int i = number1 - 2; i >= 0;)
-		{
-			int number1 = rand() % 4;
-			bool c2 = 0;
-			switch (number1)
-			{
-			case 0:
-			{
-				randomgame.getp2().Movepeople(UP);
-				randomgame.getp2array()[i] = randomgame.getp2();
-				if (randomgame.ifpass(randomgame.getp2array(), i))
-				{
-					i--;
-				}
-				else randomgame.getp2().Movepeople(DOWN);
-				break;
-			}
-			case 1:
-			{
-				randomgame.getp2().Movepeople(DOWN);
-				randomgame.getp2array()[i] = randomgame.getp2();
-				if (randomgame.ifpass(randomgame.getp2array(), i))
-				{
-					i--;
-				}
-				else randomgame.getp2().Movepeople(UP);
-				break;
-			}
-			case 2:
-			{
-				randomgame.getp2().Movepeople(LEFT);
-				randomgame.getp2array()[i] = randomgame.getp2();
-				if (randomgame.ifpass(randomgame.getp2array(), i))
-				{
-					i--;
-				}
-				else randomgame.getp2().Movepeople(RIGHT);
-				break;
-			}
-			case 3:
-			{
-				randomgame.getp2().Movepeople(RIGHT);
-				randomgame.getp2array()[i] = randomgame.getp2();
-				if (randomgame.ifpass(randomgame.getp2array(), i))
-				{
-					i--;
-				}
-				else randomgame.getp2().Movepeople(LEFT);
-				break;
-			}
-			}
-		}
-		if (ifOKCreat(randomgame))
-		{
-			break;
-		}
-
-	}
-	people* Pall = new people[2 * number1 - 1];
-	for (int i = 0; i < number1; i++)
-	{
-		Pall[i].getx() = randomgame.getp1array()[i].returnx();
-		Pall[i].gety() = randomgame.getp1array()[i].returny();
-	}
-	for (int i = number1; i < 2 * number1 - 1; i++)
-	{
-		Pall[i].getx() = randomgame.getp2array()[2 * number1 - 2 - i].returnx();
-		Pall[i].gety() = randomgame.getp2array()[2 * number1 - 2 - i].returny();
-	}
-	MyCreateGameP(randomgame,Pall);
-	cleardevice();
-	initgraph(1000, 729);
-	setbkmode(TRANSPARENT);
-	button** b1 = new button * [25];
-	for (int i = 0; i < 25; i++)
-	{
-		b1[i] = new button[25];
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++)
-		{
-			b1[i][j] = this->GQbutton[i][j];
-		}
-	}
-	ship s1(Pall[2].returnx(), Pall[2].returny());
-	ship s2(Pall[6].returnx(), Pall[6].returny());
-	BeginBatchDraw();
-	putimage(0, 0, &this->img[3]);
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
-	}
-	drawMyCreate(Pall, 2 * number1-1, b1);
-	drawOtherPath(s1.revisepath(),s1.getrun(), b1);
-	drawOtherPath(s2.revisepath(), s2.getrun(), b1);
-	int shipx = b1[Pall[0].returnx()][Pall[0].returny()].returnx();
-	int shipy = b1[Pall[0].returnx()][Pall[0].returny()].returny();
-	putimage(800, 500, &this->Move[0]);
-	putimage(750, 500, &this->Move[1]);
-	putimage(850, 500, &this->Move[2]);
-	putimage(800, 450, &this->Move[3]);
-	EndBatchDraw();
-	int k = Pall[0].returnx();
-	int j = Pall[0].returny();
-	int s1Px = b1[Pall[2].returnx()][Pall[2].returny()].returnx();
-	int s1Py = b1[Pall[2].returnx()][Pall[2].returny()].returny();
-	int s1x=(s1Px - GQbuttonbeginlength) / 25;
-	int s1y= (s1Py - GQbuttonbeginwidth) / 25;
-	int s1index = s1.getrun() - 1;
-	bool s1AD = 0;
-	int s2Px = b1[Pall[6].returnx()][Pall[6].returny()].returnx();
-	int s2Py = b1[Pall[6].returnx()][Pall[6].returny()].returny();
-	int s2x = (s2Px - GQbuttonbeginlength) / 25;
-	int s2y = (s2Py - GQbuttonbeginwidth) / 25;
-	int s2index = s2.getrun() - 1;
-	bool s2AD = 0;
-	while (1)
-	{
-		starttime = clock();
-		putimage(shipx, shipy, &this->img[13]);
-		putimage(s1Px, s1Py, &this->img[14]);
-		putimage(s2Px, s2Py, &this->img[14]);
-		b1[k][j].reviseMycreateifpass() = true;
-		if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass()||(s1Px==shipx&&s1Py==shipy)|| (s2Px == shipx && s2Py == shipy))
-		{
-			
-			drawNoMyCreate();
-			break;
-		}
-		bool x = 1;
-		for(int k=0;k<25;k++)
-		{
-			for (int j = 0; j < 25; j++) 
-			{
-				if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass())
-				{
-					x = 0;
-				}
-			}
-		}
-		if (x&& k == Pall[2 * number1 - 2].returnx()&& j == Pall[2 * number1 - 2].returny())
-		{
-			drawYesPChallenge(randomgame);
-			break;
-		}
-		ExMessage msg;
-		if (peekmessage(&msg, EX_MOUSE))
-		{
-			if (msg.message == WM_LBUTTONDOWN)
-			{
-				freamtime = clock() - starttime;
-				if (ifinimage(msg, this->Move[0], 800, 500)) 
-				{
-					BeginBatchDraw();
-					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
-					else { this->GQbutton[k][j].drawGQbutton(); }
-					b1[s1x][s1y].drawbutton();
-					if (!s1AD) 
-					{
-						if(s1index==0)
-						{
-							s1index = 1;
-							s1AD = 1;
-						}
-						else s1index -= 1;
-					}
-					else 
-					{
-						if (s1index == s1.getrun() - 1) 
-						{
-							s1index -= 1;
-							s1AD = 0;
-						}
-						else { s1index += 1; }
-					}
-					s1x = s1.revisepath()[s1index].returnx();
-					s1y = s1.revisepath()[s1index].returny();
-					s1Px = b1[s1.revisepath()[s2index].returnx()][s1.revisepath()[s2index].returny()].returnx();
-					s1Py = b1[s1.revisepath()[s2index].returnx()][s1.revisepath()[s1index].returny()].returny();
-					b1[s2x][s2y].drawbutton();
-					if (!s2AD)
-					{
-						if (s2index == 0)
-						{
-							s2index = 1;
-							s2AD = 1;
-						}
-						else s2index -= 1;
-					}
-					else
-					{
-						if (s2index == s2.getrun() - 1)
-						{
-							s2index -= 1;
-							s2AD = 0;
-						}
-						else { s2index += 1; }
-					}
-					s2x = s2.revisepath()[s2index].returnx();
-					s2y = s2.revisepath()[s2index].returny();
-					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
-					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
-					putimage(s2Px, s2Py, &this->img[14]);
-					j += 1;
-					shipy += 25;
-					putimage(shipx, shipy, &this->img[13]);
-					putimage(s1Px, s1Py, &this->img[14]);
-					EndBatchDraw();
-				}
-				else if (ifinimage(msg, this->Move[1], 750, 500))
-				{
-					BeginBatchDraw();
-					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
-					else { this->GQbutton[k][j].drawGQbutton(); }
-					b1[s1x][s1y].drawbutton();
-					if (!s1AD)
-					{
-						if (s1index == 0)
-						{
-							s1index = 1;
-							s1AD = 1;
-						}
-						else s1index -= 1;
-					}
-					else
-					{
-						if (s1index == s1.getrun() - 1)
-						{
-							s1index -= 1;
-							s1AD = 0;
-						}
-						else { s1index += 1; }
-					}
-					s1x = s1.revisepath()[s1index].returnx();
-					s1y = s1.revisepath()[s1index].returny();
-					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
-					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
-					b1[s2x][s2y].drawbutton();
-					if (!s2AD)
-					{
-						if (s2index == 0)
-						{
-							s2index = 1;
-							s2AD = 1;
-						}
-						else s2index -= 1;
-					}
-					else
-					{
-						if (s2index == s2.getrun() - 1)
-						{
-							s2index -= 1;
-							s2AD = 0;
-						}
-						else { s2index += 1; }
-					}
-					s2x = s2.revisepath()[s2index].returnx();
-					s2y = s2.revisepath()[s2index].returny();
-					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
-					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
-					putimage(s2Px, s2Py, &this->img[14]);
-					k -= 1;
-					shipx -= 25;
-					putimage(shipx, shipy, &this->img[13]);
-					putimage(s1Px, s1Py, &this->img[14]);
-					EndBatchDraw();
-				}
-				else if (ifinimage(msg, this->Move[2], 850, 500))
-				{
-					BeginBatchDraw();
-					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
-					else { this->GQbutton[k][j].drawGQbutton(); }
-					b1[s1x][s1y].drawbutton();
-					if (!s1AD)
-					{
-						if (s1index == 0)
-						{
-							s1index = 1;
-							s1AD = 1;
-						}
-						else s1index -= 1;
-					}
-					else
-					{
-						if (s1index == s1.getrun() - 1)
-						{
-							s1index -= 1;
-							s1AD = 0;
-						}
-						else { s1index += 1; }
-					}
-					s1x = s1.revisepath()[s1index].returnx();
-					s1y = s1.revisepath()[s1index].returny();
-					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
-					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
-					b1[s2x][s2y].drawbutton();
-					if (!s2AD)
-					{
-						if (s2index == 0)
-						{
-							s2index = 1;
-							s2AD = 1;
-						}
-						else s2index -= 1;
-					}
-					else
-					{
-						if (s2index == s2.getrun() - 1)
-						{
-							s2index -= 1;
-							s2AD = 0;
-						}
-						else { s2index += 1; }
-					}
-					s2x = s2.revisepath()[s2index].returnx();
-					s2y = s2.revisepath()[s2index].returny();
-					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
-					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
-					putimage(s2Px, s2Py, &this->img[14]);
-					k+=1;
-					shipx += 25;
-					putimage(shipx, shipy, &this->img[13]);
-					putimage(s1Px, s1Py, &this->img[14]);
-					EndBatchDraw();
-				}
-				else if (ifinimage(msg, this->Move[3], 800, 450))
-				{
-					BeginBatchDraw();
-					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
-					else { this->GQbutton[k][j].drawGQbutton(); }
-					b1[s1x][s1y].drawbutton();
-					if (!s1AD)
-					{
-						if (s1index == 0)
-						{
-							s1index = 1;
-							s1AD = 1;
-						}
-						else s1index -= 1;
-					}
-					else
-					{
-						if (s1index == s1.getrun() - 1)
-						{
-							s1index -= 1;
-							s1AD = 0;
-						}
-						else { s1index += 1; }
-					}
-					s1x = s1.revisepath()[s1index].returnx();
-					s1y = s1.revisepath()[s1index].returny();
-					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
-					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
-					b1[s2x][s2y].drawbutton();
-					if (!s2AD)
-					{
-						if (s2index == 0)
-						{
-							s2index = 1;
-							s2AD = 1;
-						}
-						else s2index -= 1;
-					}
-					else
-					{
-						if (s2index == s2.getrun() - 1)
-						{
-							s2index -= 1;
-							s2AD = 0;
-						}
-						else { s2index += 1; }
-					}
-					s2x = s2.revisepath()[s2index].returnx();
-					s2y = s2.revisepath()[s2index].returny();
-					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
-					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
-					putimage(s2Px, s2Py, &this->img[14]);
-					j -= 1;
-					shipy -= 25;
-					putimage(shipx, shipy, &this->img[13]);
-					putimage(s1Px, s1Py, &this->img[14]);
-					EndBatchDraw();
-				}
-				if (freamtime > 0)
-				{
-					Sleep(FPS - freamtime);
-				}
-			}
-		}
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		delete[]b1[i];
-	}
-	delete[] b1;
-	setbutton();
-		
-}
-void Mananger::createmiddle(people*& p1, game& g1)
-{
-	cleardevice();
-	initgraph(1000, 729);
-	setbkmode(TRANSPARENT);
-	button** b1 = new button * [25];
-	for (int i = 0; i < 25; i++)
-	{
-		b1[i] = new button[25];
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++)
-		{
-			b1[i][j] = this->GQbutton[i][j];
-		}
-	}
-	putimage(0, 0, &this->img[3]);
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
-	}
-	drawanswerroad(p1, 9, b1);
-	button con(800, 679, 175, 50, "下一步");
-	con.drawbutton1();
-	while (1)
-	{
-		ExMessage msg;
-		if (peekmessage(&msg, EX_MOUSE))
-		{
-			if (msg.message == WM_LBUTTONDOWN)
-			{
-				if (ifinbutoon(con, msg))
-				{
-					break;
-				}
-			}
-		}
-	}
-		for (int i = 0; i < 25; i++)
-		{
-			delete[]b1[i];
-		}
-		delete[] b1;
-		closegraph();
-}
-void Mananger::MyCreateGameP(game& g1,people*&p1) 
-{
-	cleardevice();
-	initgraph(1000, 729);
-	setbkmode(TRANSPARENT);
-	bool x = 1;
-	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-	button** b1 = new button * [25];
-	for (int i = 0; i < 25; i++)
-	{
-		b1[i] = new button[25];
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++)
-		{
-			b1[i][j] = this->GQbutton[i][j];
-		}
-	}
-	while (x)
-	{
-		BeginBatchDraw();
-		putimage(0, 0, &this->img[3]);
-		for (int i = 0; i < 25; i++)
-		{
-			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
-		}
-		b1 = drawMyroad(g1.getp1array(), g1.getrun(), b1);
-		b1 = drawYourroad(g1.getp2relative(), g1.getrun(), b1);
-		b1 = drawrepetebutton(b1);
-		EndBatchDraw();
-		bool a = clickanswer(g1, b1);
-		for (int i = 0; i < 25; i++)
-		{
-			delete[]b1[i];
-		}
-		delete[] b1;
-		setbutton();
-		if (a)
-		{
-			x = 0;
-			closegraph();
-			createmiddle(p1,g1);
-			break;
-		}
-		else
-		{
-			closegraph();
-			drawNoP(g1);
-			break;
-		}
-	}
-}
-void Mananger::CreateMode()
-{
-	cleardevice();
-	initgraph(600, 600);
-	setbkmode(TRANSPARENT);
-	button b1(200, 200, 200, 50, "自建关卡");
-	button b2(200, 250, 200, 50, "创意工房");
-	putimage(0, 0, &this->img[9]);
-	putimage(0, 0, &this->img[7]);
-	b1.drawbutton();
-	b2.drawbutton();
-	while (1) {
-		ExMessage msg = getmousemessage();
-		BeginBatchDraw();
-		if (ifinbutoon(b1, msg))
-		{
-			EndBatchDraw();
-			PlayerGreatgame();
-			break;
-		}
-		else if (ifinbutoon(b2, msg))
-		{
-			EndBatchDraw(); 
-			readgamekutxt();
-			cout << "请输入想要玩的关卡的名字：" << endl;
-			cout << "已有自建关卡:" << "  ";
-			for (int i = 0; i < this->gameall.size(); i++) 
-			{
-				cout << gameall[i].name << " ";
-			}
-			cout << endl;
-			bool x = 1;
-			while (x) 
-			{
-				string name1;
-				cin >> name1;
-				for (int i = 0; i < gameall.size(); i++) 
-				{
-					if (gameall[i].name == name1) 
-					{
-						PlayercreatrGame(gameall[i].g1);
-						x = 0;
-						break;
-					}
-				}
-				cout << "名字不正确，请再次输入" << endl;
-			}
-			
-			break;
-		}
-		else if (ifinimage(msg, this->img[7], 0, 0))
-		{
-			EndBatchDraw();
-			closegraph();
-			RunChoose();
-			break;
-		}
-	}
-	closegraph();
-}
-void Mananger::ShowMenu() 
-{
-
-	cout << "       请输入你的选择：" << endl;
-	cout << "****************************" << endl;
-	cout << "********1开始游戏***********" << endl;
-	cout << "********2查看规则*******" << endl;
-	cout << "********3查看消息*******" << endl;
-	cout << "********4创造模式**********"<<endl;
-	cout << "********5挑战模式**********" << endl;
-	cout << "********6无尽模式**********" << endl;
-	cout << "********0退出游戏**********" << endl;
-	cout << "****************************" << endl;
-};
 void Mananger::Exitgame() 
 {
 	recordmessagetxt();
 	cout << "游戏已退出" << endl;
 	exit(0);
-}
-void Mananger::WJrankP() 
-{
-	cleardevice();
-	initgraph(600, 700);
-	setbkmode(TRANSPARENT);
-	putimage(0, 0, &this->img[12]);
-	putimage(0, 0, &this->img[7]);
-	string text;
-	settextstyle(20, 20, "宋体");
-	settextcolor(BLACK);
-	text = "  姓名";
-	outtextxy(200, 100, text.c_str());
-	text = "  得分";
-	outtextxy(350, 100, text.c_str());
-	settextstyle(15, 15, "宋体");
-	for (int i = 0; i < rank.size(); i++)
-	{
-		text = to_string(i + 1);
-		outtextxy(75, 125 + i * 25, text.c_str());
-		text = rank[i].GetName();
-		outtextxy(175, 125 + i * 25, text.c_str());
-		text = to_string(rank[i].getnoendscore());
-		outtextxy(375, 125 + i * 25, text.c_str());
-	}
-	while (1)
-	{
-		ExMessage msg = getmousemessage();
-		BeginBatchDraw();
-		if (ifinimage(msg, this->img[7], 0, 0))
-		{
-			EndBatchDraw();
-			closegraph();
-			rankP();
-			break;
-		}
-	}
-}
-void Mananger::DGrankP()
-{
-	cleardevice();
-	initgraph(600, 700);
-	setbkmode(TRANSPARENT);
-	putimage(0, 0, &this->img[12]);
-	putimage(0, 0, &this->img[7]);
-	string text;
-	settextstyle(20, 20, "宋体");
-	settextcolor(BLACK);
-	text = "  姓名";
-	outtextxy(50, 100, text.c_str());
-	text = "  得分";
-	outtextxy(150, 100, text.c_str());
-	text = "  用时";
-	outtextxy(275, 100, text.c_str());
-	settextstyle(15, 15, "宋体");
-	for (int i = 0; i < 6; i++)
-	{
-		sort(this->rank.begin(), this->rank.end(), [i](const player& p1, const player& p2)
-			{
-				if (p1.returnGetscore()[i] == p2.returnGetscore()[i])return p1.returngettime()[i] < p2.returngettime()[i];
-				else return p1.returnGetscore()[i] > p2.returnGetscore()[i];
-			}
-		);
-		text = to_string(i + 1);
-		outtextxy(25, 125 + i * 25, text.c_str());
-		text = rank[0].GetName();
-		outtextxy(75, 125 + i * 25, text.c_str());
-		text = to_string(rank[0].Getscore()[i]);
-		outtextxy(225, 125 + i * 25, text.c_str());
-		text = to_string(int(rank[0].gettime()[i]));
-		outtextxy(350, 125 + i * 25, text.c_str());
-	}
-	while (1)
-	{
-		ExMessage msg = getmousemessage();
-		BeginBatchDraw();
-		if (ifinimage(msg, this->img[7], 0, 0))
-		{
-			EndBatchDraw();
-			closegraph();
-			rankP();
-			break;
-		}
-	}
-}
-void Mananger::BeginGame() 
-{
-	ChooseGame();
-
 }
 int Mananger::getlevel()const 
 {
@@ -1183,146 +340,6 @@ player& Mananger::getplayer()
 void Mananger::CheckMessage( player&p1) 
 {
 	p1.CheckMessage();
-}
-void Mananger::checkmessageP() 
-{
-	cleardevice();
-	initgraph(750, 750);
-	setbkmode(TRANSPARENT);
-	putimage(0, 0, &this->img[10]);
-	setfillcolor(WHITE);
-	fillrectangle(0, 0, 750, 750);
-	settextstyle(20, 20, "宋体");
-	settextcolor(BLACK);
-	string text;
-	text = "  名字：";
-	outtextxy(0, 150,text.c_str());
-	text = this->p1.GetName();
-	outtextxy(150, 150, text.c_str());
-	text = "  关卡：";
-	outtextxy(0, 175, text.c_str());
-	settextstyle(15, 15, "宋体");
-	for (int i = 0; i < 10; i++) 
-	{
-		outtextxy(150 + i * 60, 175, to_string(i+1).c_str());
-	}
-	settextstyle(20, 20, "宋体");
-	text = "准确率：";
-	outtextxy(0, 200, text.c_str());
-	settextstyle(15, 15, "宋体");
-	for (int i = 0; i < this->p1.Getaccuracy().size(); i++)
-	{
-		int num = this->p1.Getaccuracy()[i] * 100;
-		text = to_string(num)+"%";
-		outtextxy(150 + i * 60, 200,text.c_str());
-	}
-	settextstyle(20, 20, "宋体");
-	text = "  得分：";
-	outtextxy(0, 225, text.c_str());
-	settextstyle(15, 15, "宋体");
-	for (int i = 0; i < this->p1.Getscore().size(); i++)
-	{
-		text = to_string(this->p1.Getscore()[i]);
-		outtextxy(150 + i * 60, 225, text.c_str());
-	}
-	settextstyle(20, 20, "宋体");
-	text = "无尽得分：";
-	outtextxy(0, 250, text.c_str());
-	text = to_string(this->p1.getnoendscore());
-	outtextxy(250, 250, text.c_str());
-	putimage(0, 0, &this->img[7]);
-	while (1) 
-	{
-		ExMessage msg = getmousemessage();
-		if (ifinimage(msg, this->img[7], 0, 0))
-		{
-			closegraph();
-			RunChoose();
-			break;
-		}
-	}
-}
-void Mananger::GameShowmess(game& g1)
-{
-	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-	bool x = 1;
-	while (x) {
-		g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
-		int gamestarttime = 0;
-		int gameduration = 0;
-		gamestarttime = clock();
-		bool a = g1.IfYes(g1.getrun(), g1.getp2array());
-		gameduration = clock() - gamestarttime;
-		int secondall = gameduration / 1000;
-		int seconds = secondall % 60;
-		int minute = secondall / 60;
-		cout << "用时：" << setfill('0') << setw(2) << minute << ":" << setw(2) << seconds << endl;
-		if (a)
-		{
-			x = 0;
-			cout << "游戏挑战成功，棒棒的。" << endl;
-			bool a = 1;
-			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
-			getplayer().AddRight(getplayer().Getright(), getlevel());
-			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
-			break;
-		}
-		else
-		{
-			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
-			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
-			bool a = 0;
-			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
-			cout << "挑战失败" << endl;
-			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
-			if (!again())
-			{
-				cout << "放弃挑战" << endl;
-				cout << "是否查看答案（1表示是，0表示否）" << endl;
-				if (again()) { g1.getanswer(g1.getp2array()); }
-				break;
-			}
-			else { system("cls"); }
-		}
-	}
-}
-void Mananger::PlayerGameShowmess(game& g1)
-{
-	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-	cout << "请输入玩家作答还是系统作答：(1玩家0系统)" << endl;
-	bool aa;
-	cin >> aa;
-	if (aa)
-	{
-		bool x = 1;
-		while (x) {
-			g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
-			bool a = g1.IfYes(g1.getrun(), g1.getp2array());
-			if (a)
-			{
-				x = 0;
-				cout << "游戏挑战成功，棒棒的。" << endl;
-				break;
-			}
-			else
-			{
-				cout << "挑战失败" << endl;
-				cout << "是否再次挑战？(1表示是，0表示否)" << endl;
-
-
-
-				if (!again())
-				{
-					cout << "放弃挑战" << endl;
-					cout << "是否查看答案（1表示是，0表示否）" << endl;
-					if (again()) { g1.getanswer(g1.getp2array()); }
-					break;
-				}
-				else { system("cls"); }
-			}
-		}
-	}
-	else { g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative()); g1.getanswer(g1.getp2array()); }
 }
 void Mananger::GameShowmess1(game& g1)
 {
@@ -2006,210 +1023,15 @@ void Mananger::randomcreatgame(int number1,bool x)
 		randomcreatgame(number1,1);
 	}
 }
-void Mananger::PlayerGreatgame() 
-{
-	game playergame;
-	int number1 = 0;
-	cout << "请输入行动步数（不包括起点）:" << endl;
-	cin >> number1;
-	playergame.setrun(number1+1);
-	playergame.setzihzhen();
-	cleardevice();
-	initgraph(1000, 729);
-	setbkmode(TRANSPARENT);
-	button** b1 = new button * [25];
-	for (int i = 0; i < 25; i++)
-	{
-		b1[i] = new button[25];
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++)
-		{
-			b1[i][j] = this->GQbutton[i][j];
-		}
-	}
-	BeginBatchDraw();
-	putimage(0, 0, &this->img[3]);
-	for (int i = 0; i < 25; i++)
-	{
-			for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
-	}
-	EndBatchDraw();
-	for (int i = 0; i < playergame.getrun(); i++)
-	{
-		ExMessage msg;
-		while (true)
-		{
-			if (peekmessage(&msg, EX_MOUSE))
-			{
-				if (msg.message == WM_LBUTTONDOWN)
-				{
-					int k = (msg.x - GQbuttonbeginlength) / 25;
-					int j = (msg.y - GQbuttonbeginwidth) / 25;
-					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
-					{
-						playergame.getp1array()[i].getx() = k;
-						playergame.getp1array()[i].gety() = j;
-						b1[k][j].revisecolor() = YELLOW;
-						b1[k][j].drawgamebutton(i + 1, BLACK);
-						b1[k][j].reviseyellowifpass();
-						b1[k][j].returnrepeterun1() = i + 1;
-						break;
-					}
-				}
-			}
-		}
-	}
-	for (int i = 0; i < playergame.getrun(); i++)
-	{
-		ExMessage msg;
-		while (true)
-		{
-			if (peekmessage(&msg, EX_MOUSE))
-			{
-				if (msg.message == WM_LBUTTONDOWN)
-				{
-					int k = (msg.x - GQbuttonbeginlength) / 25;
-					int j = (msg.y - GQbuttonbeginwidth) / 25;
-					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
-					{
-						playergame.getp2array()[i].getx() = k;
-						playergame.getp2array()[i].gety() = j;
-						b1[k][j].repeter1.push_back(i + 1);
-						b1[k][j].revisecolor() = GREEN;
-						b1[k][j].revisegreenifpass();
-						b1[k][j].returnrepeterun2() = i + 1;
-						if (b1[k][j].repeter1.size() == 1 && b1[k][j].returnyellowifpass() != true)
-						{
-							b1[k][j].drawgamebutton(b1[k][j].repeter1[0], BLACK);
-						}
-						else
-						{
-
-						b1[k][j].drawmyrepete(BLACK);
-						}
-						}
-					break;
-				}
-			}
-		}
-	}
-	closegraph();
-	if (ifOKCreat(playergame))
-	{
-		PlayercreatrGame(playergame);
-	}
-	else 
-	{
-		cout << "您创造的游戏因技术有限越界了，请重新创建，两路径坐标差不要太大" << endl;
-		PlayerGreatgame();
-	}
-}
-void Mananger::challengegame() 
-{
-	cleardevice();
-	initgraph(400, 600);
-	setbkmode(TRANSPARENT);
-	putimage(0,0,&this->img[8]);
-	button b0(150, 120, 100, 50, "简单");
-	button b1(150, 170, 100, 50, "普通");
-	button b2(150, 220, 100, 50, "困难");
-	button b3(150, 270, 100, 50, "史诗");
-	button b4(150, 320, 100, 50, "传说");
-	b0.drawbutton1();
-	b1.drawbutton1();
-	b2.drawbutton1();
-	b3.drawbutton1();
-	b4.drawbutton1();
-	int number;
-	putimage(0, 0, &this->img[7]);
-	while (1) {
-		ExMessage msg = getmousemessage();
-		BeginBatchDraw();
-		if (ifinbutoon(b0, msg))
-		{
-			EndBatchDraw();
-			number = 1;
-			break;
-		}
-		else if (ifinbutoon(b1, msg))
-		{
-			EndBatchDraw(); 
-			number = 2;
-			break;
-		}
-		else if (ifinbutoon(b2, msg)) {
-			EndBatchDraw();
-			number = 3;
-			break;
-		}
-		else if (ifinbutoon(b3, msg)) {
-			EndBatchDraw();
-			number = 4; 
-			break;
-		}
-		else if (ifinbutoon(b4, msg)) {
-			EndBatchDraw(); 
-			number = 5; 
-			break;
-		}
-		else if (ifinimage(msg,this->img[7], 0, 0)) 
-		{
-			EndBatchDraw(); 
-			RunChoose();
-			break;
-		}
-	}
-	closegraph();
-	switch (number) 
-	{
-	case 1: 
-	{
-		randomcreatgame(6,1);
-		break;
-	}
-	case 2:
-	{
-		randomcreatgame(9,1);
-		break;
-	}
-	case 3: 
-	{
-
-		randomcreatgame(12,1);
-		break;
-	}
-	case 4:
-	{
-		randomcreatgame(18,1);
-		break;
-	}
-	case 5: 
-	{
-		randomcreatgame(25,1);
-		break;
-	}
-	default:
-	{
-		cout << "输入不符合要求，请重新输入:" << endl;
-		challengegame();
-	}
-	}
-
-}
-void Mananger::noendchallenge() 
-{
-	int i = 1;
-	bool x = 1;
-	randomcreatgame(i+1);
-}
-button::button(const int& x, const int& y, const int& width, const int& height, const string& text1)
-	:text(text1), x(x), y(y), width(width), height(height), color(YELLOW)
+button::button(const int& x, const int& y, const int& width, const int& height, const string& text1):text(text1), x(x), y(y), width(width), height(height), color(YELLOW)
 {
 
 }
 button::~button() {}
+button::button(const int& x, const int& y, const int& width, const int& height, const string& text1, const IMAGE& img) :text(text1), x(x), y(y), width(width), height(height), color(YELLOW)
+{
+	
+}
 int button::returnx()
 {
 	return this->x;
@@ -2289,42 +1111,6 @@ void button::changecolor()
 {
 	this->color = RED;
 }
-void button::drawbuttontxtBig(const int& txtsh, const int& txtsw, const int& txth, const int& txtw, const COLORREF&CL)
-{
-	setfillcolor(this->color);
-	settextstyle(txtsh, txtsw, "宋体");
-	settextcolor(CL);
-	int hspace = (this->width - txtw) / 2;
-	int vspace = (this->height - txth) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawbutton()
-{
-	setfillcolor(this->color);
-	settextstyle(35, 20, "宋体");
-	settextcolor(BLACK);
-	int hspace = (this->width - textwidth("查看规则")) / 2;
-	int vspace = (this->height - textheight("查看规则")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x+hspace-5, this->y+vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawbutton1()
-{
-	setfillcolor(this->color);
-	settextstyle(20, 20, "宋体");
-	settextcolor(BLACK);
-	int hspace = (this->width - textwidth("返回")) / 2;
-	int vspace = (this->height - textheight("返回")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
 string& button::revisetext() 
 {
 	return this->text;
@@ -2333,34 +1119,6 @@ int& button::returnbushu()
 {
 	return this->bushu;
 };
-void button::drawgamebutton(const int& i, const COLORREF& textcolor, const bool& x)
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	settextcolor(textcolor);
-	this->text = to_string(i);
-	int hspace = (this->width - textwidth("10")) / 2;
-	int vspace = (this->height - textheight("10")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawgamebutton(const int &i, const COLORREF&textcolor)
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	settextcolor(textcolor);
-	this->text = "";
-	this->text = to_string(i);
-	int hspace = (this->width - textwidth("10")) / 2;
-	int vspace = (this->height - textheight("10")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	this->bushu = i;
-}
 int& button::returnrepeterun1() 
 {
 	return this->repeterun1;
@@ -2369,75 +1127,10 @@ int& button::returnrepeterun2()
 {
 	return this->repeterun2;
 }
-void button::drawgamerepetebutton()
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	int hspace = (this->width - textwidth("1")) / 2;
-	int vspace = (this->height - textheight("1")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	settextcolor(BLACK);
-	this->revisetext() = to_string(this->repeterun1);
-	outtextxy(this->x + hspace , this->y + vspace - 8, this->text.c_str());
-	this->revisetext() = "";
-	for (int i = 0; i < this->repeter1.size(); i++)
-	{
-		this->revisetext() += to_string(this->repeter1[i]);
-	}
-	settextcolor(DARKGRAY);
-	outtextxy(this->x + hspace, this->y + vspace + 3, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawgamerepetebutton1() 
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	int hspace = (this->width - textwidth("1")) / 2;
-	int vspace = (this->height - textheight("1")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-		settextcolor(BLACK);
-	this->revisetext() = to_string(this->repeterun1);
-	outtextxy(this->x + hspace-3, this->y + vspace-8, this->text.c_str());
-	this->revisetext() = "";
-	settextstyle(9, 9, "宋体");
-	for (int i = 0; i < this->repeter1.size(); i++)
-	{
-		this->revisetext() += to_string(this->repeter1[i]);
-	}
-	settextcolor(DARKGRAY);
-	outtextxy(this->x + hspace-7, this->y + vspace+3, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawGQbutton() 
-{
-	setfillcolor(WHITE);
-	settextstyle(10, 10, "宋体");
-	settextcolor(BLACK);
-	int hspace = (this->width - textwidth("10")) / 2;
-	int vspace = (this->height - textheight("10")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawchoosebutton()
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	settextcolor(BLACK);
-	int hspace = (this->width - textwidth("10")) / 2;
-	int vspace = (this->height - textheight("10")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
 void Mananger::loadwindow()
 {
 
-	loadimage(&this->img[0], "C:/Users/pcuser/Desktop/实训/开始界面.jpg", 900, 600);
+	loadimage(&this->img[0], "C:/Users/pcuser/Desktop/实训/开始界面.jpg", 900, 700);
 }
 void Mananger::loadrule()
 {
@@ -2461,6 +1154,7 @@ void Mananger::loadgameP()
 	loadimage(&this->img[12], "C:/Users/pcuser/Desktop/实训/排行榜.jpg", 600, 700);
 	loadimage(&this->img[13], "C:/Users/pcuser/Desktop/实训/创意小船.jpg", 25, 25);
 	loadimage(&this->img[14], "C:/Users/pcuser/Desktop/实训/创意炸弹.jpg", 25, 25);
+	loadimage(&this->img[15], "C:/Users/pcuser/Desktop/实训/按钮背景.jpg", 200, 50);
 	loadimage(&this->Move[0], "C:/Users/pcuser/Desktop/实训/创下.jpg", 50, 50);
 	loadimage(&this->Move[1], "C:/Users/pcuser/Desktop/实训/创左.jpg", 50, 50);
 	loadimage(&this->Move[2], "C:/Users/pcuser/Desktop/实训/创右.jpg", 50, 50);
@@ -2470,49 +1164,6 @@ void Mananger::loadChooseGQmenu()
 {
 	loadimage(&this->img[2], "C:/Users/pcuser/Desktop/实训/关卡选择界面.jpg", 900, 600);
 
-
-}
-Mananger::Mananger()
-{
-	button b0(320, 100, 200, 50, "开始游戏");
-	button b1(320, 150, 200, 50, "查看规则");
-	button b2(320, 200, 200, 50, "查看信息");
-	button b3(320, 250, 200, 50, "创造模式");
-	button b4(320, 300, 200, 50, "挑战模式");
-	button b5(320, 350, 200, 50, "无尽模式");
-	button b6(320, 400, 200, 50, "退出游戏");
-	button b8(320, 450, 200, 50, " 排行榜");
-	button b9(320, 500, 200, 50, "创意模式");
-	button b7(0, 0, 150, 75, "返回");
-	button choose0(100, 100, 30, 30, "1");
-	button choose1(150, 100, 30, 30, "2");
-	button choose2(200, 100, 30, 30, "3");
-	button choose3(250, 100, 30, 30, "4");
-	button choose4(300, 100, 30, 30, "5");
-	button choose5(350, 100, 30, 30, "6");
-
-	this->buttonarr[0] = b0;
-	this->buttonarr[1] = b1;
-	this->buttonarr[2] = b2;
-	this->buttonarr[3] = b3;
-	this->buttonarr[4] = b4;
-	this->buttonarr[5] = b5;
-	this->buttonarr[6] = b6;
-	this->buttonarr[7] = b7;
-	this->buttonarr[8] = b8;
-	this->buttonarr[9] = b9;
-	this->GQChoosebutton[0] = choose0;
-	this->GQChoosebutton[1] = choose1;
-	this->GQChoosebutton[2] = choose2;
-	this->GQChoosebutton[3] = choose3;
-	this->GQChoosebutton[4] = choose4;
-	this->GQChoosebutton[5] = choose5;
-	loadwindow();
-	loadrule();
-	loadChooseGQmenu();
-	loadGamebk();
-	loadgameP();
-	setbutton();
 
 }
 void Mananger::setbutton() 
@@ -2528,51 +1179,51 @@ void Mananger::setbutton()
 }
 void Mananger::ChangeChoose()
 {
-	initgraph(900, 600);
+	initgraph(900, 700);
 	setbkmode(TRANSPARENT);
 	while (1) {
 		cleardevice();
 		putimage(0, 0, &this->img[0]);
 		for (int i = 0; i <= 6; i++)
 		{
-			this->buttonarr[i].drawbutton();
+			this->buttonarr[i].drawbuttonwithPic(&this->img[15]);
 		}
-		this->buttonarr[8].drawbutton();
-		this->buttonarr[9].drawbutton();
+		this->buttonarr[8].drawbuttonwithPic(&this->img[15]);
+		this->buttonarr[9].drawbuttonwithPic(&this->img[15]);
 		ExMessage msg = getmousemessage();
 		BeginBatchDraw();
 		if (ifinbutoon(this->buttonarr[0], msg))
 		{
-			EndBatchDraw();
 			this->choose = 1;
 			break;
 		}
 		else if (ifinbutoon(this->buttonarr[1], msg))
 		{
-			EndBatchDraw(); this->choose = 2; break;
+			 this->choose = 2; break;
 		}
 		else if (ifinbutoon(this->buttonarr[2], msg)) {
-			EndBatchDraw(); this->choose = 3; break;
+			 this->choose = 3; break;
 		}
 		else if (ifinbutoon(this->buttonarr[3], msg)) {
-			EndBatchDraw(); this->choose = 4; break;
+			 this->choose = 4; break;
 		}
 		else if (ifinbutoon(this->buttonarr[4], msg)) {
-			EndBatchDraw(); this->choose = 5; break;
+			 this->choose = 5; break;
 		}
 		else if (ifinbutoon(this->buttonarr[5], msg)) {
-			EndBatchDraw(); this->choose = 6; break;
+			 this->choose = 6; break;
 		}
 		else if (ifinbutoon(this->buttonarr[8], msg)) {
-			EndBatchDraw(); this->choose = 7; break;
+		    this->choose = 7; break;
 		}
 		else if (ifinbutoon(this->buttonarr[9], msg)) {
-			EndBatchDraw(); this->choose = 8; break;
+			 this->choose = 8; break;
 		}
 		else if (ifinbutoon(this->buttonarr[6], msg)) {
-			EndBatchDraw(); this->choose = 0; break;
+			 this->choose = 0; break;
 		}
 	}
+	EndBatchDraw();
 	closegraph();
 }
 void Mananger::ShowRule()
@@ -2883,7 +1534,6 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 	
 		}
 	}
-
 	for (int i = 0; i < g1.getrun();) 
 	{
 		ExMessage msg;
@@ -2971,6 +1621,76 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 	return true;
 
 }
+void Mananger::createGameP(game& g1, const int& i)
+{
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	bool x = 1;
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	while (x)
+	{
+		BeginBatchDraw();
+		putimage(0, 0, &this->img[3]);
+		for (int i = 0; i < 25; i++)
+		{
+			for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
+		}
+		drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		drawrepetebutton(b1);
+		EndBatchDraw();
+		int gamestarttime = 0;
+		int gameduration = 0;
+		gamestarttime = clock();
+		bool a = clickanswer(g1, b1);
+		for (int i = 0; i < 25; i++)
+		{
+			delete[]b1[i];
+		}
+		delete[] b1;
+		gameduration = clock() - gamestarttime;
+		setbutton();
+		int secondall = gameduration / 1000;
+		int seconds = secondall % 60;
+		int minute = secondall / 60;
+		this->p1.gettime()[i] = secondall;
+		if (a)
+		{
+			x = 0;
+			closegraph();
+			drawYesP(i);
+			bool a = 1;
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
+			getplayer().AddRight(getplayer().Getright(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
+			ChooseGame();
+			break;
+		}
+		else
+		{
+			closegraph();
+			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
+			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
+			bool a = 0;
+			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
+			drawNoP(g1, i);
+			break;
+		}
+	}
+}
 bool button::ifrepete() 
 {
 	if (this->greenifpass == true && this->yellowifpass == true) { return true; }
@@ -3032,76 +1752,6 @@ void Mananger::GameShowmess(game& g1, const int& i)
 bool button::returngreenifpass() 
 {
 	return this->greenifpass;
-}
-void Mananger::createGameP(game& g1, const int& i)
-{
-	cleardevice();
-	initgraph(1000, 729);
-	setbkmode(TRANSPARENT);
-	bool x = 1;
-	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-	button** b1 = new button * [25];
-	for (int i = 0; i < 25; i++)
-	{
-		b1[i] = new button[25];
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++)
-		{
-			b1[i][j] = this->GQbutton[i][j];
-		}
-	}
-	while (x)
-	{
-		BeginBatchDraw();
-		putimage(0, 0, &this->img[3]);
-		for (int i = 0; i < 25; i++)
-		{
-			for (int j = 0; j < 25; j++) {b1[i][j].drawGQbutton(); }
-		}
-		drawMyroad(g1.getp1array(), g1.getrun(), b1);
-		drawYourroad(g1.getp2relative(), g1.getrun(), b1);
-		drawrepetebutton(b1);
-		EndBatchDraw();
-		int gamestarttime = 0;
-		int gameduration = 0;
-		gamestarttime = clock();
-		bool a = clickanswer(g1, b1);
-		for (int i = 0; i < 25; i++) 
-		{
-			delete[]b1[i];
-		}
-		delete[] b1;
-		gameduration = clock() - gamestarttime;
-		setbutton();
-		int secondall = gameduration / 1000;
-		int seconds = secondall % 60;
-		int minute = secondall / 60;
-		this->p1.gettime()[i] = secondall;
-		if (a)
-		{
-			x = 0;
-			closegraph();
-			drawYesP(i);
-			bool a = 1;
-			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
-			getplayer().AddRight(getplayer().Getright(), getlevel());
-			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
-			ChooseGame();
-			break;
-		}
-		else
-		{
-			closegraph();
-			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
-			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
-			bool a = 0;
-			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
-			drawNoP(g1, i);
-			break;
-		}
-	}
 }
 void Mananger::createGameP(game& g1)
 {
@@ -3670,4 +2320,1240 @@ bool ship::ifOKPath()
 			}
 		}
 		return true;
+}
+void Mananger::PTrankP()
+{
+	cleardevice();
+	initgraph(600, 700);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[12]);
+	putimage(0, 0, &this->img[7]);
+	string text;
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	text = "  姓名";
+	outtextxy(50, 100, text.c_str());
+	text = "  总得分";
+	outtextxy(150, 100, text.c_str());
+	text = "  总用时";
+	outtextxy(275, 100, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < rank.size(); i++)
+	{
+		text = to_string(i + 1);
+		outtextxy(25, 125 + i * 25, text.c_str());
+		text = rank[i].GetName();
+		outtextxy(75, 125 + i * 25, text.c_str());
+		text = to_string(rank[i].returnscoreall());
+		outtextxy(225, 125 + i * 25, text.c_str());
+		text = to_string(int(rank[i].returntimeall()));
+		outtextxy(350, 125 + i * 25, text.c_str());
+	}
+	while (1)
+	{
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			rankP();
+			break;
+		}
+	}
+}
+void Mananger::rankP()
+{
+	cleardevice();
+	initgraph(600, 700);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[11]);
+	putimage(0, 0, &this->img[7]);
+	button b1(200, 100, 200, 50, "普通排行");
+	button b2(200, 150, 200, 50, "无尽排行");
+	button b3(200, 200, 200, 50, "单关排行");
+	b1.drawbutton();
+	b2.drawbutton();
+	b3.drawbutton();
+	while (1)
+	{
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(b1, msg))
+		{
+			EndBatchDraw();
+			PuTongRank(readplayermessagetxt());
+			PTrankP();
+			break;
+		}
+		else if (ifinbutoon(b2, msg))
+		{
+			EndBatchDraw();
+			wujinRank(readplayermessagetxt());
+			WJrankP();
+			break;
+		}
+		else if (ifinbutoon(b3, msg))
+		{
+			EndBatchDraw();
+			wujinRank(readplayermessagetxt());
+			DGrankP();
+			break;
+		}
+		else if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			RunChoose();
+			break;
+		}
+	}
+	closegraph();
+}
+void Mananger::Mycreate()
+{
+
+	game randomgame;
+	int number1 = 5;
+	randomgame.setrun(number1);
+	randomgame.setzihzhen();
+	while (1) {
+		int xfinal = 0, yfinal = 0;
+		xfinal = rand() % 10 + 8;
+		yfinal = rand() % 10 + 8;
+		randomgame.getp1().SetPeopleBeginPos(xfinal, yfinal);
+		randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
+		randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+		randomgame.getp2array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+		for (int i = number1 - 2; i >= 0;)
+		{
+			int number1 = rand() % 4;
+			switch (number1)
+			{
+			case 0:
+			{
+				randomgame.getp1().Movepeople(UP);
+				randomgame.getp1array()[i] = randomgame.getp1();
+				if (randomgame.ifpass(randomgame.getp1array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp1().Movepeople(DOWN);
+				break;
+			}
+			case 1:
+			{
+				randomgame.getp1().Movepeople(DOWN);
+				randomgame.getp1array()[i] = randomgame.getp1();
+				if (randomgame.ifpass(randomgame.getp1array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp1().Movepeople(UP);
+				break;
+			}
+			case 2:
+			{
+				randomgame.getp1().Movepeople(LEFT);
+				randomgame.getp1array()[i] = randomgame.getp1();
+				if (randomgame.ifpass(randomgame.getp1array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp1().Movepeople(RIGHT);
+				break;
+			}
+			case 3:
+			{
+				randomgame.getp1().Movepeople(RIGHT);
+				randomgame.getp1array()[i] = randomgame.getp1();
+				if (randomgame.ifpass(randomgame.getp1array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp1().Movepeople(LEFT);
+				break;
+			}
+			}
+
+		}
+		for (int i = number1 - 2; i >= 0;)
+		{
+			int number1 = rand() % 4;
+			bool c2 = 0;
+			switch (number1)
+			{
+			case 0:
+			{
+				randomgame.getp2().Movepeople(UP);
+				randomgame.getp2array()[i] = randomgame.getp2();
+				if (randomgame.ifpass(randomgame.getp2array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp2().Movepeople(DOWN);
+				break;
+			}
+			case 1:
+			{
+				randomgame.getp2().Movepeople(DOWN);
+				randomgame.getp2array()[i] = randomgame.getp2();
+				if (randomgame.ifpass(randomgame.getp2array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp2().Movepeople(UP);
+				break;
+			}
+			case 2:
+			{
+				randomgame.getp2().Movepeople(LEFT);
+				randomgame.getp2array()[i] = randomgame.getp2();
+				if (randomgame.ifpass(randomgame.getp2array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp2().Movepeople(RIGHT);
+				break;
+			}
+			case 3:
+			{
+				randomgame.getp2().Movepeople(RIGHT);
+				randomgame.getp2array()[i] = randomgame.getp2();
+				if (randomgame.ifpass(randomgame.getp2array(), i))
+				{
+					i--;
+				}
+				else randomgame.getp2().Movepeople(LEFT);
+				break;
+			}
+			}
+		}
+		if (ifOKCreat(randomgame))
+		{
+			break;
+		}
+
+	}
+	people* Pall = new people[2 * number1 - 1];
+	for (int i = 0; i < number1; i++)
+	{
+		Pall[i].getx() = randomgame.getp1array()[i].returnx();
+		Pall[i].gety() = randomgame.getp1array()[i].returny();
+	}
+	for (int i = number1; i < 2 * number1 - 1; i++)
+	{
+		Pall[i].getx() = randomgame.getp2array()[2 * number1 - 2 - i].returnx();
+		Pall[i].gety() = randomgame.getp2array()[2 * number1 - 2 - i].returny();
+	}
+	MyCreateGameP(randomgame, Pall);
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	ship s1(Pall[2].returnx(), Pall[2].returny());
+	ship s2(Pall[6].returnx(), Pall[6].returny());
+	BeginBatchDraw();
+	putimage(0, 0, &this->img[3]);
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+	}
+	drawMyCreate(Pall, 2 * number1 - 1, b1);
+	drawOtherPath(s1.revisepath(), s1.getrun(), b1);
+	drawOtherPath(s2.revisepath(), s2.getrun(), b1);
+	int shipx = b1[Pall[0].returnx()][Pall[0].returny()].returnx();
+	int shipy = b1[Pall[0].returnx()][Pall[0].returny()].returny();
+	putimage(800, 500, &this->Move[0]);
+	putimage(750, 500, &this->Move[1]);
+	putimage(850, 500, &this->Move[2]);
+	putimage(800, 450, &this->Move[3]);
+	EndBatchDraw();
+	int k = Pall[0].returnx();
+	int j = Pall[0].returny();
+	int s1Px = b1[Pall[2].returnx()][Pall[2].returny()].returnx();
+	int s1Py = b1[Pall[2].returnx()][Pall[2].returny()].returny();
+	int s1x = (s1Px - GQbuttonbeginlength) / 25;
+	int s1y = (s1Py - GQbuttonbeginwidth) / 25;
+	int s1index = s1.getrun() - 1;
+	bool s1AD = 0;
+	int s2Px = b1[Pall[6].returnx()][Pall[6].returny()].returnx();
+	int s2Py = b1[Pall[6].returnx()][Pall[6].returny()].returny();
+	int s2x = (s2Px - GQbuttonbeginlength) / 25;
+	int s2y = (s2Py - GQbuttonbeginwidth) / 25;
+	int s2index = s2.getrun() - 1;
+	bool s2AD = 0;
+	while (1)
+	{
+		starttime = clock();
+		putimage(shipx, shipy, &this->img[13]);
+		putimage(s1Px, s1Py, &this->img[14]);
+		putimage(s2Px, s2Py, &this->img[14]);
+		b1[k][j].reviseMycreateifpass() = true;
+		if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass() || (s1Px == shipx && s1Py == shipy) || (s2Px == shipx && s2Py == shipy))
+		{
+
+			drawNoMyCreate();
+			break;
+		}
+		bool x = 1;
+		for (int k = 0; k < 25; k++)
+		{
+			for (int j = 0; j < 25; j++)
+			{
+				if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass())
+				{
+					x = 0;
+				}
+			}
+		}
+		if (x && k == Pall[2 * number1 - 2].returnx() && j == Pall[2 * number1 - 2].returny())
+		{
+			drawYesPChallenge(randomgame);
+			break;
+		}
+		ExMessage msg;
+		if (peekmessage(&msg, EX_MOUSE))
+		{
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				freamtime = clock() - starttime;
+				if (ifinimage(msg, this->Move[0], 800, 500))
+				{
+					BeginBatchDraw();
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					b1[s1x][s1y].drawbutton();
+					if (!s1AD)
+					{
+						if (s1index == 0)
+						{
+							s1index = 1;
+							s1AD = 1;
+						}
+						else s1index -= 1;
+					}
+					else
+					{
+						if (s1index == s1.getrun() - 1)
+						{
+							s1index -= 1;
+							s1AD = 0;
+						}
+						else { s1index += 1; }
+					}
+					s1x = s1.revisepath()[s1index].returnx();
+					s1y = s1.revisepath()[s1index].returny();
+					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
+					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
+					b1[s2x][s2y].drawbutton();
+					if (!s2AD)
+					{
+						if (s2index == 0)
+						{
+							s2index = 1;
+							s2AD = 1;
+						}
+						else s2index -= 1;
+					}
+					else
+					{
+						if (s2index == s2.getrun() - 1)
+						{
+							s2index -= 1;
+							s2AD = 0;
+						}
+						else { s2index += 1; }
+					}
+					s2x = s2.revisepath()[s2index].returnx();
+					s2y = s2.revisepath()[s2index].returny();
+					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
+					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
+					putimage(s2Px, s2Py, &this->img[14]);
+					j += 1;
+					shipy += 25;
+					putimage(shipx, shipy, &this->img[13]);
+					putimage(s1Px, s1Py, &this->img[14]);
+					EndBatchDraw();
+				}
+				else if (ifinimage(msg, this->Move[1], 750, 500))
+				{
+					BeginBatchDraw();
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					b1[s1x][s1y].drawbutton();
+					if (!s1AD)
+					{
+						if (s1index == 0)
+						{
+							s1index = 1;
+							s1AD = 1;
+						}
+						else s1index -= 1;
+					}
+					else
+					{
+						if (s1index == s1.getrun() - 1)
+						{
+							s1index -= 1;
+							s1AD = 0;
+						}
+						else { s1index += 1; }
+					}
+					s1x = s1.revisepath()[s1index].returnx();
+					s1y = s1.revisepath()[s1index].returny();
+					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
+					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
+					b1[s2x][s2y].drawbutton();
+					if (!s2AD)
+					{
+						if (s2index == 0)
+						{
+							s2index = 1;
+							s2AD = 1;
+						}
+						else s2index -= 1;
+					}
+					else
+					{
+						if (s2index == s2.getrun() - 1)
+						{
+							s2index -= 1;
+							s2AD = 0;
+						}
+						else { s2index += 1; }
+					}
+					s2x = s2.revisepath()[s2index].returnx();
+					s2y = s2.revisepath()[s2index].returny();
+					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
+					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
+					putimage(s2Px, s2Py, &this->img[14]);
+					k -= 1;
+					shipx -= 25;
+					putimage(shipx, shipy, &this->img[13]);
+					putimage(s1Px, s1Py, &this->img[14]);
+					EndBatchDraw();
+				}
+				else if (ifinimage(msg, this->Move[2], 850, 500))
+				{
+					BeginBatchDraw();
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					b1[s1x][s1y].drawbutton();
+					if (!s1AD)
+					{
+						if (s1index == 0)
+						{
+							s1index = 1;
+							s1AD = 1;
+						}
+						else s1index -= 1;
+					}
+					else
+					{
+						if (s1index == s1.getrun() - 1)
+						{
+							s1index -= 1;
+							s1AD = 0;
+						}
+						else { s1index += 1; }
+					}
+					s1x = s1.revisepath()[s1index].returnx();
+					s1y = s1.revisepath()[s1index].returny();
+					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
+					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
+					b1[s2x][s2y].drawbutton();
+					if (!s2AD)
+					{
+						if (s2index == 0)
+						{
+							s2index = 1;
+							s2AD = 1;
+						}
+						else s2index -= 1;
+					}
+					else
+					{
+						if (s2index == s2.getrun() - 1)
+						{
+							s2index -= 1;
+							s2AD = 0;
+						}
+						else { s2index += 1; }
+					}
+					s2x = s2.revisepath()[s2index].returnx();
+					s2y = s2.revisepath()[s2index].returny();
+					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
+					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
+					putimage(s2Px, s2Py, &this->img[14]);
+					k += 1;
+					shipx += 25;
+					putimage(shipx, shipy, &this->img[13]);
+					putimage(s1Px, s1Py, &this->img[14]);
+					EndBatchDraw();
+				}
+				else if (ifinimage(msg, this->Move[3], 800, 450))
+				{
+					BeginBatchDraw();
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					b1[s1x][s1y].drawbutton();
+					if (!s1AD)
+					{
+						if (s1index == 0)
+						{
+							s1index = 1;
+							s1AD = 1;
+						}
+						else s1index -= 1;
+					}
+					else
+					{
+						if (s1index == s1.getrun() - 1)
+						{
+							s1index -= 1;
+							s1AD = 0;
+						}
+						else { s1index += 1; }
+					}
+					s1x = s1.revisepath()[s1index].returnx();
+					s1y = s1.revisepath()[s1index].returny();
+					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
+					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
+					b1[s2x][s2y].drawbutton();
+					if (!s2AD)
+					{
+						if (s2index == 0)
+						{
+							s2index = 1;
+							s2AD = 1;
+						}
+						else s2index -= 1;
+					}
+					else
+					{
+						if (s2index == s2.getrun() - 1)
+						{
+							s2index -= 1;
+							s2AD = 0;
+						}
+						else { s2index += 1; }
+					}
+					s2x = s2.revisepath()[s2index].returnx();
+					s2y = s2.revisepath()[s2index].returny();
+					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
+					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
+					putimage(s2Px, s2Py, &this->img[14]);
+					j -= 1;
+					shipy -= 25;
+					putimage(shipx, shipy, &this->img[13]);
+					putimage(s1Px, s1Py, &this->img[14]);
+					EndBatchDraw();
+				}
+				if (freamtime > 0)
+				{
+					Sleep(FPS - freamtime);
+				}
+			}
+		}
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		delete[]b1[i];
+	}
+	delete[] b1;
+	setbutton();
+
+}
+void Mananger::createmiddle(people*& p1, game& g1)
+{
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	putimage(0, 0, &this->img[3]);
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+	}
+	drawanswerroad(p1, 9, b1);
+	button con(800, 679, 175, 50, "下一步");
+	con.drawbutton1();
+	while (1)
+	{
+		ExMessage msg;
+		if (peekmessage(&msg, EX_MOUSE))
+		{
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (ifinbutoon(con, msg))
+				{
+					break;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		delete[]b1[i];
+	}
+	delete[] b1;
+	closegraph();
+}
+void Mananger::MyCreateGameP(game& g1, people*& p1)
+{
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	bool x = 1;
+	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	while (x)
+	{
+		BeginBatchDraw();
+		putimage(0, 0, &this->img[3]);
+		for (int i = 0; i < 25; i++)
+		{
+			for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+		}
+		b1 = drawMyroad(g1.getp1array(), g1.getrun(), b1);
+		b1 = drawYourroad(g1.getp2relative(), g1.getrun(), b1);
+		b1 = drawrepetebutton(b1);
+		EndBatchDraw();
+		bool a = clickanswer(g1, b1);
+		for (int i = 0; i < 25; i++)
+		{
+			delete[]b1[i];
+		}
+		delete[] b1;
+		setbutton();
+		if (a)
+		{
+			x = 0;
+			closegraph();
+			createmiddle(p1, g1);
+			break;
+		}
+		else
+		{
+			closegraph();
+			drawNoP(g1);
+			break;
+		}
+	}
+}
+void Mananger::CreateMode()
+{
+	cleardevice();
+	initgraph(600, 600);
+	setbkmode(TRANSPARENT);
+	button b1(200, 200, 200, 50, "自建关卡");
+	button b2(200, 250, 200, 50, "创意工房");
+	putimage(0, 0, &this->img[9]);
+	putimage(0, 0, &this->img[7]);
+	b1.drawbutton();
+	b2.drawbutton();
+	while (1) {
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(b1, msg))
+		{
+			EndBatchDraw();
+			PlayerGreatgame();
+			break;
+		}
+		else if (ifinbutoon(b2, msg))
+		{
+			EndBatchDraw();
+			readgamekutxt();
+			cout << "请输入想要玩的关卡的名字：" << endl;
+			cout << "已有自建关卡:" << "  ";
+			for (int i = 0; i < this->gameall.size(); i++)
+			{
+				cout << gameall[i].name << " ";
+			}
+			cout << endl;
+			bool x = 1;
+			while (x)
+			{
+				string name1;
+				cin >> name1;
+				for (int i = 0; i < gameall.size(); i++)
+				{
+					if (gameall[i].name == name1)
+					{
+						PlayercreatrGame(gameall[i].g1);
+						x = 0;
+						break;
+					}
+				}
+				cout << "名字不正确，请再次输入" << endl;
+			}
+
+			break;
+		}
+		else if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			RunChoose();
+			break;
+		}
+	}
+	closegraph();
+}
+void Mananger::WJrankP()
+{
+	cleardevice();
+	initgraph(600, 700);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[12]);
+	putimage(0, 0, &this->img[7]);
+	string text;
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	text = "  姓名";
+	outtextxy(200, 100, text.c_str());
+	text = "  得分";
+	outtextxy(350, 100, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < rank.size(); i++)
+	{
+		text = to_string(i + 1);
+		outtextxy(75, 125 + i * 25, text.c_str());
+		text = rank[i].GetName();
+		outtextxy(175, 125 + i * 25, text.c_str());
+		text = to_string(rank[i].getnoendscore());
+		outtextxy(375, 125 + i * 25, text.c_str());
+	}
+	while (1)
+	{
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			rankP();
+			break;
+		}
+	}
+}
+void Mananger::DGrankP()
+{
+	cleardevice();
+	initgraph(600, 700);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[12]);
+	putimage(0, 0, &this->img[7]);
+	string text;
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	text = "  姓名";
+	outtextxy(50, 100, text.c_str());
+	text = "  得分";
+	outtextxy(150, 100, text.c_str());
+	text = "  用时";
+	outtextxy(275, 100, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < 6; i++)
+	{
+		sort(this->rank.begin(), this->rank.end(), [i](const player& p1, const player& p2)
+			{
+				if (p1.returnGetscore()[i] == p2.returnGetscore()[i])return p1.returngettime()[i] < p2.returngettime()[i];
+				else return p1.returnGetscore()[i] > p2.returnGetscore()[i];
+			}
+		);
+		text = to_string(i + 1);
+		outtextxy(25, 125 + i * 25, text.c_str());
+		text = rank[0].GetName();
+		outtextxy(75, 125 + i * 25, text.c_str());
+		text = to_string(rank[0].Getscore()[i]);
+		outtextxy(225, 125 + i * 25, text.c_str());
+		text = to_string(int(rank[0].gettime()[i]));
+		outtextxy(350, 125 + i * 25, text.c_str());
+	}
+	while (1)
+	{
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			closegraph();
+			rankP();
+			break;
+		}
+	}
+}
+void Mananger::checkmessageP()
+{
+	cleardevice();
+	initgraph(750, 750);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[10]);
+	setfillcolor(WHITE);
+	fillrectangle(0, 0, 750, 750);
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	string text;
+	text = "  名字：";
+	outtextxy(0, 150, text.c_str());
+	text = this->p1.GetName();
+	outtextxy(150, 150, text.c_str());
+	text = "  关卡：";
+	outtextxy(0, 175, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < 10; i++)
+	{
+		outtextxy(150 + i * 60, 175, to_string(i + 1).c_str());
+	}
+	settextstyle(20, 20, "宋体");
+	text = "准确率：";
+	outtextxy(0, 200, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < this->p1.Getaccuracy().size(); i++)
+	{
+		int num = this->p1.Getaccuracy()[i] * 100;
+		text = to_string(num) + "%";
+		outtextxy(150 + i * 60, 200, text.c_str());
+	}
+	settextstyle(20, 20, "宋体");
+	text = "  得分：";
+	outtextxy(0, 225, text.c_str());
+	settextstyle(15, 15, "宋体");
+	for (int i = 0; i < this->p1.Getscore().size(); i++)
+	{
+		text = to_string(this->p1.Getscore()[i]);
+		outtextxy(150 + i * 60, 225, text.c_str());
+	}
+	settextstyle(20, 20, "宋体");
+	text = "无尽得分：";
+	outtextxy(0, 250, text.c_str());
+	text = to_string(this->p1.getnoendscore());
+	outtextxy(250, 250, text.c_str());
+	putimage(0, 0, &this->img[7]);
+	while (1)
+	{
+		ExMessage msg = getmousemessage();
+		if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			closegraph();
+			RunChoose();
+			break;
+		}
+	}
+}
+void Mananger::PlayerGreatgame()
+{
+	game playergame;
+	int number1 = 0;
+	cout << "请输入行动步数（不包括起点）:" << endl;
+	cin >> number1;
+	playergame.setrun(number1 + 1);
+	playergame.setzihzhen();
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	BeginBatchDraw();
+	putimage(0, 0, &this->img[3]);
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
+	}
+	EndBatchDraw();
+	for (int i = 0; i < playergame.getrun(); i++)
+	{
+		ExMessage msg;
+		while (true)
+		{
+			if (peekmessage(&msg, EX_MOUSE))
+			{
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					int k = (msg.x - GQbuttonbeginlength) / 25;
+					int j = (msg.y - GQbuttonbeginwidth) / 25;
+					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
+					{
+						playergame.getp1array()[i].getx() = k;
+						playergame.getp1array()[i].gety() = j;
+						b1[k][j].revisecolor() = YELLOW;
+						b1[k][j].drawgamebutton(i + 1, BLACK);
+						b1[k][j].reviseyellowifpass();
+						b1[k][j].returnrepeterun1() = i + 1;
+						break;
+					}
+				}
+			}
+		}
+	}
+	for (int i = 0; i < playergame.getrun(); i++)
+	{
+		ExMessage msg;
+		while (true)
+		{
+			if (peekmessage(&msg, EX_MOUSE))
+			{
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					int k = (msg.x - GQbuttonbeginlength) / 25;
+					int j = (msg.y - GQbuttonbeginwidth) / 25;
+					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
+					{
+						playergame.getp2array()[i].getx() = k;
+						playergame.getp2array()[i].gety() = j;
+						b1[k][j].repeter1.push_back(i + 1);
+						b1[k][j].revisecolor() = GREEN;
+						b1[k][j].revisegreenifpass();
+						b1[k][j].returnrepeterun2() = i + 1;
+						if (b1[k][j].repeter1.size() == 1 && b1[k][j].returnyellowifpass() != true)
+						{
+							b1[k][j].drawgamebutton(b1[k][j].repeter1[0], BLACK);
+						}
+						else
+						{
+
+							b1[k][j].drawmyrepete(BLACK);
+						}
+					}
+					break;
+				}
+			}
+		}
+	}
+	closegraph();
+	if (ifOKCreat(playergame))
+	{
+		PlayercreatrGame(playergame);
+	}
+	else
+	{
+		cout << "您创造的游戏因技术有限越界了，请重新创建，两路径坐标差不要太大" << endl;
+		PlayerGreatgame();
+	}
+}
+void Mananger::challengegame()
+{
+	cleardevice();
+	initgraph(400, 600);
+	setbkmode(TRANSPARENT);
+	putimage(0, 0, &this->img[8]);
+	button b0(150, 120, 100, 50, "简单");
+	button b1(150, 170, 100, 50, "普通");
+	button b2(150, 220, 100, 50, "困难");
+	button b3(150, 270, 100, 50, "史诗");
+	button b4(150, 320, 100, 50, "传说");
+	b0.drawbutton1();
+	b1.drawbutton1();
+	b2.drawbutton1();
+	b3.drawbutton1();
+	b4.drawbutton1();
+	int number;
+	putimage(0, 0, &this->img[7]);
+	while (1) {
+		ExMessage msg = getmousemessage();
+		BeginBatchDraw();
+		if (ifinbutoon(b0, msg))
+		{
+			EndBatchDraw();
+			number = 1;
+			break;
+		}
+		else if (ifinbutoon(b1, msg))
+		{
+			EndBatchDraw();
+			number = 2;
+			break;
+		}
+		else if (ifinbutoon(b2, msg)) {
+			EndBatchDraw();
+			number = 3;
+			break;
+		}
+		else if (ifinbutoon(b3, msg)) {
+			EndBatchDraw();
+			number = 4;
+			break;
+		}
+		else if (ifinbutoon(b4, msg)) {
+			EndBatchDraw();
+			number = 5;
+			break;
+		}
+		else if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			EndBatchDraw();
+			RunChoose();
+			break;
+		}
+	}
+	closegraph();
+	switch (number)
+	{
+	case 1:
+	{
+		randomcreatgame(6, 1);
+		break;
+	}
+	case 2:
+	{
+		randomcreatgame(9, 1);
+		break;
+	}
+	case 3:
+	{
+
+		randomcreatgame(12, 1);
+		break;
+	}
+	case 4:
+	{
+		randomcreatgame(18, 1);
+		break;
+	}
+	case 5:
+	{
+		randomcreatgame(25, 1);
+		break;
+	}
+	default:
+	{
+		cout << "输入不符合要求，请重新输入:" << endl;
+		challengegame();
+	}
+	}
+
+}
+void Mananger::noendchallenge()
+{
+	int i = 1;
+	bool x = 1;
+	randomcreatgame(i + 1);
+}
+void button::drawbuttontxtBig(const int& txtsh, const int& txtsw, const int& txth, const int& txtw, const COLORREF& CL)
+{
+	setfillcolor(this->color);
+	settextstyle(txtsh, txtsw, "宋体");
+	settextcolor(CL);
+	int hspace = (this->width - txtw) / 2;
+	int vspace = (this->height - txth) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawbuttonwithPic(IMAGE* m1)
+{
+	putimage(this->x, this->y, m1);
+	settextstyle(35, 20, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("查看规则")) / 2;
+	int vspace = (this->height - textheight("查看规则")) / 2;
+	outtextxy(this->x + hspace - 5, this->y + vspace, this->text.c_str());
+}
+void button::drawbutton()
+{
+	setfillcolor(this->color);
+	settextstyle(35, 20, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("查看规则")) / 2;
+	int vspace = (this->height - textheight("查看规则")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace - 5, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+
+}
+void button::drawbutton1()
+{
+	setfillcolor(this->color);
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("返回")) / 2;
+	int vspace = (this->height - textheight("返回")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawgamebutton(const int& i, const COLORREF& textcolor, const bool& x)
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	settextcolor(textcolor);
+	this->text = to_string(i);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawgamebutton(const int& i, const COLORREF& textcolor)
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	settextcolor(textcolor);
+	this->text = "";
+	this->text = to_string(i);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	this->bushu = i;
+}
+void button::drawgamerepetebutton()
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	int hspace = (this->width - textwidth("1")) / 2;
+	int vspace = (this->height - textheight("1")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	settextcolor(BLACK);
+	this->revisetext() = to_string(this->repeterun1);
+	outtextxy(this->x + hspace, this->y + vspace - 8, this->text.c_str());
+	this->revisetext() = "";
+	for (int i = 0; i < this->repeter1.size(); i++)
+	{
+		this->revisetext() += to_string(this->repeter1[i]);
+	}
+	settextcolor(DARKGRAY);
+	outtextxy(this->x + hspace, this->y + vspace + 3, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawgamerepetebutton1()
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	int hspace = (this->width - textwidth("1")) / 2;
+	int vspace = (this->height - textheight("1")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	settextcolor(BLACK);
+	this->revisetext() = to_string(this->repeterun1);
+	outtextxy(this->x + hspace - 3, this->y + vspace - 8, this->text.c_str());
+	this->revisetext() = "";
+	settextstyle(9, 9, "宋体");
+	for (int i = 0; i < this->repeter1.size(); i++)
+	{
+		this->revisetext() += to_string(this->repeter1[i]);
+	}
+	settextcolor(DARKGRAY);
+	outtextxy(this->x + hspace - 7, this->y + vspace + 3, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawGQbutton()
+{
+	setfillcolor(WHITE);
+	settextstyle(10, 10, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawchoosebutton()
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+Mananger::Mananger()
+{
+	button b0(320, 175, 200, 50, "开始游戏");
+	button b1(320, 225, 200, 50, "查看规则");
+	button b2(320, 275, 200, 50, "查看信息");
+	button b3(320, 325, 200, 50, "创造模式");
+	button b4(320, 375, 200, 50, "挑战模式");
+	button b5(320, 425, 200, 50, "无尽模式");
+	button b6(320, 475, 200, 50, "退出游戏");
+	button b8(320, 525, 200, 50, " 排行榜");
+	button b9(320, 575, 200, 50, "创意模式");
+	button b7(0, 0, 150, 75, "返回");
+	button choose0(100, 100, 30, 30, "1");
+	button choose1(150, 100, 30, 30, "2");
+	button choose2(200, 100, 30, 30, "3");
+	button choose3(250, 100, 30, 30, "4");
+	button choose4(300, 100, 30, 30, "5");
+	button choose5(350, 100, 30, 30, "6");
+
+	this->buttonarr[0] = b0;
+	this->buttonarr[1] = b1;
+	this->buttonarr[2] = b2;
+	this->buttonarr[3] = b3;
+	this->buttonarr[4] = b4;
+	this->buttonarr[5] = b5;
+	this->buttonarr[6] = b6;
+	this->buttonarr[7] = b7;
+	this->buttonarr[8] = b8;
+	this->buttonarr[9] = b9;
+	this->GQChoosebutton[0] = choose0;
+	this->GQChoosebutton[1] = choose1;
+	this->GQChoosebutton[2] = choose2;
+	this->GQChoosebutton[3] = choose3;
+	this->GQChoosebutton[4] = choose4;
+	this->GQChoosebutton[5] = choose5;
+	loadwindow();
+	loadrule();
+	loadChooseGQmenu();
+	loadGamebk();
+	loadgameP();
+	setbutton();
+
 }

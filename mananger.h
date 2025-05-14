@@ -39,7 +39,9 @@ class button
 {
 public:
 	button();
+	void drawbuttonwithPic( IMAGE*);
 	button(const int& x, const int& y, const int& width, const int& height, const std::string& text);
+	button(const int& x, const int& y, const int& width, const int& height, const std::string& text, const IMAGE& img);
 	void drawbutton();
 	void drawbutton1();
 	void drawbuttontxtBig(const int& txtsh,const int& txtsw,const int&txth,const int&txtw,const  COLORREF&);
@@ -101,16 +103,13 @@ public:
 	~Mananger();
 	void rankP();
 	void ChangeChoose();
-	void ShowMenu();
 	void ShowRule();
 	void Exitgame();
-	void BeginGame();
 	void ChooseGame();
 	void RunChoose();
 	void CreateMode();
 	int getlevel()const;
 	void CheckMessage(player&);
-	void GameShowmess(game& g1);
 	void GameShowmess(game& g1,const int&i);
 	void GameShowmess1(game& g1);
 	player& getplayer();
@@ -127,7 +126,6 @@ public:
 	void challengegame();
 	void randomcreatgame(int number1);//无尽挑战
 	void randomcreatgame(int number1, bool x);//挑战模式
-	void PlayerGameShowmess(game& g1);
 	void noendchallenge();
 	void loadwindow();
 	int ifinbutoon(button&,ExMessage );
@@ -140,8 +138,6 @@ public:
 	void MyCreateGameP(game& g1, people*& p1);
 	void creatrGameChallenge(game& g1);
 	void loadGamebk();
-	void readplayermessage();
-	void recordmessage();
 	void recordmessagetxt();
 	vector<player> &readplayermessagetxt();
 	void wujinRank(vector<player>& p1);
@@ -175,7 +171,7 @@ private:
 	player p1;
 	array<button, 15>buttonarr;
 	array<button, 15>GQChoosebutton;
-	IMAGE img[15];
+	IMAGE img[20];
 	IMAGE Move[4];
 	array<array<button,25>,25>GQbutton;
 	vector<player>rank;
