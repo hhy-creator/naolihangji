@@ -110,7 +110,6 @@ public:
 	void CreateMode();
 	int getlevel()const;
 	void CheckMessage(player&);
-	void GameShowmess(game& g1,const int&i);
 	void GameShowmess1(game& g1);
 	player& getplayer();
 	void Mycreate();
@@ -157,7 +156,6 @@ public:
 	void createmiddle(people*& p1,game& g1);
 	void drawcreate(people*& p2, const int& run, button**& b1);
 	void drawNoMyCreate();
-	void gameprogress();
 	void setbutton();
 	bool ifinimage(ExMessage,IMAGE&, const int& wb, const int& hb);
 	vector<gameku>& readgamekutxt();
@@ -170,7 +168,6 @@ private:
 	int level;
 	player p1;
 	array<button, 15>buttonarr;
-	array<button, 15>GQChoosebutton;
 	IMAGE img[20];
 	IMAGE Move[4];
 	array<array<button,25>,25>GQbutton;

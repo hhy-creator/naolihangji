@@ -16,8 +16,8 @@ using namespace std;
 const clock_t FPS = 1000/60;
 int starttime = 0;
 int freamtime = 0;
-int	GQbuttonbeginlength = 100;
-int	GQbuttonbeginwidth = 30;
+int	GQbuttonbeginlength = 150;
+int	GQbuttonbeginwidth = 40;
 int ship::getrun() 
 {
 	return this->run;
@@ -1049,7 +1049,179 @@ int button::returnheight()
 {
 	return this->height;
 }
+void button::revisegreenifpass()
+{
+	this->greenifpass = true;
+}
+void button::reviseyellowifpass()
+{
+	this->yellowifpass = true;
+}
+void button::reviseredifpass()
+{
+	this->redifpass = true;
+}
+bool& button::revisecreateifpass()
+{
+	return this->createifpass;
+}
+bool& button::reviseMycreateifpass()
+{
+	return this->Mycreateifpass;
+}
+bool button::returngreenifpass()
+{
+	return this->greenifpass;
+}
+bool button::ifrepete()
+{
+	if (this->greenifpass == true && this->yellowifpass == true) { return true; }
+	else { return false; }
+}
+COLORREF& button::revisecolor()
+{
+	return this->color;
+}
 button::button() {}
+void button::drawbuttontxtBig(const int& txtsh, const int& txtsw, const int& txth, const int& txtw, const COLORREF& CL)
+{
+	setfillcolor(this->color);
+	settextstyle(txtsh, txtsw, "宋体");
+	settextcolor(CL);
+	int hspace = (this->width - txtw) / 2;
+	int vspace = (this->height - txth) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawbuttonwithPic(IMAGE* m1)
+{
+	putimage(this->x, this->y, m1);
+	settextstyle(35, 20, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("查看规则")) / 2;
+	int vspace = (this->height - textheight("查看规则")) / 2;
+	outtextxy(this->x + hspace - 5, this->y + vspace, this->text.c_str());
+}
+void button::drawbutton()
+{
+	setfillcolor(this->color);
+	settextstyle(35, 20, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("查看规则")) / 2;
+	int vspace = (this->height - textheight("查看规则")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace - 5, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+
+}
+void button::drawbutton1()
+{
+	setfillcolor(this->color);
+	settextstyle(20, 20, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("返回")) / 2;
+	int vspace = (this->height - textheight("返回")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawgamebutton(const int& i, const COLORREF& textcolor, const bool& x)
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	settextcolor(textcolor);
+	this->text = to_string(i);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawgamebutton(const int& i, const COLORREF& textcolor)
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	settextcolor(textcolor);
+	this->text = "";
+	this->text = to_string(i);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	this->bushu = i;
+}
+void button::drawgamerepetebutton()
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	int hspace = (this->width - textwidth("1")) / 2;
+	int vspace = (this->height - textheight("1")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	settextcolor(BLACK);
+	this->revisetext() = to_string(this->repeterun1);
+	outtextxy(this->x + hspace, this->y + vspace - 8, this->text.c_str());
+	this->revisetext() = "";
+	for (int i = 0; i < this->repeter1.size(); i++)
+	{
+		this->revisetext() += to_string(this->repeter1[i]);
+	}
+	settextcolor(DARKGRAY);
+	outtextxy(this->x + hspace, this->y + vspace + 3, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawgamerepetebutton1()
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	int hspace = (this->width - textwidth("1")) / 2;
+	int vspace = (this->height - textheight("1")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	settextcolor(BLACK);
+	this->revisetext() = to_string(this->repeterun1);
+	outtextxy(this->x + hspace - 3, this->y + vspace - 8, this->text.c_str());
+	this->revisetext() = "";
+	settextstyle(9, 9, "宋体");
+	for (int i = 0; i < this->repeter1.size(); i++)
+	{
+		this->revisetext() += to_string(this->repeter1[i]);
+	}
+	settextcolor(DARKGRAY);
+	outtextxy(this->x + hspace - 7, this->y + vspace + 3, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawGQbutton()
+{
+	setfillcolor(WHITE);
+	settextstyle(10, 10, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
+void button::drawchoosebutton()
+{
+	setfillcolor(this->color);
+	settextstyle(10, 10, "宋体");
+	settextcolor(BLACK);
+	int hspace = (this->width - textwidth("10")) / 2;
+	int vspace = (this->height - textheight("10")) / 2;
+	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
+	setlinecolor(BLACK);
+	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
+}
 bool& button::reviseifokclick() 
 {
 	return this->ifokclick;
@@ -1127,6 +1299,33 @@ int& button::returnrepeterun2()
 {
 	return this->repeterun2;
 }
+void Mananger::creatgame1()
+{
+	game g1;
+	g1.setrun(5);
+	g1.setzihzhen();
+	g1.getp1().SetPeopleBeginPos(10, 14);
+	g1.getp1array()[0] = g1.getp1();
+	g1.getp1().Movepeople(RIGHT);
+	g1.getp1array()[1] = g1.getp1();
+	g1.getp1().Movepeople(RIGHT);
+	g1.getp1array()[2] = g1.getp1();
+	g1.getp1().Movepeople(UP);
+	g1.getp1array()[3] = g1.getp1();
+	g1.getp1().Movepeople(RIGHT);
+	g1.getp1array()[4] = g1.getp1();
+	g1.getp2().SetPeopleBeginPos(15, 11);
+	g1.getp2array()[0] = g1.getp2();
+	g1.getp2().Movepeople(LEFT);
+	g1.getp2array()[1] = g1.getp2();
+	g1.getp2().Movepeople(LEFT);
+	g1.getp2array()[2] = g1.getp2();
+	g1.getp2().Movepeople(DOWN);
+	g1.getp2array()[3] = g1.getp2();
+	g1.getp2().Movepeople(DOWN);
+	g1.getp2array()[4] = g1.getp2();
+	createGameP(g1, 0);
+}
 void Mananger::loadwindow()
 {
 
@@ -1155,6 +1354,9 @@ void Mananger::loadgameP()
 	loadimage(&this->img[13], "C:/Users/pcuser/Desktop/实训/创意小船.jpg", 25, 25);
 	loadimage(&this->img[14], "C:/Users/pcuser/Desktop/实训/创意炸弹.jpg", 25, 25);
 	loadimage(&this->img[15], "C:/Users/pcuser/Desktop/实训/按钮背景.jpg", 200, 50);
+	loadimage(&this->img[16], "C:/Users/pcuser/Desktop/实训/返回背景.jpg", 100, 50);
+	loadimage(&this->img[17], "C:/Users/pcuser/Desktop/实训/芙宁娜名片.jpg", 100, 50);
+	loadimage(&this->img[18], "C:/Users/pcuser/Desktop/实训/选择关卡按钮背景.jpg", 100, 100);
 	loadimage(&this->Move[0], "C:/Users/pcuser/Desktop/实训/创下.jpg", 50, 50);
 	loadimage(&this->Move[1], "C:/Users/pcuser/Desktop/实训/创左.jpg", 50, 50);
 	loadimage(&this->Move[2], "C:/Users/pcuser/Desktop/实训/创右.jpg", 50, 50);
@@ -1233,10 +1435,10 @@ void Mananger::ShowRule()
 	setbkmode(TRANSPARENT);
 	while (1) {
 		putimage(0, 0, &this->img[1]);
-		this->buttonarr[7].drawbutton1();
+		putimage(0, 0, &this->img[16]);
 		ExMessage msg = getmousemessage();
 		BeginBatchDraw();
-		if (ifinbutoon(this->buttonarr[7], msg))
+		if (ifinimage(msg, this->img[16], 0, 0))
 		{
 			EndBatchDraw();
 			cleardevice();
@@ -1253,59 +1455,69 @@ void Mananger::ChooseGame()
 	initgraph(900, 600);
 	setbkmode(TRANSPARENT);
 	bool x = 0;
+	putimage(0, 0, &this->img[2]);
+	putimage(0, 0, &this->img[7]);
+	putimage(575, 100, &this->img[18]);
+	putimage(375, 100, &this->img[18]);
+	putimage(175, 100, &this->img[18]);
+	putimage(175, 250, &this->img[18]);
+	putimage(375, 250, &this->img[18]);
+	putimage(575, 250, &this->img[18]);
 	while (1)
 	{
-		putimage(0, 0, &this->img[2]);
-		this->buttonarr[7].drawbutton1();
-		for (int i = 0; i < 6; i++)
-		{
-			this->GQChoosebutton[i].drawchoosebutton();
-		}
+		settextstyle(50, 50, "宋体");
+		settextcolor(BLACK);
+		outtextxy(200, 125,to_string(1).c_str());
+		outtextxy(400, 125, to_string(2).c_str());
+		outtextxy(600, 125, to_string(3).c_str());
+		outtextxy(200, 275, to_string(4).c_str());
+		outtextxy(400, 275, to_string(5).c_str());
+		outtextxy(600, 275, to_string(6).c_str());
 		ExMessage msg = getmousemessage();
 		BeginBatchDraw();
-		if (ifinbutoon(this->buttonarr[7], msg))
+		if (ifinimage(msg,this->img[7],0,0))
 		{
 			EndBatchDraw();
 			closegraph();
 			x = 1;
 			break;
 		}
-		else if (ifinbutoon(this->GQChoosebutton[0], msg)) 
+		else if (ifinimage(msg,this->img[18],175,100))
 		{
 			this->level = 1;
 			EndBatchDraw();
 			closegraph();
 			break;
 		}
-		else if (ifinbutoon(this->GQChoosebutton[1], msg)) 
+		else if (ifinimage(msg, this->img[18], 375, 100))
 		{
 			this->level = 2;
 			EndBatchDraw();
 			closegraph();
 			break;
 		}
-		else if (ifinbutoon(this->GQChoosebutton[2], msg))
+		else if (ifinimage(msg, this->img[18], 575, 100))
 		{
 			this->level = 3;
 			EndBatchDraw();
 			closegraph();
 			break;
 		}
-		else if (ifinbutoon(this->GQChoosebutton[3], msg))
+		else if (ifinimage(msg, this->img[18], 175, 250))
 		{
 			this->level = 4;
 			EndBatchDraw();
 			closegraph();
 			break;
 		}
-		else if (ifinbutoon(this->GQChoosebutton[4], msg))
+		else if (ifinimage(msg, this->img[18], 375, 250))
 		{
 			this->level = 5;
 			EndBatchDraw();
 			closegraph();
 			break;
 		}
-		else if (ifinbutoon(this->GQChoosebutton[5], msg))
+		else if (ifinimage(msg, this->img[18], 575, 250))
 		{
 			this->level = 6;
 			EndBatchDraw();
@@ -1353,53 +1565,6 @@ void Mananger::ChooseGame()
 		cout << "当前关卡不存在，请重新输入!" << endl;
 		ChooseGame();
 	}
-}
-void Mananger::creatgame1()
-{
-	game g1;
-	g1.setrun(5);
-	g1.setzihzhen();
-	g1.getp1().SetPeopleBeginPos(10, 14);
-	g1.getp1array()[0] = g1.getp1();
-	g1.getp1().Movepeople(RIGHT);
-	g1.getp1array()[1] = g1.getp1();
-	g1.getp1().Movepeople(RIGHT);
-	g1.getp1array()[2] = g1.getp1();
-	g1.getp1().Movepeople(UP);
-	g1.getp1array()[3] = g1.getp1();
-	g1.getp1().Movepeople(RIGHT);
-	g1.getp1array()[4] = g1.getp1();
-	g1.getp2().SetPeopleBeginPos(15, 11);
-	g1.getp2array()[0] = g1.getp2();
-	g1.getp2().Movepeople(LEFT);
-	g1.getp2array()[1] = g1.getp2();
-	g1.getp2().Movepeople(LEFT);
-	g1.getp2array()[2] = g1.getp2();
-	g1.getp2().Movepeople(DOWN);
-	g1.getp2array()[3] = g1.getp2();
-	g1.getp2().Movepeople(DOWN);
-	g1.getp2array()[4] = g1.getp2();
-	createGameP(g1,0);
-}
-void button::revisegreenifpass() 
-{
-	this->greenifpass = true;
-}
-void button::reviseyellowifpass() 
-{
-	this->yellowifpass = true;
-}
-void button::reviseredifpass() 
-{
-	this->redifpass = true;
-}
-bool& button::revisecreateifpass() 
-{
-	return this->createifpass;
-}
-bool& button::reviseMycreateifpass() 
-{
-	return this->Mycreateifpass;
 }
 button**& Mananger::drawMyroad(people*&p2, const int& run, button**&b1)
 {
@@ -1690,68 +1855,6 @@ void Mananger::createGameP(game& g1, const int& i)
 			break;
 		}
 	}
-}
-bool button::ifrepete() 
-{
-	if (this->greenifpass == true && this->yellowifpass == true) { return true; }
-	else { return false; }
-}
-COLORREF& button::revisecolor() 
-{
-	return this->color;
-}
-void Mananger::gameprogress() 
-{
-
-}
-void Mananger::GameShowmess(game& g1, const int& i)
-{
-	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-	bool x = 1;
-	while (x) {
-		g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
-		int gamestarttime = 0;
-		int gameduration = 0;
-		gamestarttime = clock();
-		bool a = g1.IfYes(g1.getrun(), g1.getp2array());
-		gameduration = clock() - gamestarttime;
-		int secondall = gameduration / 1000;
-		int seconds = secondall % 60;
-		int minute = secondall / 60;
-		this->p1.gettime()[i] = secondall;
-		cout << "用时：" << setfill('0') << setw(2) << minute << ":" << setw(2) << seconds << endl;
-		if (a)
-		{
-			x = 0;
-			cout << "游戏挑战成功，棒棒的。" << endl;
-			bool a = 1;
-			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
-			getplayer().AddRight(getplayer().Getright(), getlevel());
-			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
-			break;
-		}
-		else
-		{
-			getplayer().AddWrong(getplayer().Getwrong(), getlevel());
-			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
-			bool a = 0;
-			getplayer().CreatScore(getplayer().Getscore(), getlevel(), a, this->p1.gettime(), g1.getrun());
-			cout << "挑战失败" << endl;
-			cout << "是否再次挑战？(1表示是，0表示否)" << endl;
-			if (!again())
-			{
-				cout << "放弃挑战" << endl;
-				cout << "是否查看答案（1表示是，0表示否）" << endl;
-				if (again()) { g1.getanswer(g1.getp2array()); }
-				break;
-			}
-			else { system("cls"); }
-		}
-	}
-}
-bool button::returngreenifpass() 
-{
-	return this->greenifpass;
 }
 void Mananger::createGameP(game& g1)
 {
@@ -3375,145 +3478,6 @@ void Mananger::noendchallenge()
 	bool x = 1;
 	randomcreatgame(i + 1);
 }
-void button::drawbuttontxtBig(const int& txtsh, const int& txtsw, const int& txth, const int& txtw, const COLORREF& CL)
-{
-	setfillcolor(this->color);
-	settextstyle(txtsh, txtsw, "宋体");
-	settextcolor(CL);
-	int hspace = (this->width - txtw) / 2;
-	int vspace = (this->height - txth) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawbuttonwithPic(IMAGE* m1)
-{
-	putimage(this->x, this->y, m1);
-	settextstyle(35, 20, "宋体");
-	settextcolor(BLACK);
-	int hspace = (this->width - textwidth("查看规则")) / 2;
-	int vspace = (this->height - textheight("查看规则")) / 2;
-	outtextxy(this->x + hspace - 5, this->y + vspace, this->text.c_str());
-}
-void button::drawbutton()
-{
-	setfillcolor(this->color);
-	settextstyle(35, 20, "宋体");
-	settextcolor(BLACK);
-	int hspace = (this->width - textwidth("查看规则")) / 2;
-	int vspace = (this->height - textheight("查看规则")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace - 5, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-
-}
-void button::drawbutton1()
-{
-	setfillcolor(this->color);
-	settextstyle(20, 20, "宋体");
-	settextcolor(BLACK);
-	int hspace = (this->width - textwidth("返回")) / 2;
-	int vspace = (this->height - textheight("返回")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawgamebutton(const int& i, const COLORREF& textcolor, const bool& x)
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	settextcolor(textcolor);
-	this->text = to_string(i);
-	int hspace = (this->width - textwidth("10")) / 2;
-	int vspace = (this->height - textheight("10")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawgamebutton(const int& i, const COLORREF& textcolor)
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	settextcolor(textcolor);
-	this->text = "";
-	this->text = to_string(i);
-	int hspace = (this->width - textwidth("10")) / 2;
-	int vspace = (this->height - textheight("10")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	this->bushu = i;
-}
-void button::drawgamerepetebutton()
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	int hspace = (this->width - textwidth("1")) / 2;
-	int vspace = (this->height - textheight("1")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	settextcolor(BLACK);
-	this->revisetext() = to_string(this->repeterun1);
-	outtextxy(this->x + hspace, this->y + vspace - 8, this->text.c_str());
-	this->revisetext() = "";
-	for (int i = 0; i < this->repeter1.size(); i++)
-	{
-		this->revisetext() += to_string(this->repeter1[i]);
-	}
-	settextcolor(DARKGRAY);
-	outtextxy(this->x + hspace, this->y + vspace + 3, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawgamerepetebutton1()
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	int hspace = (this->width - textwidth("1")) / 2;
-	int vspace = (this->height - textheight("1")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	settextcolor(BLACK);
-	this->revisetext() = to_string(this->repeterun1);
-	outtextxy(this->x + hspace - 3, this->y + vspace - 8, this->text.c_str());
-	this->revisetext() = "";
-	settextstyle(9, 9, "宋体");
-	for (int i = 0; i < this->repeter1.size(); i++)
-	{
-		this->revisetext() += to_string(this->repeter1[i]);
-	}
-	settextcolor(DARKGRAY);
-	outtextxy(this->x + hspace - 7, this->y + vspace + 3, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawGQbutton()
-{
-	setfillcolor(WHITE);
-	settextstyle(10, 10, "宋体");
-	settextcolor(BLACK);
-	int hspace = (this->width - textwidth("10")) / 2;
-	int vspace = (this->height - textheight("10")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
-void button::drawchoosebutton()
-{
-	setfillcolor(this->color);
-	settextstyle(10, 10, "宋体");
-	settextcolor(BLACK);
-	int hspace = (this->width - textwidth("10")) / 2;
-	int vspace = (this->height - textheight("10")) / 2;
-	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-	outtextxy(this->x + hspace, this->y + vspace, this->text.c_str());
-	setlinecolor(BLACK);
-	rectangle(this->x, this->y, this->x + this->width, this->y + this->height);
-}
 Mananger::Mananger()
 {
 	button b0(320, 175, 200, 50, "开始游戏");
@@ -3543,12 +3507,6 @@ Mananger::Mananger()
 	this->buttonarr[7] = b7;
 	this->buttonarr[8] = b8;
 	this->buttonarr[9] = b9;
-	this->GQChoosebutton[0] = choose0;
-	this->GQChoosebutton[1] = choose1;
-	this->GQChoosebutton[2] = choose2;
-	this->GQChoosebutton[3] = choose3;
-	this->GQChoosebutton[4] = choose4;
-	this->GQChoosebutton[5] = choose5;
 	loadwindow();
 	loadrule();
 	loadChooseGQmenu();
