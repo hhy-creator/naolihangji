@@ -1083,6 +1083,36 @@ COLORREF& button::revisecolor()
 	return this->color;
 }
 button::button() {}
+bool Mananger::ifOKCreat(const game& g1)
+{
+	for (int i = 0; i < g1.getrun(); i++)
+	{
+		if (g1.returnp1arr()[i].getx() > 25 || g1.returnp1arr()[i].getx() < 0 || g1.returnp1arr()[i].gety() > 25 || g1.returnp1arr()[i].gety() < 0)
+		{
+			return false;
+		}
+		if (g1.returnp2arr()[i].getx() > 25 || g1.returnp2arr()[i].getx() < 0 || g1.returnp2arr()[i].gety() > 25 || g1.returnp2arr()[i].gety() < 0)
+		{
+			return false;
+		}
+		if (g1.returnp2rearr()[i].getx() > 25 || g1.returnp2rearr()[i].getx() < 0 || g1.returnp2rearr()[i].gety() > 25 || g1.returnp2rearr()[i].gety() < 0)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+bool ship::ifOKPath()
+{
+	for (int i = 0; i < this->getrun(); i++)
+	{
+		if (this->path[i].getx() > 25 || this->path[i].getx() < 0 || this->path[i].gety() > 25 || this->path[i].gety() < 0)
+		{
+			return false;
+		}
+	}
+	return true;
+}
 void button::drawbuttontxtBig(const int& txtsh, const int& txtsw, const int& txth, const int& txtw, const COLORREF& CL)
 {
 	setfillcolor(this->color);
@@ -1342,8 +1372,8 @@ void Mananger::loadGamebk()
 }
 void Mananger::loadgameP() 
 {
-	loadimage(&this->img[4], "C:/Users/pcuser/Desktop/实训/芙宁娜胜利.jpg", 400, 400);
-	loadimage(&this->img[5], "C:/Users/pcuser/Desktop/实训/芙宁娜失败.jpg", 400, 400);
+	loadimage(&this->img[4], "C:/Users/pcuser/Desktop/实训/芙宁娜胜利.png", 800, 600);
+	loadimage(&this->img[5], "C:/Users/pcuser/Desktop/实训/芙宁娜失败.jpg", 800, 600);
 	loadimage(&this->img[6], "C:/Users/pcuser/Desktop/实训/提示图片.jpg",50,50);
 	loadimage(&this->img[7], "C:/Users/pcuser/Desktop/实训/撤回图片.jpg", 50, 50);
 	loadimage(&this->img[8], "C:/Users/pcuser/Desktop/实训/挑战模式.jpg", 400, 600);
@@ -1355,8 +1385,10 @@ void Mananger::loadgameP()
 	loadimage(&this->img[14], "C:/Users/pcuser/Desktop/实训/创意炸弹.jpg", 25, 25);
 	loadimage(&this->img[15], "C:/Users/pcuser/Desktop/实训/按钮背景.jpg", 200, 50);
 	loadimage(&this->img[16], "C:/Users/pcuser/Desktop/实训/返回背景.jpg", 100, 50);
-	loadimage(&this->img[17], "C:/Users/pcuser/Desktop/实训/芙宁娜名片.jpg", 100, 50);
+	loadimage(&this->img[17], "C:/Users/pcuser/Desktop/实训/芙宁娜名片.jpg", 800, 600);
 	loadimage(&this->img[18], "C:/Users/pcuser/Desktop/实训/选择关卡按钮背景.jpg", 100, 100);
+	loadimage(&this->img[19], "C:/Users/pcuser/Desktop/实训/下一关按钮.jpg", 200, 100);
+	loadimage(&this->img[20], "C:/Users/pcuser/Desktop/实训/保存按钮图片.jpg", 50, 50);
 	loadimage(&this->Move[0], "C:/Users/pcuser/Desktop/实训/创下.jpg", 50, 50);
 	loadimage(&this->Move[1], "C:/Users/pcuser/Desktop/实训/创左.jpg", 50, 50);
 	loadimage(&this->Move[2], "C:/Users/pcuser/Desktop/实训/创右.jpg", 50, 50);
@@ -2032,26 +2064,23 @@ void Mananger::drawYesP(game& g1)
 	setbkmode(TRANSPARENT);
 	setbkcolor(WHITE);
 	cleardevice();
-	button b1(250, 0, 300, 50, "VICTORY");
-	button b2(250, 50, 300, 50, "下一关");
-	button b3(0, 0, 75, 75, "返回");
 	bool x = 0;
 	while (!x)
 	{
 		BeginBatchDraw();
-		putimage(200, 200, &this->img[4]);
-		b1.drawbutton();
-		b2.drawbutton();
-		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
+		putimage(0, 0, &this->img[17]);
+		putimage(0, 0, &this->img[4]);
+		putimage(600, 500, &this->img[19]);
+		putimage(0, 0, &this->img[7]);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
-		if (ifinbutoon(b3, msg))
+		if (ifinimage(msg,this->img[7],0,0))
 		{
 			closegraph();
 			RunChoose();
 			x = 1;
 		}
-		else if(ifinbutoon(b2, msg))
+		else if(ifinimage(msg,this->img[19],600, 500 ))
 		{
 			closegraph();
 			randomcreatgame(g1.getrun() + 1);
@@ -2067,23 +2096,22 @@ void Mananger::drawYesPChallenge(game& g1)
 	setbkmode(TRANSPARENT);
 	setbkcolor(WHITE);
 	cleardevice();
-	button b1(250, 0, 300, 50, "VICTORY");
-	button b3(0, 0, 75, 75, "返回");
 	bool x = 0;
 	while (!x)
 	{
 		BeginBatchDraw();
-		putimage(200, 200, &this->img[4]);
-		b1.drawbutton();
-		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
+		putimage(0, 0, &this->img[17]);
+		putimage(0, 0, &this->img[4]);
+		putimage(0, 0, &this->img[7]);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
-		if (ifinbutoon(b3, msg))
+		if (ifinimage(msg, this->img[7], 0, 0))
 		{
 			closegraph();
 			RunChoose();
 			x = 1;
 		}
+
 	}
 }
 void Mananger::drawYesPPlayerCreate(game& g1)
@@ -2092,27 +2120,24 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 	initgraph(800, 600);
 	setbkmode(TRANSPARENT);
 	setbkcolor(WHITE);
-	cleardevice();
-	button b1(250, 0, 300, 50, "VICTORY");
 	button b2(250, 50, 300, 50, "保存");
-	button b3(0, 0, 75, 75, "返回"); 
 	bool x = 0;
 	while (!x)
 	{
 		BeginBatchDraw();
-		putimage(200, 200, &this->img[4]);
-		b1.drawbutton();
-		b2.drawbutton();
-		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
+		putimage(0, 0, &this->img[17]);
+		putimage(0, 0, &this->img[4]);
+		putimage(0, 0, &this->img[7]);
+		putimage(0, 50, &this->img[20]);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
-		if (ifinbutoon(b3, msg))
+		if (ifinimage(msg, this->img[7], 0, 0))
 		{
 			closegraph();
 			RunChoose();
 			x = 1;
 		}
-		else if (ifinbutoon(b2,msg)) 
+		else if (ifinimage(msg,this->img[20],0,50))
 		{
 			closegraph();
 			string name;
@@ -2123,6 +2148,56 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 		}
 	}
 }
+void Mananger::drawYesP(const int& i)
+{
+	cleardevice();
+	initgraph(800, 600);
+	setbkmode(TRANSPARENT);
+	setbkcolor(WHITE);
+	cleardevice();
+	string s = "用时：";
+	int timeall = p1.gettime()[i];
+	if (timeall < 10)
+	{
+		s += to_string(0);
+		s += to_string(timeall / 60);
+	}
+	else
+	{
+		s += to_string(timeall / 60);
+	}
+	s += ":";
+	if (timeall % 60 < 10)
+	{
+		s += to_string(0);
+		s += to_string(timeall % 60);
+	}
+	else
+	{
+		s += to_string(timeall % 60);
+	}
+	button b2(230, 200, 300, 50, s);
+	bool x = 0;
+	while (!x)
+	{
+		BeginBatchDraw();
+		putimage(0, 0, &this->img[17]);
+		putimage(0, 0, &this->img[4]);
+		putimage(600, 500, &this->img[19]);
+		putimage(0, 0, &this->img[7]);
+		b2.drawbutton();
+		EndBatchDraw();
+		ExMessage msg = getmousemessage();
+		if (ifinimage(msg, this->img[7], 0, 0))
+		{
+			closegraph();
+			RunChoose();
+			x = 1;
+		}
+
+	}
+
+}
 void Mananger::drawNoMyCreate() 
 {
 	cleardevice();
@@ -2130,19 +2205,16 @@ void Mananger::drawNoMyCreate()
 	setbkmode(TRANSPARENT);
 	setbkcolor(WHITE);
 	cleardevice();
-	button b1(250, 0, 300, 50, "DEFEAT");
-	button b3(0, 0, 75, 75, "返回");
 	bool x = 0;
 	while (!x)
 	{
 		int number = 0;
 		BeginBatchDraw();
-		putimage(200, 200, &this->img[5]);
-		b1.drawbutton();
-		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
+		putimage(0, 0, &this->img[5]);
+		putimage(0, 0, &this->img[7]);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
-		if (ifinbutoon(b3, msg))
+		if (ifinimage(msg, this->img[7], 0, 0))
 		{
 			closegraph();
 			x = 1;
@@ -2157,23 +2229,20 @@ void Mananger::drawNoP(game& g1)
 	setbkmode(TRANSPARENT);
 	setbkcolor(WHITE);
 	cleardevice();
-	button b1(250, 0, 300, 50, "DEFEAT");
-	button b3(0, 0, 75, 75, "返回");
-	button b4(250, 50, 300, 50, "再次挑战");
-	button b5(250, 100, 300, 50, "查看答案");
+	button b4(280, 20, 200, 50, "再次挑战");
+	button b5(280, 220, 200, 50, "查看答案");
 	bool x = 0;
 	while (!x)
 	{
 		int number = 0;
 		BeginBatchDraw();
-		putimage(200, 200, &this->img[5]);
-		b1.drawbutton();
-		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
-		b4.drawbutton();
-		b5.drawbutton();
+		putimage(0, 0, &this->img[5]);
+		putimage(0, 0, &this->img[7]);
+		b4.drawbuttonwithPic(&this->img[15]);
+		b5.drawbuttonwithPic(&this->img[15]);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
-		if (ifinbutoon(b3, msg))
+		if (ifinimage(msg,this->img[7],0,0))
 		{
 			closegraph();
 			x = 1;
@@ -2191,7 +2260,7 @@ void Mananger::drawNoP(game& g1)
 			cleardevice();
 			initgraph(1000, 729);
 			setbkmode(TRANSPARENT);
-			button b3(0, 0, 75, 75, "返回");
+			
 			button** b1 = new button * [25];
 			for (int i = 0; i < 25; i++)
 			{
@@ -2208,16 +2277,16 @@ void Mananger::drawNoP(game& g1)
 			while (m) {
 				BeginBatchDraw();
 				putimage(0, 0, &this->img[3]);
+				putimage(0, 0, &this->img[7]);
 				for (int i = 0; i < 25; i++)
 				{
 					for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
 				}
 				drawanswerroad(g1.getp2array(), g1.getrun(), b1);
-				b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
 				EndBatchDraw();
 				ExMessage msg = getmousemessage();
 				setbutton();
-				if (ifinbutoon(b3, msg))
+				if (ifinimage(msg,this->img[7],0,0))
 				{
 					closegraph();
 					for (int i = 0; i < 25; i++)
@@ -2231,56 +2300,6 @@ void Mananger::drawNoP(game& g1)
 			}
 		}
 	}
-}
-void Mananger::drawYesP(const int&i) 
-{
-	cleardevice();
-	initgraph(800, 600);
-	setbkmode(TRANSPARENT);
-	setbkcolor(WHITE);
-	cleardevice();
-	string s = "用时：";
-	int timeall = p1.gettime()[i];
-	if (timeall < 10)
-	{
-		s += to_string(0);
-		s += to_string(timeall / 60);
-	}
-	else 
-	{
-		s += to_string(timeall / 60);
-	}
-	s += ":";
-	if (timeall % 60 < 10)
-	{
-		s += to_string(0);
-		s += to_string(timeall % 60);
-	}
-	else
-	{
-		s += to_string(timeall % 60);
-	}
-	button b1(250, 0, 300, 50, "VICTORY");
-	button b2 (250, 50, 300, 50, s);
-	button b3(0, 0, 75, 75, "返回");
-	bool x = 0;
-	while (!x) 
-	{
-		BeginBatchDraw();
-		putimage(200, 200, &this->img[4]);
-		b1.drawbutton();
-		b2.drawbutton();
-		b3.drawbuttontxtBig(10,10,10,10,GREEN);
-		EndBatchDraw();
-		ExMessage msg = getmousemessage();
-		if (ifinbutoon(b3, msg)) 
-		{
-			closegraph();
-			x = 1;
-		}
-		
-	}
-
 }
 void Mananger::drawNoP(game& g1, const int& i)
 {
@@ -2310,11 +2329,7 @@ void Mananger::drawNoP(game& g1, const int& i)
 	{
 		s += to_string(timeall % 60);
 	}
-	button b11(250, 0, 300, 50, "DEFEAT");
-	button b2(250, 50, 300, 50, s);
-	button b3(0, 0, 75, 75, "返回");
-	button b4(250, 100, 300, 50, "再次挑战");
-	button b5(250, 150, 300, 50, "查看答案");
+	button b2(250, 540, 300, 50, s);
 	button** b1 = new button * [25];
 	for (int i = 0; i < 25; i++)
 	{
@@ -2327,20 +2342,21 @@ void Mananger::drawNoP(game& g1, const int& i)
 			b1[i][j] = this->GQbutton[i][j];
 		}
 	}
+	button b4(280, 20, 200, 50, "再次挑战");
+	button b5(280, 220, 200, 50, "查看答案");
 	bool x = 0;
 	while (!x)
 	{
 		int number = 0;
 		BeginBatchDraw();
-		putimage(200, 200, &this->img[5]);
-		b11.drawbutton();
+		putimage(0, 0, &this->img[5]);
+		putimage(0, 0, &this->img[7]);
+		b4.drawbuttonwithPic(&this->img[15]);
+		b5.drawbuttonwithPic(&this->img[15]);
 		b2.drawbutton();
-		b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
-		b4.drawbutton();
-		b5.drawbutton();
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
-		if (ifinbutoon(b3, msg))
+		if (ifinimage(msg, this->img[7], 0, 0))
 		{
 			closegraph();
 			x = 1;
@@ -2365,21 +2381,22 @@ void Mananger::drawNoP(game& g1, const int& i)
 			cleardevice();
 			initgraph(1000, 729);
 			setbkmode(TRANSPARENT);
-			button b3(0, 0, 75, 75, "返回");
+			
 			bool m = 1;
 			while (m) {
 				BeginBatchDraw();
 				putimage(0, 0, &this->img[3]);
+				putimage(0, 0, &this->img[7]);
 				for (int i = 0; i < 25; i++)
 				{
 					for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
 				}
 				drawanswerroad(g1.getp2array(), g1.getrun(), b1);
-				b3.drawbuttontxtBig(10, 10, 10, 10, GREEN);
+				
 				EndBatchDraw();
 				ExMessage msg = getmousemessage();
 				setbutton();
-				if (ifinbutoon(b3, msg)) 
+				if (ifinimage(msg,this->img[7],0,0))
 				{
 					closegraph();
 					for (int i = 0; i < 25; i++)
@@ -2393,36 +2410,6 @@ void Mananger::drawNoP(game& g1, const int& i)
 			}
 		}
 	}
-}
-bool Mananger::ifOKCreat(const game& g1) 
-{
-	for (int i = 0; i < g1.getrun(); i++) 
-	{
-		if (g1.returnp1arr()[i].getx() > 25 || g1.returnp1arr()[i].getx() < 0 || g1.returnp1arr()[i].gety() > 25 || g1.returnp1arr()[i].gety() < 0) 
-		{
-			return false;
-		}
-		if (g1.returnp2arr()[i].getx() > 25 || g1.returnp2arr()[i].getx() < 0 || g1.returnp2arr()[i].gety() > 25 || g1.returnp2arr()[i].gety() < 0)
-		{
-			return false;
-		}
-		if (g1.returnp2rearr()[i].getx() > 25 || g1.returnp2rearr()[i].getx() < 0 || g1.returnp2rearr()[i].gety() > 25 || g1.returnp2rearr()[i].gety() < 0)
-		{
-			return false;
-		}
-	}
-	return true;
-}
-bool ship::ifOKPath() 
-{
-		for (int i = 0; i < this->getrun(); i++)
-		{
-			if (this->path[i].getx() > 25 || this->path[i].getx() < 0 || this->path[i].gety() > 25 || this->path[i].gety() < 0)
-			{
-				return false;
-			}
-		}
-		return true;
 }
 void Mananger::PTrankP()
 {
