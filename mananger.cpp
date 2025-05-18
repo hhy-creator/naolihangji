@@ -1309,6 +1309,106 @@ bool Mananger::ifinimage(ExMessage m, IMAGE&pb,const int& wb,const int& hb)
 	}
 	return false;
 }
+void Mananger::PlayerGreatgame()
+{
+	game playergame;
+	int number1 = 0;
+	cout << "请输入行动步数（不包括起点）:" << endl;
+	cin >> number1;
+	playergame.setrun(number1 + 1);
+	playergame.setzihzhen();
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	BeginBatchDraw();
+	putimage(0, 0, &this->img[3]);
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
+	}
+	EndBatchDraw();
+	for (int i = 0; i < playergame.getrun(); i++)
+	{
+		ExMessage msg;
+		while (true)
+		{
+			if (peekmessage(&msg, EX_MOUSE))
+			{
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					int k = (msg.x - GQbuttonbeginlength) / 25;
+					int j = (msg.y - GQbuttonbeginwidth) / 25;
+					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
+					{
+						playergame.getp1array()[i].getx() = k;
+						playergame.getp1array()[i].gety() = j;
+						b1[k][j].revisecolor() = YELLOW;
+						b1[k][j].drawgamebutton(i + 1, BLACK);
+						b1[k][j].reviseyellowifpass();
+						b1[k][j].returnrepeterun1() = i + 1;
+						break;
+					}
+				}
+			}
+		}
+	}
+	for (int i = 0; i < playergame.getrun(); i++)
+	{
+		ExMessage msg;
+		while (true)
+		{
+			if (peekmessage(&msg, EX_MOUSE))
+			{
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					int k = (msg.x - GQbuttonbeginlength) / 25;
+					int j = (msg.y - GQbuttonbeginwidth) / 25;
+					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
+					{
+						playergame.getp2array()[i].getx() = k;
+						playergame.getp2array()[i].gety() = j;
+						b1[k][j].repeter1.push_back(i + 1);
+						b1[k][j].revisecolor() = GREEN;
+						b1[k][j].revisegreenifpass();
+						b1[k][j].returnrepeterun2() = i + 1;
+						if (b1[k][j].repeter1.size() == 1 && b1[k][j].returnyellowifpass() != true)
+						{
+							b1[k][j].drawgamebutton(b1[k][j].repeter1[0], BLACK);
+						}
+						else
+						{
+
+							b1[k][j].drawmyrepete(BLACK);
+						}
+					}
+					break;
+				}
+			}
+		}
+	}
+	closegraph();
+	if (ifOKCreat(playergame))
+	{
+		PlayercreatrGame(playergame);
+	}
+	else
+	{
+		cout << "您创造的游戏因技术有限越界了，请重新创建，两路径坐标差不要太大" << endl;
+		PlayerGreatgame();
+	}
+}
 void button::changecolor()
 {
 	this->color = RED;
@@ -1328,6 +1428,12 @@ int& button::returnrepeterun1()
 int& button::returnrepeterun2() 
 {
 	return this->repeterun2;
+}
+void Mananger::noendchallenge()
+{
+	int i = 1;
+	bool x = 1;
+	randomcreatgame(i + 1);
 }
 void Mananger::creatgame1()
 {
@@ -1378,12 +1484,16 @@ void Mananger::loadgameP()
 	loadimage(&this->img[7], "C:/Users/pcuser/Desktop/实训/撤回图片.jpg", 50, 50);
 	loadimage(&this->img[8], "C:/Users/pcuser/Desktop/实训/挑战模式.jpg", 400, 600);
 	loadimage(&this->img[9], "C:/Users/pcuser/Desktop/实训/创造模式背景.jpg", 600, 600);
-	loadimage(&this->img[10], "C:/Users/pcuser/Desktop/实训/查看信息背景.jpg", 750, 750);
+	loadimage(&this->img[10], "C:/Users/pcuser/Desktop/实训/自身消息.jpg", 800, 600);
 	loadimage(&this->img[11], "C:/Users/pcuser/Desktop/实训/查看信息背景.jpg", 600, 700);
 	loadimage(&this->img[12], "C:/Users/pcuser/Desktop/实训/排行榜.jpg", 600, 700);
+	loadimage(&this->img[21], "C:/Users/pcuser/Desktop/实训/普通排行图片.jpg", 600, 700);
+	loadimage(&this->img[22], "C:/Users/pcuser/Desktop/实训/无尽排行图片.jpg", 600, 700);
+	loadimage(&this->img[24], "C:/Users/pcuser/Desktop/实训/单关排行图片.jpg", 600, 700);
 	loadimage(&this->img[13], "C:/Users/pcuser/Desktop/实训/创意小船.jpg", 25, 25);
 	loadimage(&this->img[14], "C:/Users/pcuser/Desktop/实训/创意炸弹.jpg", 25, 25);
 	loadimage(&this->img[15], "C:/Users/pcuser/Desktop/实训/按钮背景.jpg", 200, 50);
+	loadimage(&this->img[23], "C:/Users/pcuser/Desktop/实训/创造模式按钮背景.jpg", 200, 50);
 	loadimage(&this->img[16], "C:/Users/pcuser/Desktop/实训/返回背景.jpg", 100, 50);
 	loadimage(&this->img[17], "C:/Users/pcuser/Desktop/实训/芙宁娜名片.jpg", 800, 600);
 	loadimage(&this->img[18], "C:/Users/pcuser/Desktop/实训/选择关卡按钮背景.jpg", 100, 100);
@@ -2183,7 +2293,7 @@ void Mananger::drawYesP(const int& i)
 		BeginBatchDraw();
 		putimage(0, 0, &this->img[17]);
 		putimage(0, 0, &this->img[4]);
-		putimage(600, 500, &this->img[19]);
+		//putimage(600, 500, &this->img[19]);
 		putimage(0, 0, &this->img[7]);
 		b2.drawbutton();
 		EndBatchDraw();
@@ -2416,28 +2526,21 @@ void Mananger::PTrankP()
 	cleardevice();
 	initgraph(600, 700);
 	setbkmode(TRANSPARENT);
-	putimage(0, 0, &this->img[12]);
+	putimage(0, 0, &this->img[21]);
 	putimage(0, 0, &this->img[7]);
 	string text;
-	settextstyle(20, 20, "宋体");
 	settextcolor(BLACK);
-	text = "  姓名";
-	outtextxy(50, 100, text.c_str());
-	text = "  总得分";
-	outtextxy(150, 100, text.c_str());
-	text = "  总用时";
-	outtextxy(275, 100, text.c_str());
 	settextstyle(15, 15, "宋体");
-	for (int i = 0; i < rank.size(); i++)
+	for (int i = 0; i<min(20,rank.size()); i++)
 	{
 		text = to_string(i + 1);
-		outtextxy(25, 125 + i * 25, text.c_str());
+		outtextxy(50, 100 + i * 25, text.c_str());
 		text = rank[i].GetName();
-		outtextxy(75, 125 + i * 25, text.c_str());
+		outtextxy(150, 100 + i * 25, text.c_str());
 		text = to_string(rank[i].returnscoreall());
-		outtextxy(225, 125 + i * 25, text.c_str());
+		outtextxy(320, 100 + i * 25, text.c_str());
 		text = to_string(int(rank[i].returntimeall()));
-		outtextxy(350, 125 + i * 25, text.c_str());
+		outtextxy(475, 100 + i * 25, text.c_str());
 	}
 	while (1)
 	{
@@ -2459,12 +2562,12 @@ void Mananger::rankP()
 	setbkmode(TRANSPARENT);
 	putimage(0, 0, &this->img[11]);
 	putimage(0, 0, &this->img[7]);
-	button b1(200, 100, 200, 50, "普通排行");
-	button b2(200, 150, 200, 50, "无尽排行");
-	button b3(200, 200, 200, 50, "单关排行");
-	b1.drawbutton();
-	b2.drawbutton();
-	b3.drawbutton();
+	button b1(200, 250, 200, 50, "普通排行");
+	button b2(200, 300, 200, 50, "无尽排行");
+	button b3(200, 350, 200, 50, "单关排行");
+	b1.drawbuttonwithPic(&this->img[15]);
+	b2.drawbuttonwithPic(&this->img[15]);
+	b3.drawbuttonwithPic(&this->img[15]);
 	while (1)
 	{
 		ExMessage msg = getmousemessage();
@@ -2504,7 +2607,7 @@ void Mananger::Mycreate()
 {
 
 	game randomgame;
-	int number1 = 5;
+	int number1 = 6;
 	randomgame.setrun(number1);
 	randomgame.setzihzhen();
 	while (1) {
@@ -2652,8 +2755,8 @@ void Mananger::Mycreate()
 			b1[i][j] = this->GQbutton[i][j];
 		}
 	}
-	ship s1(Pall[2].returnx(), Pall[2].returny());
-	ship s2(Pall[6].returnx(), Pall[6].returny());
+	ship s1(Pall[3].returnx(), Pall[3].returny());
+	ship s2(Pall[8].returnx(), Pall[8].returny());
 	BeginBatchDraw();
 	putimage(0, 0, &this->img[3]);
 	for (int i = 0; i < 25; i++)
@@ -2672,14 +2775,14 @@ void Mananger::Mycreate()
 	EndBatchDraw();
 	int k = Pall[0].returnx();
 	int j = Pall[0].returny();
-	int s1Px = b1[Pall[2].returnx()][Pall[2].returny()].returnx();
-	int s1Py = b1[Pall[2].returnx()][Pall[2].returny()].returny();
+	int s1Px = b1[Pall[3].returnx()][Pall[3].returny()].returnx();
+	int s1Py = b1[Pall[3].returnx()][Pall[3].returny()].returny();
 	int s1x = (s1Px - GQbuttonbeginlength) / 25;
 	int s1y = (s1Py - GQbuttonbeginwidth) / 25;
 	int s1index = s1.getrun() - 1;
 	bool s1AD = 0;
-	int s2Px = b1[Pall[6].returnx()][Pall[6].returny()].returnx();
-	int s2Py = b1[Pall[6].returnx()][Pall[6].returny()].returny();
+	int s2Px = b1[Pall[8].returnx()][Pall[8].returny()].returnx();
+	int s2Py = b1[Pall[8].returnx()][Pall[8].returny()].returny();
 	int s2x = (s2Px - GQbuttonbeginlength) / 25;
 	int s2y = (s2Py - GQbuttonbeginwidth) / 25;
 	int s2index = s2.getrun() - 1;
@@ -2988,9 +3091,9 @@ void Mananger::createmiddle(people*& p1, game& g1)
 	{
 		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
 	}
-	drawanswerroad(p1, 9, b1);
-	button con(800, 679, 175, 50, "下一步");
-	con.drawbutton1();
+	drawanswerroad(p1, 11, b1);
+	button con(800, 679, 200, 50, "下一步");
+	con.drawbuttonwithPic(&this->img[15]);
 	while (1)
 	{
 		ExMessage msg;
@@ -3065,17 +3168,17 @@ void Mananger::MyCreateGameP(game& g1, people*& p1)
 		}
 	}
 }
-void Mananger::CreateMode()
+void Mananger::CreateMode() 
 {
 	cleardevice();
 	initgraph(600, 600);
 	setbkmode(TRANSPARENT);
 	button b1(200, 200, 200, 50, "自建关卡");
-	button b2(200, 250, 200, 50, "创意工房");
+	button b2(200, 250, 200, 50, "创意总站");
 	putimage(0, 0, &this->img[9]);
 	putimage(0, 0, &this->img[7]);
-	b1.drawbutton();
-	b2.drawbutton();
+	b1.drawbuttonwithPic(&this->img[23]);
+	b2.drawbuttonwithPic(&this->img[23]);
 	while (1) {
 		ExMessage msg = getmousemessage();
 		BeginBatchDraw();
@@ -3130,32 +3233,27 @@ void Mananger::WJrankP()
 	cleardevice();
 	initgraph(600, 700);
 	setbkmode(TRANSPARENT);
-	putimage(0, 0, &this->img[12]);
+	putimage(0, 0, &this->img[22]);
 	putimage(0, 0, &this->img[7]);
 	string text;
-	settextstyle(20, 20, "宋体");
-	settextcolor(BLACK);
-	text = "  姓名";
-	outtextxy(200, 100, text.c_str());
-	text = "  得分";
-	outtextxy(350, 100, text.c_str());
 	settextstyle(15, 15, "宋体");
-	for (int i = 0; i < rank.size(); i++)
+	settextcolor(BLACK);
+	for (int i = 0; i < min(20,rank.size()); i++)
 	{
 		text = to_string(i + 1);
-		outtextxy(75, 125 + i * 25, text.c_str());
+		outtextxy(120, 125 + i * 25, text.c_str());
 		text = rank[i].GetName();
-		outtextxy(175, 125 + i * 25, text.c_str());
+		outtextxy(250, 125 + i * 25, text.c_str());
 		text = to_string(rank[i].getnoendscore());
-		outtextxy(375, 125 + i * 25, text.c_str());
+		outtextxy(450, 125 + i * 25, text.c_str());
 	}
 	while (1)
 	{
 		ExMessage msg = getmousemessage();
-		BeginBatchDraw();
+		
 		if (ifinimage(msg, this->img[7], 0, 0))
 		{
-			EndBatchDraw();
+			
 			closegraph();
 			rankP();
 			break;
@@ -3167,17 +3265,10 @@ void Mananger::DGrankP()
 	cleardevice();
 	initgraph(600, 700);
 	setbkmode(TRANSPARENT);
-	putimage(0, 0, &this->img[12]);
+	putimage(0, 0, &this->img[24]);
 	putimage(0, 0, &this->img[7]);
 	string text;
-	settextstyle(20, 20, "宋体");
 	settextcolor(BLACK);
-	text = "  姓名";
-	outtextxy(50, 100, text.c_str());
-	text = "  得分";
-	outtextxy(150, 100, text.c_str());
-	text = "  用时";
-	outtextxy(275, 100, text.c_str());
 	settextstyle(15, 15, "宋体");
 	for (int i = 0; i < 6; i++)
 	{
@@ -3188,13 +3279,13 @@ void Mananger::DGrankP()
 			}
 		);
 		text = to_string(i + 1);
-		outtextxy(25, 125 + i * 25, text.c_str());
+		outtextxy(100, 125 + i * 25, text.c_str());
 		text = rank[0].GetName();
-		outtextxy(75, 125 + i * 25, text.c_str());
+		outtextxy(275, 125 + i * 25, text.c_str());
 		text = to_string(rank[0].Getscore()[i]);
-		outtextxy(225, 125 + i * 25, text.c_str());
+		outtextxy(400, 125 + i * 25, text.c_str());
 		text = to_string(int(rank[0].gettime()[i]));
-		outtextxy(350, 125 + i * 25, text.c_str());
+		outtextxy(500, 125 + i * 25, text.c_str());
 	}
 	while (1)
 	{
@@ -3212,49 +3303,33 @@ void Mananger::DGrankP()
 void Mananger::checkmessageP()
 {
 	cleardevice();
-	initgraph(750, 750);
+	initgraph(800, 600);
 	setbkmode(TRANSPARENT);
 	putimage(0, 0, &this->img[10]);
-	setfillcolor(WHITE);
-	fillrectangle(0, 0, 750, 750);
-	settextstyle(20, 20, "宋体");
-	settextcolor(BLACK);
+	settextstyle(40, 40, "宋体");
+	settextcolor(BLUE);
 	string text;
-	text = "  名字：";
-	outtextxy(0, 150, text.c_str());
 	text = this->p1.GetName();
 	outtextxy(150, 150, text.c_str());
-	text = "  关卡：";
-	outtextxy(0, 175, text.c_str());
-	settextstyle(15, 15, "宋体");
+	settextstyle(30, 30, "宋体");
 	for (int i = 0; i < 10; i++)
 	{
-		outtextxy(150 + i * 60, 175, to_string(i + 1).c_str());
+		outtextxy(160 + i * 60, 220, to_string(i + 1).c_str());
 	}
-	settextstyle(20, 20, "宋体");
-	text = "准确率：";
-	outtextxy(0, 200, text.c_str());
-	settextstyle(15, 15, "宋体");
 	for (int i = 0; i < this->p1.Getaccuracy().size(); i++)
 	{
 		int num = this->p1.Getaccuracy()[i] * 100;
 		text = to_string(num) + "%";
-		outtextxy(150 + i * 60, 200, text.c_str());
+		outtextxy(160 + i * 60, 300, text.c_str());
 	}
-	settextstyle(20, 20, "宋体");
-	text = "  得分：";
-	outtextxy(0, 225, text.c_str());
-	settextstyle(15, 15, "宋体");
 	for (int i = 0; i < this->p1.Getscore().size(); i++)
 	{
 		text = to_string(this->p1.Getscore()[i]);
-		outtextxy(150 + i * 60, 225, text.c_str());
+		outtextxy(160 + i * 60, 378, text.c_str());
 	}
-	settextstyle(20, 20, "宋体");
-	text = "无尽得分：";
-	outtextxy(0, 250, text.c_str());
 	text = to_string(this->p1.getnoendscore());
-	outtextxy(250, 250, text.c_str());
+	settextstyle(40, 40, "宋体");
+	outtextxy(300, 467, text.c_str());
 	putimage(0, 0, &this->img[7]);
 	while (1)
 	{
@@ -3265,106 +3340,6 @@ void Mananger::checkmessageP()
 			RunChoose();
 			break;
 		}
-	}
-}
-void Mananger::PlayerGreatgame()
-{
-	game playergame;
-	int number1 = 0;
-	cout << "请输入行动步数（不包括起点）:" << endl;
-	cin >> number1;
-	playergame.setrun(number1 + 1);
-	playergame.setzihzhen();
-	cleardevice();
-	initgraph(1000, 729);
-	setbkmode(TRANSPARENT);
-	button** b1 = new button * [25];
-	for (int i = 0; i < 25; i++)
-	{
-		b1[i] = new button[25];
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++)
-		{
-			b1[i][j] = this->GQbutton[i][j];
-		}
-	}
-	BeginBatchDraw();
-	putimage(0, 0, &this->img[3]);
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
-	}
-	EndBatchDraw();
-	for (int i = 0; i < playergame.getrun(); i++)
-	{
-		ExMessage msg;
-		while (true)
-		{
-			if (peekmessage(&msg, EX_MOUSE))
-			{
-				if (msg.message == WM_LBUTTONDOWN)
-				{
-					int k = (msg.x - GQbuttonbeginlength) / 25;
-					int j = (msg.y - GQbuttonbeginwidth) / 25;
-					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
-					{
-						playergame.getp1array()[i].getx() = k;
-						playergame.getp1array()[i].gety() = j;
-						b1[k][j].revisecolor() = YELLOW;
-						b1[k][j].drawgamebutton(i + 1, BLACK);
-						b1[k][j].reviseyellowifpass();
-						b1[k][j].returnrepeterun1() = i + 1;
-						break;
-					}
-				}
-			}
-		}
-	}
-	for (int i = 0; i < playergame.getrun(); i++)
-	{
-		ExMessage msg;
-		while (true)
-		{
-			if (peekmessage(&msg, EX_MOUSE))
-			{
-				if (msg.message == WM_LBUTTONDOWN)
-				{
-					int k = (msg.x - GQbuttonbeginlength) / 25;
-					int j = (msg.y - GQbuttonbeginwidth) / 25;
-					if (j >= 0 && j <= 25 && k >= 0 && k <= 25)
-					{
-						playergame.getp2array()[i].getx() = k;
-						playergame.getp2array()[i].gety() = j;
-						b1[k][j].repeter1.push_back(i + 1);
-						b1[k][j].revisecolor() = GREEN;
-						b1[k][j].revisegreenifpass();
-						b1[k][j].returnrepeterun2() = i + 1;
-						if (b1[k][j].repeter1.size() == 1 && b1[k][j].returnyellowifpass() != true)
-						{
-							b1[k][j].drawgamebutton(b1[k][j].repeter1[0], BLACK);
-						}
-						else
-						{
-
-							b1[k][j].drawmyrepete(BLACK);
-						}
-					}
-					break;
-				}
-			}
-		}
-	}
-	closegraph();
-	if (ifOKCreat(playergame))
-	{
-		PlayercreatrGame(playergame);
-	}
-	else
-	{
-		cout << "您创造的游戏因技术有限越界了，请重新创建，两路径坐标差不要太大" << endl;
-		PlayerGreatgame();
 	}
 }
 void Mananger::challengegame()
@@ -3378,7 +3353,13 @@ void Mananger::challengegame()
 	button b2(150, 220, 100, 50, "困难");
 	button b3(150, 270, 100, 50, "史诗");
 	button b4(150, 320, 100, 50, "传说");
-	b0.drawbutton1();
+	COLORREF c1 = RGB(242, 217, 151);
+	b0.revisecolor() = c1;
+	b1.revisecolor() = c1;
+	b2.revisecolor() = c1;
+	b3.revisecolor() = c1;
+	b4.revisecolor() = c1;
+	b4.drawbutton1();
 	b1.drawbutton1();
 	b2.drawbutton1();
 	b3.drawbutton1();
@@ -3458,12 +3439,6 @@ void Mananger::challengegame()
 	}
 	}
 
-}
-void Mananger::noendchallenge()
-{
-	int i = 1;
-	bool x = 1;
-	randomcreatgame(i + 1);
 }
 Mananger::Mananger()
 {
