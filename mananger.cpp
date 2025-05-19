@@ -341,24 +341,6 @@ void Mananger::CheckMessage( player&p1)
 {
 	p1.CheckMessage();
 }
-void Mananger::GameShowmess1(game& g1)
-{
-	g1.setp2relative(g1.getp2relative(), g1.getp2array(), g1.getp1array(), g1.getrun());
-	g1.DisplayRelativeMove(g1.getp1array(), g1.getp2relative());
-	bool a = g1.IfYes(g1.getrun(), g1.getp2array());
-	if (a)
-	{
-		
-		cout << "游戏挑战成功，棒棒的。" << endl;
-
-	}
-	else{
-				cout << "挑战结束" << endl;
-
-		}
-
-	
-}
 void Mananger::creatgame2()
 {
 	game g2;
@@ -1503,6 +1485,10 @@ void Mananger::loadgameP()
 	loadimage(&this->Move[1], "C:/Users/pcuser/Desktop/实训/创左.jpg", 50, 50);
 	loadimage(&this->Move[2], "C:/Users/pcuser/Desktop/实训/创右.jpg", 50, 50);
 	loadimage(&this->Move[3], "C:/Users/pcuser/Desktop/实训/创上.jpg", 50, 50);
+	loadimage(&this->ymimg[0], "C:/Users/pcuser/Desktop/实训/撤回图片掩码.jpg", 50, 50);
+	loadimage(&this->ymimg[1], "C:/Users/pcuser/Desktop/实训/芙宁娜胜利ym.png", 800, 600);
+	loadimage(&this->ymimg[2], "C:/Users/pcuser/Desktop/实训/下一关按钮掩码.jpg", 200, 100);
+	loadimage(&this->ymimg[3], "C:/Users/pcuser/Desktop/实训/保存按钮图片掩码.jpg", 50, 50);
 }
 void Mananger::loadChooseGQmenu()
 {
@@ -1598,7 +1584,8 @@ void Mananger::ChooseGame()
 	setbkmode(TRANSPARENT);
 	bool x = 0;
 	putimage(0, 0, &this->img[2]);
-	putimage(0, 0, &this->img[7]);
+	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+	putimage(0, 0, &this->img[7],SRCINVERT);
 	putimage(575, 100, &this->img[18]);
 	putimage(375, 100, &this->img[18]);
 	putimage(175, 100, &this->img[18]);
@@ -1825,7 +1812,8 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 {
 
 	putimage(0, 679, &this->img[6]);
-	putimage(50, 679, &this->img[7]);
+	putimage(50, 679, &this->ymimg[0], NOTSRCERASE);
+	putimage(50, 679, &this->img[7],SRCINVERT);
 	people* p3array = new people[g1.getrun()];
 	button** b2 = new button * [25];
 	for (int i = 0; i < 25; i++)
@@ -2179,9 +2167,12 @@ void Mananger::drawYesP(game& g1)
 	{
 		BeginBatchDraw();
 		putimage(0, 0, &this->img[17]);
-		putimage(0, 0, &this->img[4]);
-		putimage(600, 500, &this->img[19]);
-		putimage(0, 0, &this->img[7]);
+		putimage(0, 0, &this->ymimg[1], NOTSRCERASE);
+		putimage(0, 0, &this->img[4],SRCINVERT);
+		putimage(600, 500, &this->ymimg[2], NOTSRCERASE);
+		putimage(600, 500, &this->img[19],SRCINVERT);
+		putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+		putimage(0, 0, &this->img[7],SRCINVERT);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
 		if (ifinimage(msg,this->img[7],0,0))
@@ -2211,8 +2202,10 @@ void Mananger::drawYesPChallenge(game& g1)
 	{
 		BeginBatchDraw();
 		putimage(0, 0, &this->img[17]);
-		putimage(0, 0, &this->img[4]);
-		putimage(0, 0, &this->img[7]);
+		putimage(0, 0, &this->ymimg[1], NOTSRCERASE);
+		putimage(0, 0, &this->img[4],SRCINVERT);
+		putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+		putimage(0, 0, &this->img[7],SRCINVERT);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
 		if (ifinimage(msg, this->img[7], 0, 0))
@@ -2230,15 +2223,17 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 	initgraph(800, 600);
 	setbkmode(TRANSPARENT);
 	setbkcolor(WHITE);
-	button b2(250, 50, 300, 50, "保存");
 	bool x = 0;
 	while (!x)
 	{
 		BeginBatchDraw();
 		putimage(0, 0, &this->img[17]);
-		putimage(0, 0, &this->img[4]);
-		putimage(0, 0, &this->img[7]);
-		putimage(0, 50, &this->img[20]);
+		putimage(0, 0, &this->ymimg[1], NOTSRCERASE);
+		putimage(0, 0, &this->img[4], SRCINVERT);
+		putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+		putimage(0, 0, &this->img[7], SRCINVERT);
+		putimage(0, 50, &this->ymimg[3], NOTSRCERASE);
+		putimage(0, 50, &this->img[20],SRCINVERT);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
 		if (ifinimage(msg, this->img[7], 0, 0))
@@ -2292,9 +2287,10 @@ void Mananger::drawYesP(const int& i)
 	{
 		BeginBatchDraw();
 		putimage(0, 0, &this->img[17]);
-		putimage(0, 0, &this->img[4]);
-		//putimage(600, 500, &this->img[19]);
-		putimage(0, 0, &this->img[7]);
+		putimage(0, 0, &this->ymimg[1], NOTSRCERASE);
+		putimage(0, 0, &this->img[4], SRCINVERT);
+		putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+		putimage(0, 0, &this->img[7], SRCINVERT);
 		b2.drawbutton();
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
@@ -2321,7 +2317,8 @@ void Mananger::drawNoMyCreate()
 		int number = 0;
 		BeginBatchDraw();
 		putimage(0, 0, &this->img[5]);
-		putimage(0, 0, &this->img[7]);
+		putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+		putimage(0, 0, &this->img[7], SRCINVERT);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
 		if (ifinimage(msg, this->img[7], 0, 0))
@@ -2347,7 +2344,8 @@ void Mananger::drawNoP(game& g1)
 		int number = 0;
 		BeginBatchDraw();
 		putimage(0, 0, &this->img[5]);
-		putimage(0, 0, &this->img[7]);
+		putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+		putimage(0, 0, &this->img[7], SRCINVERT);
 		b4.drawbuttonwithPic(&this->img[15]);
 		b5.drawbuttonwithPic(&this->img[15]);
 		EndBatchDraw();
@@ -2387,7 +2385,8 @@ void Mananger::drawNoP(game& g1)
 			while (m) {
 				BeginBatchDraw();
 				putimage(0, 0, &this->img[3]);
-				putimage(0, 0, &this->img[7]);
+				putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+				putimage(0, 0, &this->img[7], SRCINVERT);
 				for (int i = 0; i < 25; i++)
 				{
 					for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
@@ -2460,7 +2459,8 @@ void Mananger::drawNoP(game& g1, const int& i)
 		int number = 0;
 		BeginBatchDraw();
 		putimage(0, 0, &this->img[5]);
-		putimage(0, 0, &this->img[7]);
+		putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+		putimage(0, 0, &this->img[7], SRCINVERT);
 		b4.drawbuttonwithPic(&this->img[15]);
 		b5.drawbuttonwithPic(&this->img[15]);
 		b2.drawbutton();
@@ -2496,7 +2496,8 @@ void Mananger::drawNoP(game& g1, const int& i)
 			while (m) {
 				BeginBatchDraw();
 				putimage(0, 0, &this->img[3]);
-				putimage(0, 0, &this->img[7]);
+				putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+				putimage(0, 0, &this->img[7], SRCINVERT);
 				for (int i = 0; i < 25; i++)
 				{
 					for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
@@ -2527,7 +2528,8 @@ void Mananger::PTrankP()
 	initgraph(600, 700);
 	setbkmode(TRANSPARENT);
 	putimage(0, 0, &this->img[21]);
-	putimage(0, 0, &this->img[7]);
+	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+	putimage(0, 0, &this->img[7], SRCINVERT);
 	string text;
 	settextcolor(BLACK);
 	settextstyle(15, 15, "宋体");
@@ -2561,7 +2563,8 @@ void Mananger::rankP()
 	initgraph(600, 700);
 	setbkmode(TRANSPARENT);
 	putimage(0, 0, &this->img[11]);
-	putimage(0, 0, &this->img[7]);
+	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+	putimage(0, 0, &this->img[7], SRCINVERT);
 	button b1(200, 250, 200, 50, "普通排行");
 	button b2(200, 300, 200, 50, "无尽排行");
 	button b3(200, 350, 200, 50, "单关排行");
@@ -3176,7 +3179,8 @@ void Mananger::CreateMode()
 	button b1(200, 200, 200, 50, "自建关卡");
 	button b2(200, 250, 200, 50, "创意总站");
 	putimage(0, 0, &this->img[9]);
-	putimage(0, 0, &this->img[7]);
+	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+	putimage(0, 0, &this->img[7], SRCINVERT);
 	b1.drawbuttonwithPic(&this->img[23]);
 	b2.drawbuttonwithPic(&this->img[23]);
 	while (1) {
@@ -3365,7 +3369,8 @@ void Mananger::challengegame()
 	b3.drawbutton1();
 	b4.drawbutton1();
 	int number;
-	putimage(0, 0, &this->img[7]);
+	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+	putimage(0, 0, &this->img[7], SRCINVERT);
 	while (1) {
 		ExMessage msg = getmousemessage();
 		BeginBatchDraw();
