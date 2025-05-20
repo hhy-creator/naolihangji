@@ -76,6 +76,7 @@ public:
 	bool& revisecreateifpass();
 	bool& reviseMycreateifpass();
 	bool& revisebombpass();
+	bool& reviseCreateModeifpass();
 private:
 	int x;
 	int y;
@@ -92,6 +93,7 @@ private:
 	int bushu;
 	bool ifokclick=1;
 	bool createifpass=0;
+	bool CreateModeIfpass = 0;
 	bool Mycreateifpass = 0;
 	bool bombpass = 0;
 };
