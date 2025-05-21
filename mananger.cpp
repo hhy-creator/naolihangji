@@ -1299,8 +1299,29 @@ void Mananger::PlayerGreatgame()
 {
 	game playergame;
 	int number1 = 0;
-	cout << "请输入行动步数（不包括起点）:" << endl;
-	cin >> number1;
+	char buffer[256] = { '0'};
+	buffer[0] = '0';
+	buffer[2] = '0';
+	initgraph(640, 480);
+	setbkmode(TRANSPARENT);
+	IMAGE i1;
+	loadimage(&i1, "C:/Users/pcuser/Desktop/实训/获取输入背景.jpg", 640, 480);
+	putimage(0, 0, &i1);
+	InputBox(buffer, 256, _T("请输入步数大小（不包括起点）:"), _T("欢迎创建游戏"), _T("确定"));
+	if (buffer[1] > '0'||(buffer[0]=='1'&&buffer[1]=='0'))
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			number1 *= 10;
+			number1 += buffer[i] - 48;
+		}
+	}
+	else 
+	{
+		number1 = buffer[0] - 48;
+	}
+	closegraph();
+
 	playergame.setrun(number1 + 1);
 	playergame.setzihzhen();
 	cleardevice();
@@ -1481,6 +1502,7 @@ void Mananger::loadgameP()
 	loadimage(&this->img[22], "C:/Users/pcuser/Desktop/实训/无尽排行图片.jpg", 600, 700);
 	loadimage(&this->img[24], "C:/Users/pcuser/Desktop/实训/单关排行图片.jpg", 600, 700);
 	loadimage(&this->img[25], "C:/Users/pcuser/Desktop/实训/失败背景.jpg", 800, 600);
+
 	loadimage(&this->img[13], "C:/Users/pcuser/Desktop/实训/创意小船.jpg", 25, 25);
 	loadimage(&this->img[14], "C:/Users/pcuser/Desktop/实训/创意炸弹.jpg", 25, 25);
 	loadimage(&this->img[15], "C:/Users/pcuser/Desktop/实训/按钮背景.jpg", 200, 50);
@@ -1786,7 +1808,9 @@ bool button::returnyellowifpass()
 }
 void Mananger::drawanswerroad(people*& p2, const int& run, button**& b1)
 {
-	for (int i = 0; i < run; i++)
+	b1[p2[0].returnx()][p2[0].returny()].revisecolor() = RED;
+	b1[p2[0].returnx()][p2[0].returny()].drawgamebutton(1, BLACK);
+	for (int i = 1; i < run; i++)
 	{
 
 		b1[p2[i].returnx()][p2[i].returny()].revisecolor() = RED;
@@ -2641,6 +2665,8 @@ void Mananger::Mycreate()
 		randomgame.getp2().SetPeopleBeginPos(xfinal, yfinal);
 		randomgame.getp1array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
 		randomgame.getp2array()[number1 - 1].SetPeopleBeginPos(xfinal, yfinal);
+		int a[25][25]{0};
+		a[xfinal][yfinal] = 1;
 		for (int i = number1 - 2; i >= 0;)
 		{
 			int number1 = rand() % 4;
@@ -2650,9 +2676,10 @@ void Mananger::Mycreate()
 			{
 				randomgame.getp1().Movepeople(UP);
 				randomgame.getp1array()[i] = randomgame.getp1();
-				if (randomgame.ifpass(randomgame.getp1array(), i))
+				if (randomgame.ifpass(randomgame.getp1array(), i)&&a[randomgame.getp1().returnx()][randomgame.getp1().returny()==0])
 				{
 					i--;
+					a[randomgame.getp1().returnx()][randomgame.getp1().returny()] = 1;
 				}
 				else randomgame.getp1().Movepeople(DOWN);
 				break;
@@ -2661,9 +2688,10 @@ void Mananger::Mycreate()
 			{
 				randomgame.getp1().Movepeople(DOWN);
 				randomgame.getp1array()[i] = randomgame.getp1();
-				if (randomgame.ifpass(randomgame.getp1array(), i))
+				if (randomgame.ifpass(randomgame.getp1array(), i)&& a[randomgame.getp1().returnx()][randomgame.getp1().returny()] ==0)
 				{
 					i--;
+					a[randomgame.getp1().returnx()][randomgame.getp1().returny()] = 1;
 				}
 				else randomgame.getp1().Movepeople(UP);
 				break;
@@ -2672,9 +2700,10 @@ void Mananger::Mycreate()
 			{
 				randomgame.getp1().Movepeople(LEFT);
 				randomgame.getp1array()[i] = randomgame.getp1();
-				if (randomgame.ifpass(randomgame.getp1array(), i))
+				if (randomgame.ifpass(randomgame.getp1array(), i)&& a[randomgame.getp1().returnx()][randomgame.getp1().returny()] ==0)
 				{
 					i--;
+					a[randomgame.getp1().returnx()][randomgame.getp1().returny()] = 1;
 				}
 				else randomgame.getp1().Movepeople(RIGHT);
 				break;
@@ -2683,9 +2712,10 @@ void Mananger::Mycreate()
 			{
 				randomgame.getp1().Movepeople(RIGHT);
 				randomgame.getp1array()[i] = randomgame.getp1();
-				if (randomgame.ifpass(randomgame.getp1array(), i))
+				if (randomgame.ifpass(randomgame.getp1array(), i)&& a[randomgame.getp1().returnx()][randomgame.getp1().returny()] ==0)
 				{
 					i--;
+					a[randomgame.getp1().returnx()][randomgame.getp1().returny()] = 1;
 				}
 				else randomgame.getp1().Movepeople(LEFT);
 				break;
