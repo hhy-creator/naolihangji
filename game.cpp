@@ -232,6 +232,7 @@ void game::writegame(const std::string&name)
 		cout << "文件打开失败" << endl;
 		return;
 	}
+	os << endl;
 	for (int i = 0; i < name.size(); i++)
 	{
 		os <<name[i];
@@ -247,6 +248,27 @@ void game::writegame(const std::string&name)
 		os << this->p2array[i].getx() << " " << this->p2array[i].gety() << " ";
 	}
 	os.close();
+}
+game::game() 
+{
+
+}
+game::game(const game& g1) 
+{
+	this->run = g1.run;
+	this->setzihzhen();
+	for (int i = 0; i < this->run; i++)
+	{
+		this->p1array[i].getx() = g1.returnp1arr()[i].returnx();
+		this->p1array[i].gety() = g1.returnp1arr()[i].returny();
+		this->p2array[i].getx() = g1.returnp2arr()[i].returnx();
+		this->p2array[i].gety() = g1.returnp2arr()[i].returny();
+		this->p2relative[i].getx() = g1.returnp2rearr()[i].returnx();
+		this->p2relative[i].gety() = g1.returnp2rearr()[i].returny();
+	}
+	this->p1 = g1.p1;
+	this->p2 = g1.p2;
+	
 }
 game& game::operator=(const game& g1) 
 {

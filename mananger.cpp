@@ -141,21 +141,56 @@ void Mananger::PuTongRank(vector<player>& p1)
 }
 void Mananger::recordmessagetxt() 
 {
-	ofstream ofs("D:/脑力航迹/playermessgae.txt", ios::app);
+	ofstream ofs("C:/Users/pcuser/Desktop/实训/playermessage.txt",ios::out);
 	if (!ofs.is_open())
 	{
 		cout << "文件打开失败" << endl;
 		return;
 	}
-	this->p1.serializetxt(ofs);
+	bool ifnoadd = 0;
+	for (int i = 0; i < this->rank.size(); i++)
+	{
+		if (this->p1 == rank[i])
+		{
+			this->rank[i] =this-> p1;
+			ifnoadd = 1;
+		}
+	}
+	if (!ifnoadd) 
+	{
+		this->rank.push_back(this->p1);
+	}
+	for (int i = 0; i < this->rank.size(); i++) 
+	{
+		this->rank[i].serializetxt(ofs);
+	}
 	ofs.close();
+}
+void Mananger::dlOrZc() 
+{
+	readplayermessagetxt();
+	for (int i = 0; i < this->rank.size(); i++) 
+	{
+		if (this->p1 == rank[i]) 
+		{
+			this->p1.gettime() = rank[i].gettime();
+			this->p1.getnoendscore() = rank[i].getnoendscore();
+			this->p1.Getaccuracy() = rank[i].Getaccuracy();
+			this->p1.Getscore() = rank[i].Getscore();
+			this->p1.Getright() = rank[i].Getright();
+			this->p1.Getwrong() = rank[i].Getwrong();
+			this->p1.revisetimeall() = rank[i].returntimeall();
+			this->p1.revisescoreall() = rank[i].returnscoreall();
+			break;
+		}
+	}
 }
 vector<player>& Mananger::readplayermessagetxt(){
 	if (this->rank.size() != 0) 
 	{
 		this->rank.resize(0);
 	}
-	ifstream is("D:/脑力航迹/playermessgae.txt");
+	ifstream is("C:/Users/pcuser/Desktop/实训/playermessage.txt");
 	if (!is.is_open())
 	{
 		cout << "文件打开失败" << endl;
@@ -169,6 +204,9 @@ vector<player>& Mananger::readplayermessagetxt(){
 		is >> id;
 		if (id != "") {
 			p1.GetName() = id;
+			string passw;
+			is >> passw;
+			p1.revisepassword() = passw;
 			for (int i = 0; i < p1.gettime().size(); i++)
 			{
 				is >> p1.gettime()[i];
@@ -233,9 +271,7 @@ vector<gameku>& Mananger::readgamekutxt()
 			{
 				is >> g2.g1.getp2array()[i].getx() >> g2.g1.getp2array()[i].gety();
 			}
-			this->gameall.resize(gamenumber);
-			this->gameall[gamenumber - 1] = g2;
-			gamenumber++;
+			this->gameall.push_back(g2);
 		}
 	}
 	is.close();
@@ -2008,8 +2044,6 @@ void Mananger::createGameP(game& g1, const int& i)
 			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
 			closegraph();
 			drawYesP(i);
-
-			ChooseGame();
 			break;
 		}
 		else
@@ -2066,7 +2100,7 @@ void Mananger::createGameP(game& g1)
 		{
 			x = 0;
 			closegraph();
-			this->p1.getnoendscore() += 100;
+			this->p1.getnoendscore() =max((g1.getrun()-1)* 100,this->p1.getnoendscore());
 			drawYesP(g1);
 			bool a = 1;
 			break;
@@ -2335,7 +2369,7 @@ void Mananger::drawYesP(const int& i)
 		if (ifinimage(msg, this->img[7], 0, 0))
 		{
 			closegraph();
-			RunChoose();
+			ChooseGame();
 			x = 1;
 		}
 
@@ -3526,5 +3560,6 @@ Mananger::Mananger()
 	loadGamebk();
 	loadgameP();
 	setbutton();
+	dlOrZc();
 
 }

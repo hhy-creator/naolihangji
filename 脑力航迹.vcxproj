@@ -30,7 +30,6 @@
     <ClCompile Include="player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="playermessgae.txt" />
     <Text Include="game.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -7,20 +7,44 @@ using namespace std;
 player& player::SetName()
 {
 	string name="";
+	string password = "";
 	char buffer[256] = { 0 };
+	char buffer1[256] = { 0 };
 	initgraph(640, 480);
 	setbkmode(TRANSPARENT);
 	IMAGE i1;
 	loadimage(&i1, "C:/Users/pcuser/Desktop/实训/获取输入背景.jpg", 640, 480);
 	putimage(0, 0, &i1);
-	InputBox(buffer,256, _T("请输入姓名:"), _T("请创建用户"), _T("确定"));
+	InputBox(buffer,256, _T("请输入姓名:"), _T("请创建or登陆用户"), _T("确定"));
 	for (int i = 0; i <14; i++) 
 	{
 		name += buffer[i];
 	}
+	InputBox(buffer1, 256, _T("请输入密码:"), _T("下一步"), _T("确定"));
+	for (int i = 0; i < 14; i++)
+	{
+		password += buffer1[i];
+	}
 	closegraph();
 	this->name = name;
+	this->password = password;
 	return *this;
+}
+bool player::operator==(const player& p1) 
+{
+	if (this->name == p1.name && this->password == p1.password) 
+	{
+		return true;
+	}
+	return false;
+}
+double& player::revisetimeall()
+{
+	return this->timeall;
+}
+int& player::revisescoreall()
+{
+	return this->scoreall;
 }
 double player::returntimeall() 
 {
@@ -40,6 +64,10 @@ int player::returnscoreall()
 	}
 	return this->scoreall;
 }
+string& player::revisepassword() 
+{
+	return this->password;
+}
 string& player::GetName() 
 {
 	return this->name;
@@ -52,64 +80,20 @@ vector<double> player::returngettime() const
 {
 	return this->time;
 }
-void player::serialize(std::ostream& os) const {
-	// 写入 name
-	os.write(reinterpret_cast<const char*>(&this->name), sizeof(this->name));
-
-	// 写入 time 向量
-	for (int i = 0; i < this->time.size(); i++) 
-	{
-		double m = time[i];
-		os.write(reinterpret_cast<const char*>(&m), sizeof(double));
-	}
-
-
-
-	// 写入 score 向量
-	
-	for (int i = 0; i < this->score.size(); i++)
-	{
-		int m = score[i];
-		os.write(reinterpret_cast<const char*>(&m), sizeof(int));
-	}
-	// 写入 noendscore
-	os.write(reinterpret_cast<const char*>(&this->noendscore), sizeof(int));
-}
-void  player::deserialize(std::istream& is) {
-	player p1(0);
-    // 读取name
-	string name;
-	is.read(reinterpret_cast<char*>(&name),sizeof(name));
-	p1.name = name;
-    // 读取vector<double> time
-	for (int i = 0; i < p1.gettime().size(); i++)
-	{
-		double m;
-		is.read(reinterpret_cast<char*>(&m), sizeof(double));
-		p1.gettime()[i] = m;
-	}
-
-	for (int i = 0; i < p1.score.size(); i++)
-	{
-		double m;
-		is.read(reinterpret_cast<char*>(&m), sizeof(double));
-		p1.gettime()[i] = m;
-	}
-
-    // 读取noendscore
-	int m;
-	is.read(reinterpret_cast<char*>(&p1.noendscore), sizeof(int));
-	
-	p1.CheckMessage();
-}
 void player::serializetxt(std::ostream& os) const 
 {
 	// 写入 name
+	os << endl;
 	for (int i = 0; i < this->name.size(); i++) 
 	{
 		os << this->name[i];
 	}
 	os << endl;
+	for (int i = 0; i < this->password.size(); i++)
+	{
+		os << this->password[i];
+	}
+	//os << endl;
 	// 写入 time 向量
 	for (int i = 0; i < this->time.size(); i++)
 	{
@@ -175,7 +159,7 @@ void player::deserializetxt(std::istream& is)
 
 	p1.CheckMessage();
 }
-player::player(int) :name(""), noendscore(0)
+player::player(int) :name(""), noendscore(0),password("0")
 {
 	name.resize(32);
 	for (int i = 0; i < 10; i++)

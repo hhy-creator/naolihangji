@@ -12,14 +12,14 @@ class player
 {
 public:
 	player(int);
+	bool operator==(const player&p1);
 	player();
-	void serialize(std::ostream& os) const;
-	void deserialize(std::istream& is);
 	void serializetxt(std::ostream& os) const;
 	void deserializetxt(std::istream& is);
 	void CheckMessage();
 	player& SetName();
 	string& GetName();
+	string& revisepassword();
 	void AddRight(vector<int>&, const int&);
 	void AddWrong(vector<int>&, const int&);
 	void CalAccuracy(const vector<int>&,const vector<int>&, vector<double>&);
@@ -37,8 +37,11 @@ public:
 	int getnoend()const;
 	double returntimeall();
 	int returnscoreall();
+	double& revisetimeall();
+	int& revisescoreall();
 private:
 	string name;
+	string password;
 	vector<double >time;
 	vector<double>accuracy;
 	vector<int>score;

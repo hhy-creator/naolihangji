@@ -164,6 +164,7 @@ public:
 	void PTrankP();
 	void WJrankP();
 	void DGrankP();
+	void dlOrZc();
 private:
 	int choose;
 	int level;

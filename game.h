@@ -8,6 +8,7 @@ class people
 {
 public:
 	people() :x(0), y(0) {}
+
 	void DisplayMessage(const people&)const;
 	void SetPeopleBeginPos(const int&, const int&);
 	void Movepeople(const Direction& heading);
@@ -24,6 +25,9 @@ class game
 
 public:
 	~game();
+
+	game(const game& g1);
+	game();
 	game& operator=(const game&g1);
 	void DisplayRelativeMove(people*&, people*&)const;
 	bool IfYes(int, people*&);
@@ -44,7 +48,6 @@ public:
 	people* returnp2arr()const;
 	people* returnp2rearr()const;
 	void writegame(const std::string&);
-	void readgame(const std::string,game&);
 private:
 	people p1, p2;
 	int run;
