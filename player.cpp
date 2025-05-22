@@ -93,7 +93,7 @@ void player::serializetxt(std::ostream& os) const
 	{
 		os << this->password[i];
 	}
-	//os << endl;
+	os << endl;
 	// Ð´Èë time ÏòÁ¿
 	for (int i = 0; i < this->time.size(); i++)
 	{

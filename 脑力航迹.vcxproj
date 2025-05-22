@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="game.txt" />
+    <Text Include="playermessage.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

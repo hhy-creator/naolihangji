@@ -141,7 +141,7 @@ void Mananger::PuTongRank(vector<player>& p1)
 }
 void Mananger::recordmessagetxt() 
 {
-	ofstream ofs("C:/Users/pcuser/Desktop/实训/playermessage.txt",ios::out);
+	ofstream ofs("playermessage.txt",ios::out);
 	if (!ofs.is_open())
 	{
 		cout << "文件打开失败" << endl;
@@ -190,7 +190,7 @@ vector<player>& Mananger::readplayermessagetxt(){
 	{
 		this->rank.resize(0);
 	}
-	ifstream is("C:/Users/pcuser/Desktop/实训/playermessage.txt");
+	ifstream is("playermessage.txt");
 	if (!is.is_open())
 	{
 		cout << "文件打开失败" << endl;
@@ -3317,7 +3317,8 @@ void Mananger::WJrankP()
 	initgraph(600, 700);
 	setbkmode(TRANSPARENT);
 	putimage(0, 0, &this->img[22]);
-	putimage(0, 0, &this->img[7]);
+	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+	putimage(0, 0, &this->img[7], SRCINVERT);
 	string text;
 	settextstyle(15, 15, "宋体");
 	settextcolor(BLACK);
@@ -3349,7 +3350,8 @@ void Mananger::DGrankP()
 	initgraph(600, 700);
 	setbkmode(TRANSPARENT);
 	putimage(0, 0, &this->img[24]);
-	putimage(0, 0, &this->img[7]);
+	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+	putimage(0, 0, &this->img[7], SRCINVERT);
 	string text;
 	settextcolor(BLACK);
 	settextstyle(15, 15, "宋体");
