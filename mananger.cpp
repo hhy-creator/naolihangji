@@ -244,7 +244,7 @@ vector<gameku>& Mananger::readgamekutxt()
 	{
 		this->gameall.resize(0);
 	}
-	ifstream is("D:/脑力航迹/game.txt");
+	ifstream is("game.txt");
 	if (!is.is_open())
 	{
 		cout << "文件打开失败" << endl;
@@ -1343,10 +1343,10 @@ void Mananger::PlayerGreatgame()
 		initgraph(640, 480);
 		setbkmode(TRANSPARENT);
 		IMAGE i1;
-		loadimage(&i1, "C:/Users/pcuser/Desktop/实训/获取输入背景.jpg", 640, 480);
+		loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
 		putimage(0, 0, &i1);
 		InputBox(buffer, 256, _T("请输入步数大小（不包括起点）:"), _T("欢迎创建游戏"), _T("确定"));
-		if (buffer[1] >= '0' && buffer[1] <= '9' && buffer[0] >= '0' && buffer[0] <= '9') 
+		if ((buffer[1] >= '0' && buffer[1] <= '9' && buffer[0] >= '0' && buffer[0] <= '9')|| (buffer[1] == '\0' && buffer[0] >= '0' && buffer[0] <= '9'))
 		{
 			break;
 		}
@@ -1518,41 +1518,41 @@ void Mananger::creatgame1()
 }
 void Mananger::loadgameP() 
 {
-	loadimage(&this->img[0], "C:/Users/pcuser/Desktop/实训/开始界面.jpg", 900, 700);
-	loadimage(&this->img[1], "C:/Users/pcuser/Desktop/实训/规则介绍.jpg", 900, 600);
-	loadimage(&this->img[3], "C:/Users/pcuser/Desktop/实训/关卡背景图.jpg", 1000, 729);
-	loadimage(&this->img[2], "C:/Users/pcuser/Desktop/实训/关卡选择界面.jpg", 900, 600);
-	loadimage(&this->img[4], "C:/Users/pcuser/Desktop/实训/芙宁娜胜利.png", 800, 600);
-	loadimage(&this->img[5], "C:/Users/pcuser/Desktop/实训/芙宁娜失败.jpg", 800, 600);
-	loadimage(&this->img[6], "C:/Users/pcuser/Desktop/实训/提示图片.jpg",50,50);
-	loadimage(&this->img[7], "C:/Users/pcuser/Desktop/实训/撤回图片.jpg", 50, 50);
-	loadimage(&this->img[8], "C:/Users/pcuser/Desktop/实训/挑战模式.jpg", 400, 600);
-	loadimage(&this->img[9], "C:/Users/pcuser/Desktop/实训/创造模式背景.jpg", 600, 600);
-	loadimage(&this->img[10], "C:/Users/pcuser/Desktop/实训/自身消息.jpg", 800, 600);
-	loadimage(&this->img[11], "C:/Users/pcuser/Desktop/实训/查看信息背景.jpg", 600, 700);
-	loadimage(&this->img[12], "C:/Users/pcuser/Desktop/实训/排行榜.jpg", 600, 700);
-	loadimage(&this->img[21], "C:/Users/pcuser/Desktop/实训/普通排行图片.jpg", 600, 700);
-	loadimage(&this->img[22], "C:/Users/pcuser/Desktop/实训/无尽排行图片.jpg", 600, 700);
-	loadimage(&this->img[24], "C:/Users/pcuser/Desktop/实训/单关排行图片.jpg", 600, 700);
-	loadimage(&this->img[25], "C:/Users/pcuser/Desktop/实训/失败背景.jpg", 800, 600);
-	loadimage(&this->img[13], "C:/Users/pcuser/Desktop/实训/创意小船.jpg", 25, 25);
-	loadimage(&this->img[14], "C:/Users/pcuser/Desktop/实训/创意炸弹.jpg", 25, 25);
-	loadimage(&this->img[15], "C:/Users/pcuser/Desktop/实训/按钮背景.jpg", 200, 50);
-	loadimage(&this->img[23], "C:/Users/pcuser/Desktop/实训/创造模式按钮背景.jpg", 200, 50);
-	loadimage(&this->img[16], "C:/Users/pcuser/Desktop/实训/返回背景.jpg", 100, 50);
-	loadimage(&this->img[17], "C:/Users/pcuser/Desktop/实训/芙宁娜名片.jpg", 800, 600);
-	loadimage(&this->img[18], "C:/Users/pcuser/Desktop/实训/选择关卡按钮背景.jpg", 100, 100);
-	loadimage(&this->img[19], "C:/Users/pcuser/Desktop/实训/下一关按钮.jpg", 200, 100);
-	loadimage(&this->img[20], "C:/Users/pcuser/Desktop/实训/保存按钮图片.jpg", 50, 50);
-	loadimage(&this->Move[0], "C:/Users/pcuser/Desktop/实训/创下.jpg", 50, 50);
-	loadimage(&this->Move[1], "C:/Users/pcuser/Desktop/实训/创左.jpg", 50, 50);
-	loadimage(&this->Move[2], "C:/Users/pcuser/Desktop/实训/创右.jpg", 50, 50);
-	loadimage(&this->Move[3], "C:/Users/pcuser/Desktop/实训/创上.jpg", 50, 50);
-	loadimage(&this->ymimg[0], "C:/Users/pcuser/Desktop/实训/撤回图片掩码.jpg", 50, 50);
-	loadimage(&this->ymimg[1], "C:/Users/pcuser/Desktop/实训/芙宁娜胜利ym.png", 800, 600);
-	loadimage(&this->ymimg[2], "C:/Users/pcuser/Desktop/实训/下一关按钮掩码.jpg", 200, 100);
-	loadimage(&this->ymimg[3], "C:/Users/pcuser/Desktop/实训/保存按钮图片掩码.jpg", 50, 50);
-	loadimage(&this->ymimg[4], "C:/Users/pcuser/Desktop/实训/芙宁娜失败掩码.jpg", 800, 600);
+	loadimage(&this->img[0], "脑力航迹/实训/开始界面.jpg", 900, 700);
+	loadimage(&this->img[1], "脑力航迹/实训/规则介绍.jpg", 900, 600);
+	loadimage(&this->img[3], "脑力航迹/实训/关卡背景图.jpg", 1000, 729);
+	loadimage(&this->img[2], "脑力航迹/实训/关卡选择界面.jpg", 900, 600);
+	loadimage(&this->img[4], "脑力航迹/实训/芙宁娜胜利.png", 800, 600);
+	loadimage(&this->img[5], "脑力航迹/实训/芙宁娜失败.jpg", 800, 600);
+	loadimage(&this->img[6], "脑力航迹/实训/提示图片.jpg",50,50);
+	loadimage(&this->img[7], "脑力航迹/实训/撤回图片.jpg", 50, 50);
+	loadimage(&this->img[8], "脑力航迹/实训/挑战模式.jpg", 400, 600);
+	loadimage(&this->img[9], "脑力航迹/实训/创造模式背景.jpg", 600, 600);
+	loadimage(&this->img[10], "脑力航迹/实训/自身消息.jpg", 800, 600);
+	loadimage(&this->img[11], "脑力航迹/实训/查看信息背景.jpg", 600, 700);
+	loadimage(&this->img[12], "脑力航迹/实训/排行榜.jpg", 600, 700);
+	loadimage(&this->img[21], "脑力航迹/实训/普通排行图片.jpg", 600, 700);
+	loadimage(&this->img[22], "脑力航迹/实训/无尽排行图片.jpg", 600, 700);
+	loadimage(&this->img[24], "脑力航迹/实训/单关排行图片.jpg", 600, 700);
+	loadimage(&this->img[25], "脑力航迹/实训/失败背景.jpg", 800, 600);
+	loadimage(&this->img[13], "脑力航迹/实训/创意小船.jpg", 25, 25);
+	loadimage(&this->img[14], "脑力航迹/实训/创意炸弹.jpg", 25, 25);
+	loadimage(&this->img[15], "脑力航迹/实训/按钮背景.jpg", 200, 50);
+	loadimage(&this->img[23], "脑力航迹/实训/创造模式按钮背景.jpg", 200, 50);
+	loadimage(&this->img[16], "脑力航迹/实训/返回背景.jpg", 100, 50);
+	loadimage(&this->img[17], "脑力航迹/实训/芙宁娜名片.jpg", 800, 600);
+	loadimage(&this->img[18], "脑力航迹/实训/选择关卡按钮背景.jpg", 100, 100);
+	loadimage(&this->img[19], "脑力航迹/实训/下一关按钮.jpg", 200, 100);
+	loadimage(&this->img[20], "脑力航迹/实训/保存按钮图片.jpg", 50, 50);
+	loadimage(&this->Move[0], "脑力航迹/实训/创下.jpg", 50, 50);
+	loadimage(&this->Move[1], "脑力航迹/实训/创左.jpg", 50, 50);
+	loadimage(&this->Move[2], "脑力航迹/实训/创右.jpg", 50, 50);
+	loadimage(&this->Move[3], "脑力航迹/实训/创上.jpg", 50, 50);
+	loadimage(&this->ymimg[0], "脑力航迹/实训/撤回图片掩码.jpg", 50, 50);
+	loadimage(&this->ymimg[1], "脑力航迹/实训/芙宁娜胜利ym.png", 800, 600);
+	loadimage(&this->ymimg[2], "脑力航迹/实训/下一关按钮掩码.jpg", 200, 100);
+	loadimage(&this->ymimg[3], "脑力航迹/实训/保存按钮图片掩码.jpg", 50, 50);
+	loadimage(&this->ymimg[4], "脑力航迹/实训/芙宁娜失败掩码.jpg", 800, 600);
 }
 void Mananger::setbutton() 
 {

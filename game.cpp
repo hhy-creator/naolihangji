@@ -226,7 +226,7 @@ people* game::returnp2rearr() const
 };
 void game::writegame(const std::string&name) 
 {
-	ofstream os("D:/脑力航迹/game.txt",ios::app);
+	ofstream os("game.txt",ios::app);
 	if (!os.is_open())
 	{
 		cout << "文件打开失败" << endl;
