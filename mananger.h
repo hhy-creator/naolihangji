@@ -127,17 +127,13 @@ public:
 	void randomcreatgame(int number1);//无尽挑战
 	void randomcreatgame(int number1, bool x);//挑战模式
 	void noendchallenge();
-	void loadwindow();
 	int ifinbutoon(button&,ExMessage );
-	void loadrule();
 	void loadgameP();
 	ExMessage getmousemessage();
-	void loadChooseGQmenu();
 	void createGameP( game& g1, const int& i);
 	void createGameP(game& g1);
 	void MyCreateGameP(game& g1, people*& p1);
 	void creatrGameChallenge(game& g1);
-	void loadGamebk();
 	void recordmessagetxt();
 	vector<player> &readplayermessagetxt();
 	void wujinRank(vector<player>& p1);

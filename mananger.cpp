@@ -1338,12 +1338,19 @@ void Mananger::PlayerGreatgame()
 	char buffer[256] = { '0'};
 	buffer[0] = '0';
 	buffer[2] = '0';
-	initgraph(640, 480);
-	setbkmode(TRANSPARENT);
-	IMAGE i1;
-	loadimage(&i1, "C:/Users/pcuser/Desktop/实训/获取输入背景.jpg", 640, 480);
-	putimage(0, 0, &i1);
-	InputBox(buffer, 256, _T("请输入步数大小（不包括起点）:"), _T("欢迎创建游戏"), _T("确定"));
+
+	while (1) {
+		initgraph(640, 480);
+		setbkmode(TRANSPARENT);
+		IMAGE i1;
+		loadimage(&i1, "C:/Users/pcuser/Desktop/实训/获取输入背景.jpg", 640, 480);
+		putimage(0, 0, &i1);
+		InputBox(buffer, 256, _T("请输入步数大小（不包括起点）:"), _T("欢迎创建游戏"), _T("确定"));
+		if (buffer[1] >= '0' && buffer[1] <= '9' && buffer[0] >= '0' && buffer[0] <= '9') 
+		{
+			break;
+		}
+	}
 	if (buffer[1] > '0'||(buffer[0]=='1'&&buffer[1]=='0'))
 	{
 		for (int i = 0; i < 2; i++)
@@ -1509,22 +1516,12 @@ void Mananger::creatgame1()
 	g1.getp2array()[4] = g1.getp2();
 	createGameP(g1, 0);
 }
-void Mananger::loadwindow()
-{
-
-	loadimage(&this->img[0], "C:/Users/pcuser/Desktop/实训/开始界面.jpg", 900, 700);
-}
-void Mananger::loadrule()
-{
-	loadimage(&this->img[1], "C:/Users/pcuser/Desktop/实训/规则介绍.jpg", 900, 600);
-}
-void Mananger::loadGamebk()
-{
-	loadimage(&this->img[3], "C:/Users/pcuser/Desktop/实训/关卡背景图.jpg", 1000, 729);
-
-}
 void Mananger::loadgameP() 
 {
+	loadimage(&this->img[0], "C:/Users/pcuser/Desktop/实训/开始界面.jpg", 900, 700);
+	loadimage(&this->img[1], "C:/Users/pcuser/Desktop/实训/规则介绍.jpg", 900, 600);
+	loadimage(&this->img[3], "C:/Users/pcuser/Desktop/实训/关卡背景图.jpg", 1000, 729);
+	loadimage(&this->img[2], "C:/Users/pcuser/Desktop/实训/关卡选择界面.jpg", 900, 600);
 	loadimage(&this->img[4], "C:/Users/pcuser/Desktop/实训/芙宁娜胜利.png", 800, 600);
 	loadimage(&this->img[5], "C:/Users/pcuser/Desktop/实训/芙宁娜失败.jpg", 800, 600);
 	loadimage(&this->img[6], "C:/Users/pcuser/Desktop/实训/提示图片.jpg",50,50);
@@ -1538,7 +1535,6 @@ void Mananger::loadgameP()
 	loadimage(&this->img[22], "C:/Users/pcuser/Desktop/实训/无尽排行图片.jpg", 600, 700);
 	loadimage(&this->img[24], "C:/Users/pcuser/Desktop/实训/单关排行图片.jpg", 600, 700);
 	loadimage(&this->img[25], "C:/Users/pcuser/Desktop/实训/失败背景.jpg", 800, 600);
-
 	loadimage(&this->img[13], "C:/Users/pcuser/Desktop/实训/创意小船.jpg", 25, 25);
 	loadimage(&this->img[14], "C:/Users/pcuser/Desktop/实训/创意炸弹.jpg", 25, 25);
 	loadimage(&this->img[15], "C:/Users/pcuser/Desktop/实训/按钮背景.jpg", 200, 50);
@@ -1557,12 +1553,6 @@ void Mananger::loadgameP()
 	loadimage(&this->ymimg[2], "C:/Users/pcuser/Desktop/实训/下一关按钮掩码.jpg", 200, 100);
 	loadimage(&this->ymimg[3], "C:/Users/pcuser/Desktop/实训/保存按钮图片掩码.jpg", 50, 50);
 	loadimage(&this->ymimg[4], "C:/Users/pcuser/Desktop/实训/芙宁娜失败掩码.jpg", 800, 600);
-}
-void Mananger::loadChooseGQmenu()
-{
-	loadimage(&this->img[2], "C:/Users/pcuser/Desktop/实训/关卡选择界面.jpg", 900, 600);
-
-
 }
 void Mananger::setbutton() 
 {
@@ -2043,6 +2033,7 @@ void Mananger::createGameP(game& g1, const int& i)
 			getplayer().AddRight(getplayer().Getright(), getlevel()-1);
 			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
 			closegraph();
+			recordmessagetxt();
 			drawYesP(i);
 			break;
 		}
@@ -2052,6 +2043,7 @@ void Mananger::createGameP(game& g1, const int& i)
 			getplayer().AddWrong(getplayer().Getwrong(), getlevel()-1);
 			getplayer().CalAccuracy(getplayer().Getright(), getplayer().Getwrong(), getplayer().Getaccuracy());
 			getplayer().CreatScore(getplayer().Getscore(), getlevel()-1, a, this->p1.gettime(), g1.getrun());
+			recordmessagetxt();
 			drawNoP(g1, i);
 			break;
 		}
@@ -2101,6 +2093,7 @@ void Mananger::createGameP(game& g1)
 			x = 0;
 			closegraph();
 			this->p1.getnoendscore() =max((g1.getrun()-1)* 100,this->p1.getnoendscore());
+			recordmessagetxt();
 			drawYesP(g1);
 			bool a = 1;
 			break;
@@ -2109,6 +2102,7 @@ void Mananger::createGameP(game& g1)
 		{
 			closegraph();
 			bool a = 0;
+			recordmessagetxt();
 			drawNoP(g1);
 			break;
 		}
@@ -3275,31 +3269,66 @@ void Mananger::CreateMode()
 		{
 			EndBatchDraw();
 			readgamekutxt();
-			cout << "请输入想要玩的关卡的名字：" << endl;
-			cout << "已有自建关卡:" << "  ";
+			cleardevice();
+			initgraph(600, 700);
+			setbkmode(TRANSPARENT);
+			putimage(0, 0, &this->img[12]);
+			putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
+			putimage(0, 0, &this->img[7], SRCINVERT);
+			putimage(430, 620, &this->ymimg[2], NOTSRCERASE);
+			putimage(430,620, &this->img[19], SRCINVERT);
+			string text;
+			settextstyle(20, 20, "宋体");
+			settextcolor(BLACK);
+			text = "已有自建关卡:";
+			outtextxy(150, 90 , text.c_str());
+			settextstyle(15, 15, "宋体");
 			for (int i = 0; i < this->gameall.size(); i++)
 			{
-				cout << gameall[i].name << " ";
+				text =gameall[i].name;
+				outtextxy(150, 120+20*i, text.c_str());
 			}
-			cout << endl;
-			bool x = 1;
-			while (x)
+			while (1)
 			{
-				string name1;
-				cin >> name1;
-				for (int i = 0; i < gameall.size(); i++)
+				ExMessage msg = getmousemessage();
+				if (ifinimage(msg, this->img[19], 500, 600)) 
 				{
-					if (gameall[i].name == name1)
-					{
-						PlayercreatrGame(gameall[i].g1);
-						x = 0;
-						break;
+					bool x = 1;
+					while (x) {
+						string name = "";
+						char buffer[256] = { 0 };
+						initgraph(640, 480);
+						setbkmode(TRANSPARENT);
+						IMAGE i1;
+						loadimage(&i1, "C:/Users/pcuser/Desktop/实训/获取输入背景.jpg", 640, 480);
+						putimage(0, 0, &i1);
+						InputBox(buffer, 256, _T("请输入关卡名字:"), _T("请选择关卡"), _T("确定"));
+						int i = 0;
+						while(buffer[i]!='\0'){
+							name += buffer[i];
+							i++;
+						}
+						for (int i = 0; i < gameall.size(); i++)
+						{
+							if (gameall[i].name == name)
+							{
+								PlayercreatrGame(gameall[i].g1);
+								x = 0;
+								break;
+							}
+						}
 					}
+					closegraph();
 				}
-				cout << "名字不正确，请再次输入" << endl;
+				else if (ifinimage(msg, this->img[7], 0, 0))
+				{
+					closegraph();
+					RunChoose();
+					break;
+				}
 			}
-
-			break;
+			closegraph();
+			
 		}
 		else if (ifinimage(msg, this->img[7], 0, 0))
 		{
@@ -3396,11 +3425,12 @@ void Mananger::checkmessageP()
 	string text;
 	text = this->p1.GetName();
 	outtextxy(150, 150, text.c_str());
-	settextstyle(30, 30, "宋体");
+	settextstyle(20, 20, "宋体");
 	for (int i = 0; i < 10; i++)
 	{
 		outtextxy(160 + i * 60, 220, to_string(i + 1).c_str());
 	}
+	settextstyle(15, 15, "宋体");
 	for (int i = 0; i < this->p1.Getaccuracy().size(); i++)
 	{
 		int num = this->p1.Getaccuracy()[i] * 100;
@@ -3556,10 +3586,6 @@ Mananger::Mananger()
 	this->buttonarr[7] = b7;
 	this->buttonarr[8] = b8;
 	this->buttonarr[9] = b9;
-	loadwindow();
-	loadrule();
-	loadChooseGQmenu();
-	loadGamebk();
 	loadgameP();
 	setbutton();
 	dlOrZc();
