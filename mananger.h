@@ -143,6 +143,7 @@ public:
 	button**& drawYourroad( people*&, const int& run, button**& b1);
 	button**& drawOtherPath(people*& p2, const int& run, button**& b1);
 	void drawanswerroad( people*&, const int& run, button**& b1);
+	void drawanswerroad(people*&, const int& run, button**& b1,bool& x);
 	button**& drawrepetebutton(button**& b1);
 	bool clickanswer( game&, button**& b1);
 	void drawYesP(const int& i);

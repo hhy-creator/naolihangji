@@ -1832,7 +1832,7 @@ bool button::returnyellowifpass()
 {
 	return this->yellowifpass;
 }
-void Mananger::drawanswerroad(people*& p2, const int& run, button**& b1)
+void Mananger::drawanswerroad(people*&p2, const int& run, button**& b1, bool& x) 
 {
 	b1[p2[0].returnx()][p2[0].returny()].revisecolor() = RED;
 	b1[p2[0].returnx()][p2[0].returny()].drawgamebutton(1, BLACK);
@@ -1840,10 +1840,20 @@ void Mananger::drawanswerroad(people*& p2, const int& run, button**& b1)
 	{
 
 		b1[p2[i].returnx()][p2[i].returny()].revisecolor() = RED;
-		if ( i == run - 1) {
+		if (i == run - 1) {
 			b1[p2[i].returnx()][p2[i].returny()].drawgamebutton(i + 1, BLACK);
 		}
 		else { b1[p2[i].returnx()][p2[i].returny()].drawbutton(); }
+		b1[p2[i].returnx()][p2[i].returny()].reviseredifpass();
+	}
+}
+void Mananger::drawanswerroad(people*& p2, const int& run, button**& b1)
+{
+	for (int i = 0; i < run; i++)
+	{
+
+		b1[p2[i].returnx()][p2[i].returny()].revisecolor() = RED;
+		b1[p2[i].returnx()][p2[i].returny()].drawgamebutton(i + 1, BLACK);
 		b1[p2[i].returnx()][p2[i].returny()].reviseredifpass();
 	}
 }
@@ -2310,9 +2320,19 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 		else if (ifinimage(msg,this->img[20],0,50))
 		{
 			closegraph();
-			string name;
-			cout << "请为游戏取个名字:" << endl;
-			cin >> name;
+			string name = "";
+			char buffer[256] = { 0 };
+			initgraph(640, 480);
+			setbkmode(TRANSPARENT);
+			IMAGE i1;
+			loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
+			putimage(0, 0, &i1);
+			InputBox(buffer, 256, _T("请输入关卡名字:"), _T("请选择关卡"), _T("确定"));
+			int i = 0;
+			while (buffer[i] != '\0') {
+				name += buffer[i];
+				i++;
+			}
 			g1.writegame(name);
 			RunChoose();
 		}
@@ -3167,7 +3187,8 @@ void Mananger::createmiddle(people*& p1, game& g1)
 	{
 		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
 	}
-	drawanswerroad(p1, 11, b1);
+	bool x = 1;
+	drawanswerroad(p1, 11, b1,x);
 	button con(800, 679, 200, 50, "下一步");
 	con.drawbuttonwithPic(&this->img[15]);
 	while (1)
@@ -3300,7 +3321,7 @@ void Mananger::CreateMode()
 						initgraph(640, 480);
 						setbkmode(TRANSPARENT);
 						IMAGE i1;
-						loadimage(&i1, "C:/Users/pcuser/Desktop/实训/获取输入背景.jpg", 640, 480);
+						loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
 						putimage(0, 0, &i1);
 						InputBox(buffer, 256, _T("请输入关卡名字:"), _T("请选择关卡"), _T("确定"));
 						int i = 0;
