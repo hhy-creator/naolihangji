@@ -1834,6 +1834,7 @@ bool button::returnyellowifpass()
 }
 void Mananger::drawanswerroad(people*&p2, const int& run, button**& b1, bool& x) 
 {
+	BeginBatchDraw();
 	b1[p2[0].returnx()][p2[0].returny()].revisecolor() = RED;
 	b1[p2[0].returnx()][p2[0].returny()].drawgamebutton(1, BLACK);
 	for (int i = 1; i < run; i++)
@@ -1846,6 +1847,7 @@ void Mananger::drawanswerroad(people*&p2, const int& run, button**& b1, bool& x)
 		else { b1[p2[i].returnx()][p2[i].returny()].drawbutton(); }
 		b1[p2[i].returnx()][p2[i].returny()].reviseredifpass();
 	}
+	EndBatchDraw();
 }
 void Mananger::drawanswerroad(people*& p2, const int& run, button**& b1)
 {
@@ -2823,7 +2825,17 @@ void Mananger::Mycreate()
 			}
 			}
 		}
-		if (ifOKCreat(randomgame))
+		randomgame.setp2relative(randomgame.getp2relative(), randomgame.getp2array(), randomgame.getp1array(), randomgame.getrun());
+		bool x = 1;
+		for (int i = 0; i < randomgame.getrun()-1; i++) 
+		{
+			if (randomgame.getp2relative()[i].returnx() == randomgame.getp2relative()[i + 1].returnx() && randomgame.getp2relative()[i].returny() == randomgame.getp2relative()[i + 1].returny()) 
+			{
+				x = 0; 
+				break;
+			}
+		}
+		if (ifOKCreat(randomgame)&&x)
 		{
 			break;
 		}
@@ -3182,11 +3194,13 @@ void Mananger::createmiddle(people*& p1, game& g1)
 			b1[i][j] = this->GQbutton[i][j];
 		}
 	}
+	BeginBatchDraw();
 	putimage(0, 0, &this->img[3]);
 	for (int i = 0; i < 25; i++)
 	{
 		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
 	}
+	EndBatchDraw();
 	bool x = 1;
 	drawanswerroad(p1, 11, b1,x);
 	button con(800, 679, 200, 50, "ÏÂÒ»²½");

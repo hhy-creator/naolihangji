@@ -220,8 +220,8 @@ void player::CreatScore(vector<int>& score, const int&i,const bool&x,const vecto
 {
 	if (x) 
 	{
-		if (time[i] < run * 5) { score[i] = 100; }
-		else { score[i] = 100 * ((time[i] / run) / 5); }
+		if (time[i] < run * 5) { score[i] =max( 100,score[i]); }
+		else { score[i] = max((100 / (time[i] / run)) * 5,score[i]); }
 	}
 	else 
 	{
