@@ -280,18 +280,6 @@ vector<gameku>& Mananger::readgamekutxt()
 Mananger::~Mananger() 
 {
 }
-bool again() 
-{
-	int num1 = 0;
-	cin >> num1;
-	if (num1 == 1) { return true; }
-	else if (num1 == 0) { return false; }
-	else
-	{
-		cout << "输入不符合要求，请重新输入:" << endl; 
-		again();
-	}
-}
 void Mananger::RunChoose() 
 {
 	ChangeChoose();
@@ -373,11 +361,6 @@ player& Mananger::getplayer()
 {
 	return this->p1;
 }
-void Mananger::CheckMessage( player&p1) 
-{
-	p1.CheckMessage();
-}
-
 void Mananger::randomcreatgame() 
 {
 	game randomgame;

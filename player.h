@@ -16,7 +16,6 @@ public:
 	player();
 	void serializetxt(std::ostream& os) const;
 	void deserializetxt(std::istream& is);
-	void CheckMessage();
 	player& SetName();
 	string& GetName();
 	string& revisepassword();
@@ -24,8 +23,6 @@ public:
 	void AddWrong(vector<int>&, const int&);
 	void CalAccuracy(const vector<int>&,const vector<int>&, vector<double>&);
 	void CreatScore(vector<int>&, const int&, const bool& x,const vector<double>&time,const int&run);
-	void ShowScore(const vector<int>&);
-	void ShowAccuracy(const vector<double>&);
 	vector<int>& Getscore();
 	vector<int> returnGetscore()const;
 	vector<double> returngettime()const;

@@ -112,7 +112,6 @@ public:
 	void RunChoose();
 	void CreateMode();
 	int getlevel()const;
-	void CheckMessage(player&);
 	player& getplayer();
 	void Mycreate();
 	void randomcreatgame();

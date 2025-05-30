@@ -158,7 +158,6 @@ void player::deserializetxt(std::istream& is)
 
 	is >> p1.noendscore;
 
-	p1.CheckMessage();
 }
 player::player(int) :name(""), noendscore(0),password("0")
 {
@@ -185,13 +184,6 @@ player::player() : noendscore(0)
 	}
 	SetName();
 
-}
-void player::CheckMessage()
-{
-	cout << this->GetName() << ":" << endl;
-	this->ShowAccuracy(this->Getaccuracy());
-	this->ShowScore(this->Getscore());
-	cout << "无尽挑战分数：" << this->getnoendscore() << endl;
 }
 void player::AddRight(vector<int>&right,const int&i)
 {
@@ -227,24 +219,6 @@ void player::CreatScore(vector<int>& score, const int&i,const bool&x,const vecto
 	{
 		score[i] = 0;
 	}
-}
-void player::ShowScore(const vector<int>&array1)
-{
-	cout << "关卡" <<setfill(' ') << setw(8) << "分数" << endl;
-	for (int i = 1; i <= 5; i++) 
-	{
-		cout << i <<setfill(' ') << setw(8) << array1[i] << endl;
-	}
-	cout << endl;
-}
-void player::ShowAccuracy(const vector<double>&array1)
-{
-	cout << "关卡" <<setfill(' ') << setw(8) << "正确率" << endl;
-	for (int i = 0; i <5; i++)
-	{
-		cout << i+1 << setfill(' ') << setw(8) << array1[i] * 100 << "% " << endl;
-	}
-	cout << endl;
 }
 vector<int>& player::Getscore()
 {

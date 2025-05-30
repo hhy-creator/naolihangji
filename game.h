@@ -8,8 +8,6 @@ class people
 {
 public:
 	people() :x(0), y(0) {}
-
-	void DisplayMessage(const people&)const;
 	void SetPeopleBeginPos(const int&, const int&);
 	void Movepeople(const Direction& heading);
 	int& getx();
@@ -29,8 +27,6 @@ public:
 	game(const game& g1);
 	game();
 	game& operator=(const game&g1);
-	void DisplayRelativeMove(people*&, people*&)const;
-	bool IfYes(int, people*&);
 	void setrun(const int&);
 	int getrun()const;
 	people& getp1();
@@ -40,10 +36,8 @@ public:
 	people*& getp2relative();
 	void setp2relative(people*&, people*&, people*&, const int& run);
 	void setzihzhen();
-	void getanswer(people*&)const;
 	bool ifpass(people*&, const int&)const;
 	bool ifpass1(people*&, const int&)const;
-	void gettip(int&, people*&)const;
 	people* returnp1arr()const;
 	people* returnp2arr()const;
 	people* returnp2rearr()const;

@@ -4,10 +4,6 @@
 #include <vector>
 #include <fstream>
 using namespace std;
-void people::DisplayMessage(const people& p1)const 
-{
-	cout <<"("<< p1.returnx() << "," << p1.returny()<<")" << "   ";
-}
 void people::SetPeopleBeginPos(const int& x1, const int& y1)
 {
 	this->x = x1;
@@ -81,85 +77,6 @@ void game::setp2relative(people*& p1, people*&p2, people*&p3,const int& run)
 	}
 
 }
-void game::DisplayRelativeMove( people*& p1array,  people*&p2relative)const
-{
-	
-
-	for (int i = 0; i < run; i++) 
-	{
-		if (i == 0) 
-		{
-			cout << "你与别人的起点：" << endl;
-			p1array[i].DisplayMessage(p1array[i]); 
-			p2relative[i].DisplayMessage(p2relative[i]);
-			cout << endl;
-			cout << "步数     你与别人的坐标" << endl;
-		}
-		else 
-		{
-			cout <<setw(3)<< i << setw(8);
-			p1array[i].DisplayMessage(p1array[i]);
-			p2relative[i].DisplayMessage(p2relative[i]);
-			cout << endl;
-
-		}
-	}
-}
-void game::getanswer( people* &p2array)const 
-{
-	for (int i = 0; i < this->getrun(); i++) 
-	{
-		p2array[i].DisplayMessage(p2array[i]);
-	}
-	cout << endl;
-}
-bool game::IfYes(int number, people*& p2array)
-{
-	cout << "需要提示请输入250 250" << endl;
-	people* p3array = new people[number];
-	for (int i = 0; i < number; i++) 
-	{
-		if (i == 0) 
-		{
-			cout << "别人的起点：" << endl;
-			int x1, y1;
-			cin >> x1 >> y1;
-			if (x1 == 250 && y1 == 250) 
-			{
-				gettip(i, p2array);
-				cin >> x1 >> y1;
-			}
-			p3array[i].SetPeopleBeginPos(x1, y1);
-			cout << "步数     别人的坐标" << endl;
-		}
-		else {
-			cout << i <<"          ";
-			int x1, y1;
-			cin >> x1 >> y1;
-			if (x1 == 250 && y1 == 250)
-			{
-				gettip(i, p2array);
-				cout << "请继续输入当前别人的坐标：" << endl;
-				cin >> x1 >> y1;
-			}
-			p3array[i].SetPeopleBeginPos(x1, y1);
-		}
-
-	}
-	for (int i = 0; i < number; i++)
-	{
-		if (p2array[i].returnx() != p3array[i].returnx() || p2array[i].returny() != p3array[i].returny())
-		{
-			system("cls");
-			delete[]p3array;
-		
-			return false;
-		}
-	}
-	system("cls");
-	delete[]p3array;
-	return true;
-}
 bool game::ifpass(people*& p1, const int& num)const 
 {
 	for (int i = this->getrun() - 1; i > num; i--) 
@@ -181,11 +98,6 @@ bool game::ifpass1(people*& p1, const int& num)const
 		}
 	}
 	return true;
-}
-void game::gettip( int &i, people*& p2array)const
-{
-
-		cout << "提示："; p2array[i].DisplayMessage(p2array[i]);
 }
 int game::getrun() const
 {
