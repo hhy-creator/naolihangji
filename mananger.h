@@ -104,6 +104,7 @@ public:
 	bool ifOKCreat(const game&g1);
 	~Mananger();
 	void rankP();
+	void getfromgameku(const string& name, const int& GQnumber);
 	void ChangeChoose();
 	void ShowRule();
 	void Exitgame();
@@ -114,11 +115,6 @@ public:
 	void CheckMessage(player&);
 	player& getplayer();
 	void Mycreate();
-	void creatgame1();
-	void creatgame2();
-	void creatgame3();
-	void creatgame4();
-	void creatgame5();
 	void randomcreatgame();
 	void PlayerGreatgame();
 	void drawYesPPlayerCreate(game& g1);
