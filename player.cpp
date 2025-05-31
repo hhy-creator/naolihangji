@@ -162,7 +162,7 @@ void player::deserializetxt(std::istream& is)
 player::player(int) :name(""), noendscore(0),password("0")
 {
 	name.resize(32);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		time.push_back(0);
 		accuracy.push_back(0);
@@ -174,7 +174,7 @@ player::player(int) :name(""), noendscore(0),password("0")
 player::player() : noendscore(0)
 {
 	name.resize(32);
-	for (int i = 0; i < 10; i++) 
+	for (int i = 0; i < 9; i++) 
 	{
 		time.push_back(0);
 		accuracy.push_back(0);
@@ -195,7 +195,7 @@ void player::AddWrong(vector<int>&wrong,const int&i)
 }
 void player::CalAccuracy(const vector<int>&right, const vector<int>&wrong, vector<double>&accurary)
 {
-	for (int i = 0; i < 10; i++) 
+	for (int i = 0; i < 9; i++) 
 	{
 		if(right[i]+wrong[i]!=0)accuracy[i] = double(right[i]) / (right[i] + wrong[i]);
 	}
@@ -217,7 +217,7 @@ void player::CreatScore(vector<int>& score, const int&i,const bool&x,const vecto
 	}
 	else 
 	{
-		score[i] = 0;
+		score[i] = score[i] > 0 ? score[i] = score[i] : score[i] = 0;
 	}
 }
 vector<int>& player::Getscore()

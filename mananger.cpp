@@ -10,7 +10,6 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
-#include <conio.h>
 #include <graphics.h>
 using namespace std;
 const clock_t FPS = 1000/60;
@@ -2184,8 +2183,7 @@ void Mananger::drawNoP(game& g1)
 	setbkmode(TRANSPARENT);
 	setbkcolor(WHITE);
 	cleardevice();
-	button b4(280, 20, 200, 50, "再次挑战");
-	button b5(280, 220, 200, 50, "查看答案");
+	button b4(280, 520, 200, 50, "再次挑战");
 	bool x = 0;
 	while (!x)
 	{
@@ -2196,8 +2194,8 @@ void Mananger::drawNoP(game& g1)
 		putimage(0, 0, &this->img[5], SRCINVERT);
 		putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
 		putimage(0, 0, &this->img[27], SRCINVERT);
+		putimage(0, 500, &this->img[29]);
 		b4.drawbuttonwithPic(&this->img[15]);
-		b5.drawbuttonwithPic(&this->img[15]);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
 		if (ifinimage(msg,this->img[27],0,0))
@@ -2212,7 +2210,7 @@ void Mananger::drawNoP(game& g1)
 			x = 1;
 			createGameP(g1);
 		}
-		else if (ifinbutoon(b5, msg))
+		else if (ifinimage(msg,this->img[29],0,500))
 		{
 			closegraph();
 			cleardevice();
@@ -2301,7 +2299,6 @@ void Mananger::drawNoP(game& g1, const int& i)
 		}
 	}
 	button b4(280, 520, 200, 50, "再次挑战");
-	//button b5(270, 560, 200, 50, "查看答案");
 	bool x = 0;
 	while (!x)
 	{
@@ -2319,7 +2316,6 @@ void Mananger::drawNoP(game& g1, const int& i)
 		settextcolor(RGB(250, 240, 202));
 		outtextxy(324, 250, s.c_str());
 		b4.drawbuttonwithPic(&this->img[15]);
-		//b5.drawbuttonwithPic(&this->img[15]);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
 		if (ifinimage(msg, this->img[27], 0, 0))
@@ -3221,37 +3217,37 @@ void Mananger::checkmessageP()
 	initgraph(800, 600);
 	setbkmode(TRANSPARENT);
 	putimage(0, 0, &this->img[10]);
-	settextstyle(40, 40, "宋体");
-	settextcolor(BLUE);
+	settextstyle(40, 40, "黑体");
+	settextcolor(RGB(202,81,0));
 	string text;
 	text = this->p1.GetName();
 	outtextxy(150, 150, text.c_str());
-	settextstyle(20, 20, "宋体");
-	for (int i = 0; i < 10; i++)
+	settextstyle(20, 20, "黑体");
+	for (int i = 0; i < 9; i++)
 	{
-		outtextxy(160 + i * 60, 220, to_string(i + 1).c_str());
+		outtextxy(170 + i * 70, 220, to_string(i + 1).c_str());
 	}
-	settextstyle(15, 15, "宋体");
+	settextstyle(17, 17, "黑体");
 	for (int i = 0; i < this->p1.Getaccuracy().size(); i++)
 	{
 		int num = this->p1.Getaccuracy()[i] * 100;
 		text = to_string(num) + "%";
-		outtextxy(160 + i * 60, 300, text.c_str());
+		outtextxy(170 + i * 70, 300, text.c_str());
 	}
 	for (int i = 0; i < this->p1.Getscore().size(); i++)
 	{
 		text = to_string(this->p1.Getscore()[i]);
-		outtextxy(160 + i * 60, 378, text.c_str());
+		outtextxy(170 + i * 70, 378, text.c_str());
 	}
 	text = to_string(this->p1.getnoendscore());
-	settextstyle(40, 40, "宋体");
+	settextstyle(40, 40, "黑体");
 	outtextxy(300, 467, text.c_str());
-	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
-	putimage(0, 0, &this->img[7], SRCINVERT);
+	putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
+	putimage(0, 0, &this->img[27], SRCINVERT);
 	while (1)
 	{
 		ExMessage msg = getmousemessage();
-		if (ifinimage(msg, this->img[7], 0, 0))
+		if (ifinimage(msg, this->img[27], 0, 0))
 		{
 			closegraph();
 			RunChoose();
