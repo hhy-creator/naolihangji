@@ -4,30 +4,183 @@ using namespace std;
 #include "player.h"
 #include <algorithm>
 #include "easyx.h"
+#include <vector>
+vector<player>& readplayermessagetxt(vector<player>&v1) {
+	if (v1.size() != 0)
+	{
+		v1.resize(0);
+	}
+	ifstream is("playermessage.txt");
+	if (!is.is_open())
+	{
+		cout << "文件打开失败" << endl;
+		return v1;
+	}
+	string line;
+	while (getline(is, line) && !is.eof())
+	{
+		player p1(0);
+		string  id;
+		is >> id;
+		if (id != "") {
+			p1.GetName() = id;
+			string passw;
+			is >> passw;
+			p1.revisepassword() = passw;
+			for (int i = 0; i < p1.gettime().size(); i++)
+			{
+				is >> p1.gettime()[i];
+			}
+			for (int i = 0; i < p1.Getaccuracy().size(); i++)
+			{
+				is >> p1.Getaccuracy()[i];
+			}
+			for (int i = 0; i < p1.Getright().size(); i++)
+			{
+				is >> p1.Getright()[i];
+			}
+			for (int i = 0; i < p1.Getwrong().size(); i++)
+			{
+				is >> p1.Getwrong()[i];
+			}
+
+
+			for (int i = 0; i < p1.Getscore().size(); i++)
+			{
+				is >> p1.Getscore()[i];
+			}
+
+			is >> p1.getnoendscore();
+
+			v1.push_back(p1);
+		}
+	}
+	is.close();
+	return v1;
+}
 player& player::SetName()
 {
-		string name = "";
-		string password = "";
+
+	string caozuo="";
+	vector<player>v1;
+	readplayermessagetxt(v1);
 		char buffer[256] = { 0 };
 		char buffer1[256] = { 0 };
-		initgraph(640, 480);
-		setbkmode(TRANSPARENT);
-		IMAGE i1;
-		loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
-		putimage(0, 0, &i1);
-		InputBox(buffer, 256, _T("请输入名字（长度不超过10超过将取前10个字节）:"), _T("请创建or登陆用户"), _T("确定"));
-		for (int i = 0; i < 10; i++)
-		{
-			name += buffer[i];
+		while (1) {
+			initgraph(640, 480);
+			setbkmode(TRANSPARENT);
+			IMAGE i1;
+			loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
+			putimage(0, 0, &i1);
+			InputBox(buffer, 256, _T("请输入操作（登陆or注册）:"), _T("请创建or登陆用户"), _T("确定"));
+			int i = 0;
+			while (buffer[i] != '\0') 
+			{
+				caozuo += buffer[i];
+				i++;
+			}
+			if (caozuo == "登陆") 
+			{
+				break;
+			}
+			else if(caozuo=="注册")
+			{
+				break;
+			}
+			else { caozuo = ""; }
 		}
-		InputBox(buffer1, 256, _T("请输入密码:"), _T("下一步"), _T("确定"));
-
-		for (int i = 0; i < 14; i++)
+		if (caozuo == "登陆") 
 		{
-			password += buffer1[i];
+			string name = "";
+			int index = 0;
+			string password = "";
+			bool x = 1;
+			while (x) {
+				initgraph(640, 480);
+				setbkmode(TRANSPARENT);
+				IMAGE i1;
+				loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
+				putimage(0, 0, &i1);
+				InputBox(buffer, 256, _T("请输入名字（名字不正确会要求重新输入）:"), _T("请登陆用户"), _T("确定"));
+				int j = 0;
+				while (buffer[j] != '\0')
+				{
+					name += buffer[j];
+					j++;
+				}
+				for (int i = 0; i < v1.size(); i++)
+				{
+					if (name == v1[i].name)
+					{
+						x = 0;
+						index = i;
+						break;
+					}
+					else { name = ""; }
+				}
+			}
+			bool x1 = 1;
+			while (x1) {
+				InputBox(buffer1, 256, _T("请输入密码(错误请重新输入):"), _T("下一步"), _T("确定"));
+				int m = 0;
+				while (buffer1[m]!='\0')
+				{
+					password += buffer1[m];
+					m++;
+				}
+				if (password == v1[index].password) 
+				{
+					x1 = 0;
+				}
+				else { password = ""; }
+			}
+			this->name = name;
+			this->password = password;
 		}
-	this->name = name;
-	this->password = password;
+		else if (caozuo == "注册") 
+		{
+			string name = "";
+			string password = "";
+			while (1) {
+				initgraph(640, 480);
+				setbkmode(TRANSPARENT);
+				IMAGE i1;
+				loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
+				putimage(0, 0, &i1);
+				InputBox(buffer, 256, _T("请输入名字(发现重名或名字太长会要求重新输入):"), _T("请注册用户"), _T("确定"));
+				int i = 0;
+				while (buffer[i] != '\0')
+				{
+					name += buffer[i];
+					i++;
+				}
+				if (name.size() <= 14) {
+					int sum = 0;
+					for (int i = 0; i < v1.size(); i++)
+					{
+						if (name != v1[i].name)
+						{
+							sum++;
+						}
+					}
+					if (sum == v1.size())
+					{
+						int j = 0;
+						InputBox(buffer1, 256, _T("请输入密码:"), _T("下一步"), _T("确定"));
+						while (buffer1[j] != '\0' )
+						{
+							password += buffer1[j];
+							j++;
+						}
+						break;
+					}
+					else { name = ""; }
+				}
+				else { name = ""; }
+			}
+			this->name = name;
+			this->password = password;
+		}
 	return *this;
 }
 bool player::operator==(const player& p1) 
