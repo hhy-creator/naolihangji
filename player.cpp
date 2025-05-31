@@ -26,7 +26,6 @@ player& player::SetName()
 		{
 			password += buffer1[i];
 		}
-	closegraph();
 	this->name = name;
 	this->password = password;
 	return *this;
