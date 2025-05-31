@@ -15,8 +15,8 @@ player& player::SetName()
 		IMAGE i1;
 		loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
 		putimage(0, 0, &i1);
-		InputBox(buffer, 256, _T("请输入名字（长度不超过14超过将取前14个字节）:"), _T("请创建or登陆用户"), _T("确定"));
-		for (int i = 0; i < 14; i++)
+		InputBox(buffer, 256, _T("请输入名字（长度不超过10超过将取前10个字节）:"), _T("请创建or登陆用户"), _T("确定"));
+		for (int i = 0; i < 10; i++)
 		{
 			name += buffer[i];
 		}

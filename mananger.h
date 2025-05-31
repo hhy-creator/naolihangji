@@ -162,8 +162,8 @@ private:
 	int level;
 	player p1;
 	array<button, 15>buttonarr;
-	IMAGE img[30];
-	IMAGE ymimg[30];
+	IMAGE img[35];
+	IMAGE ymimg[20];
 	IMAGE Move[4];
 	array<array<button,25>,25>GQbutton;
 	vector<player>rank;
