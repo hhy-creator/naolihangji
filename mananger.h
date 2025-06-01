@@ -114,6 +114,7 @@ public:
 	int getlevel()const;
 	player& getplayer();
 	void Mycreate();
+	void createchallenge(game&g1, int& number1,people*&Pall);
 	void randomcreatgame();
 	void PlayerGreatgame();
 	void drawYesPPlayerCreate(game& g1);
@@ -149,7 +150,7 @@ public:
 	void drawNoP(game& g1);
 	void createmiddle(people*& p1,game& g1);
 	void drawcreate(people*& p2, const int& run, button**& b1);
-	void drawNoMyCreate();
+	void drawNoMyCreate(game& g1, int& number1, people*& Pall);
 	void setbutton();
 	bool ifinimage(ExMessage,IMAGE&, const int& wb, const int& hb);
 	vector<gameku>& readgamekutxt();

@@ -59,11 +59,38 @@ void ship::createMypath(const int&bx,const int& by)
 	p1.SetPeopleBeginPos(xfinal, yfinal);
 	this->path[this->run - 1].SetPeopleBeginPos(xfinal, yfinal);
 	bool x = 1;
-	int number2 = rand() % 4;
 	while (x) 
 	{
+		int number2 = rand() % 4;
 		for (int i = this->run - 2; i >= 0;)
 		{
+			if (i == 1) 
+			{
+				switch (number2)
+				{
+				case 0:
+				{
+					number2 = 3;
+					break;
+				}
+				case 1:
+				{
+					number2 = 2;
+					break;
+				}
+				case 2:
+				{
+					number2 = 1;
+
+					break;
+				}
+				case 3:
+				{
+					number2 = 0;
+					break;
+				}
+				}
+			}
 			switch (number2)
 			{
 			case 0:
@@ -1236,6 +1263,10 @@ void Mananger::loadgameP()
 	loadimage(&this->ymimg[5], "ÄÔÁ¦º½¼£/ÊµÑµ/·µ»ØÖ÷½çÃæÍ¼Æ¬ÑÚÂëÍ¼.jpg", 80, 80);
 	loadimage(&this->ymimg[6], "ÄÔÁ¦º½¼£/ÊµÑµ/·µ»ØÍ¼Æ¬ÑÚÂë.jpg", 100, 100);
 	loadimage(&this->ymimg[7], "ÄÔÁ¦º½¼£/ÊµÑµ/¼ÆÊ±Æ÷ÑÚÂë.jpg", 70, 70);
+	loadimage(&this->ymimg[8], "ÄÔÁ¦º½¼£/ÊµÑµ/´´ÉÏÑÚÂë.jpg", 50, 50);
+	loadimage(&this->ymimg[9], "ÄÔÁ¦º½¼£/ÊµÑµ/´´ÏÂÑÚÂë.jpg", 50, 50);
+	loadimage(&this->ymimg[10], "ÄÔÁ¦º½¼£/ÊµÑµ/´´×óÑÚÂë.jpg", 50, 50);
+	loadimage(&this->ymimg[11], "ÄÔÁ¦º½¼£/ÊµÑµ/´´ÓÒÑÚÂë.jpg", 50, 50);
 }
 void Mananger::setbutton() 
 {
@@ -2149,7 +2180,7 @@ void Mananger::drawYesP(const int& i)
 	}
 
 }
-void Mananger::drawNoMyCreate() 
+void Mananger::drawNoMyCreate(game& g1, int& number1, people*& Pall)
 {
 	cleardevice();
 	initgraph(800, 600);
@@ -2166,6 +2197,8 @@ void Mananger::drawNoMyCreate()
 		putimage(0, 0, &this->img[5],SRCINVERT);
 		putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
 		putimage(0, 0, &this->img[27], SRCINVERT);
+		putimage(0, 550, &this->ymimg[0], NOTSRCERASE);
+		putimage(0, 550, &this->img[7], SRCINVERT);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
 		if (ifinimage(msg, this->img[27], 0, 0))
@@ -2173,6 +2206,12 @@ void Mananger::drawNoMyCreate()
 			closegraph();
 			x = 1;
 			RunChoose();
+		}
+		else if (ifinimage( msg,this->img[7],0,550))
+		{
+			closegraph();
+			x = 1;
+			createchallenge(g1, number1,  Pall);
 		}
 	}
 }
@@ -2544,6 +2583,335 @@ void Mananger::rankP()
 	}
 	closegraph();
 }
+void Mananger::createchallenge(game& randomgame, int&number1,people*& Pall)
+{
+	MyCreateGameP(randomgame, Pall);
+	cleardevice();
+	initgraph(1000, 729);
+	setbkmode(TRANSPARENT);
+	button** b1 = new button * [25];
+	for (int i = 0; i < 25; i++)
+	{
+		b1[i] = new button[25];
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++)
+		{
+			b1[i][j] = this->GQbutton[i][j];
+		}
+	}
+	ship s1(Pall[3].returnx(), Pall[3].returny());
+	ship s2(Pall[8].returnx(), Pall[8].returny());
+	BeginBatchDraw();
+	putimage(0, 0, &this->img[3]);
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
+	}
+	drawMyCreate(Pall, 2 * number1 - 1, b1);
+	drawOtherPath(s1.revisepath(), s1.getrun(), b1);
+	drawOtherPath(s2.revisepath(), s2.getrun(), b1);
+	int shipx = b1[Pall[0].returnx()][Pall[0].returny()].returnx();
+	int shipy = b1[Pall[0].returnx()][Pall[0].returny()].returny();
+	putimage(860, 500, &this->ymimg[9], NOTSRCERASE);
+	putimage(860, 500, &this->Move[0], SRCINVERT);
+	putimage(810, 500, &this->ymimg[10], NOTSRCERASE);
+	putimage(810, 500, &this->Move[1], SRCINVERT);
+	putimage(910, 500, &this->ymimg[11], NOTSRCERASE);
+	putimage(910, 500, &this->Move[2], SRCINVERT);
+	putimage(860, 450, &this->ymimg[8],NOTSRCERASE);
+	putimage(860, 450, &this->Move[3],SRCINVERT);
+	EndBatchDraw();
+	int k = Pall[0].returnx();
+	int j = Pall[0].returny();
+	int s1Px = b1[Pall[3].returnx()][Pall[3].returny()].returnx();
+	int s1Py = b1[Pall[3].returnx()][Pall[3].returny()].returny();
+	int s1x = (s1Px - GQbuttonbeginlength) / 25;
+	int s1y = (s1Py - GQbuttonbeginwidth) / 25;
+	int s1index = s1.getrun() - 1;
+	bool s1AD = 0;
+	int s2Px = b1[Pall[8].returnx()][Pall[8].returny()].returnx();
+	int s2Py = b1[Pall[8].returnx()][Pall[8].returny()].returny();
+	int s2x = (s2Px - GQbuttonbeginlength) / 25;
+	int s2y = (s2Py - GQbuttonbeginwidth) / 25;
+	int s2index = s2.getrun() - 1;
+	bool s2AD = 0;
+	while (1)
+	{
+		putimage(shipx, shipy, &this->img[13]);
+		putimage(s1Px, s1Py, &this->img[14]);
+		putimage(s2Px, s2Py, &this->img[14]);
+		b1[k][j].reviseMycreateifpass() = true;
+		if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass() || (s1Px == shipx && s1Py == shipy) || (s2Px == shipx && s2Py == shipy))
+		{
+
+			drawNoMyCreate(randomgame,  number1, Pall);
+			break;
+		}
+		bool x = 1;
+		for (int k = 0; k < 25; k++)
+		{
+			for (int j = 0; j < 25; j++)
+			{
+				if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass())
+				{
+					x = 0;
+				}
+			}
+		}
+		if (x && k == Pall[2 * number1 - 2].returnx() && j == Pall[2 * number1 - 2].returny())
+		{
+			drawYesPChallenge(randomgame);
+			break;
+		}
+		ExMessage msg;
+		if (peekmessage(&msg, EX_MOUSE))
+		{
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (ifinimage(msg, this->Move[0], 860, 500))
+				{
+					BeginBatchDraw();
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					b1[s1x][s1y].drawbutton();
+					if (!s1AD)
+					{
+						if (s1index == 0)
+						{
+							s1index = 1;
+							s1AD = 1;
+						}
+						else s1index -= 1;
+					}
+					else
+					{
+						if (s1index == s1.getrun() - 1)
+						{
+							s1index -= 1;
+							s1AD = 0;
+						}
+						else { s1index += 1; }
+					}
+					s1x = s1.revisepath()[s1index].returnx();
+					s1y = s1.revisepath()[s1index].returny();
+					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
+					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
+					b1[s2x][s2y].drawbutton();
+					if (!s2AD)
+					{
+						if (s2index == 0)
+						{
+							s2index = 1;
+							s2AD = 1;
+						}
+						else s2index -= 1;
+					}
+					else
+					{
+						if (s2index == s2.getrun() - 1)
+						{
+							s2index -= 1;
+							s2AD = 0;
+						}
+						else { s2index += 1; }
+					}
+					s2x = s2.revisepath()[s2index].returnx();
+					s2y = s2.revisepath()[s2index].returny();
+					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
+					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
+					putimage(s2Px, s2Py, &this->img[14]);
+					j += 1;
+					shipy += 25;
+					putimage(shipx, shipy, &this->img[13]);
+					putimage(s1Px, s1Py, &this->img[14]);
+					EndBatchDraw();
+				}
+				else if (ifinimage(msg, this->Move[1], 810, 500))
+				{
+					BeginBatchDraw();
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					b1[s1x][s1y].drawbutton();
+					if (!s1AD)
+					{
+						if (s1index == 0)
+						{
+							s1index = 1;
+							s1AD = 1;
+						}
+						else s1index -= 1;
+					}
+					else
+					{
+						if (s1index == s1.getrun() - 1)
+						{
+							s1index -= 1;
+							s1AD = 0;
+						}
+						else { s1index += 1; }
+					}
+					s1x = s1.revisepath()[s1index].returnx();
+					s1y = s1.revisepath()[s1index].returny();
+					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
+					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
+					b1[s2x][s2y].drawbutton();
+					if (!s2AD)
+					{
+						if (s2index == 0)
+						{
+							s2index = 1;
+							s2AD = 1;
+						}
+						else s2index -= 1;
+					}
+					else
+					{
+						if (s2index == s2.getrun() - 1)
+						{
+							s2index -= 1;
+							s2AD = 0;
+						}
+						else { s2index += 1; }
+					}
+					s2x = s2.revisepath()[s2index].returnx();
+					s2y = s2.revisepath()[s2index].returny();
+					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
+					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
+					putimage(s2Px, s2Py, &this->img[14]);
+					k -= 1;
+					shipx -= 25;
+					putimage(shipx, shipy, &this->img[13]);
+					putimage(s1Px, s1Py, &this->img[14]);
+					EndBatchDraw();
+				}
+				else if (ifinimage(msg, this->Move[2], 910, 500))
+				{
+					BeginBatchDraw();
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					b1[s1x][s1y].drawbutton();
+					if (!s1AD)
+					{
+						if (s1index == 0)
+						{
+							s1index = 1;
+							s1AD = 1;
+						}
+						else s1index -= 1;
+					}
+					else
+					{
+						if (s1index == s1.getrun() - 1)
+						{
+							s1index -= 1;
+							s1AD = 0;
+						}
+						else { s1index += 1; }
+					}
+					s1x = s1.revisepath()[s1index].returnx();
+					s1y = s1.revisepath()[s1index].returny();
+					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
+					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
+					b1[s2x][s2y].drawbutton();
+					if (!s2AD)
+					{
+						if (s2index == 0)
+						{
+							s2index = 1;
+							s2AD = 1;
+						}
+						else s2index -= 1;
+					}
+					else
+					{
+						if (s2index == s2.getrun() - 1)
+						{
+							s2index -= 1;
+							s2AD = 0;
+						}
+						else { s2index += 1; }
+					}
+					s2x = s2.revisepath()[s2index].returnx();
+					s2y = s2.revisepath()[s2index].returny();
+					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
+					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
+					putimage(s2Px, s2Py, &this->img[14]);
+					k += 1;
+					shipx += 25;
+					putimage(shipx, shipy, &this->img[13]);
+					putimage(s1Px, s1Py, &this->img[14]);
+					EndBatchDraw();
+				}
+				else if (ifinimage(msg, this->Move[3], 860, 450))
+				{
+					BeginBatchDraw();
+					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
+					else { this->GQbutton[k][j].drawGQbutton(); }
+					b1[s1x][s1y].drawbutton();
+					if (!s1AD)
+					{
+						if (s1index == 0)
+						{
+							s1index = 1;
+							s1AD = 1;
+						}
+						else s1index -= 1;
+					}
+					else
+					{
+						if (s1index == s1.getrun() - 1)
+						{
+							s1index -= 1;
+							s1AD = 0;
+						}
+						else { s1index += 1; }
+					}
+					s1x = s1.revisepath()[s1index].returnx();
+					s1y = s1.revisepath()[s1index].returny();
+					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
+					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
+					b1[s2x][s2y].drawbutton();
+					if (!s2AD)
+					{
+						if (s2index == 0)
+						{
+							s2index = 1;
+							s2AD = 1;
+						}
+						else s2index -= 1;
+					}
+					else
+					{
+						if (s2index == s2.getrun() - 1)
+						{
+							s2index -= 1;
+							s2AD = 0;
+						}
+						else { s2index += 1; }
+					}
+					s2x = s2.revisepath()[s2index].returnx();
+					s2y = s2.revisepath()[s2index].returny();
+					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
+					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
+					putimage(s2Px, s2Py, &this->img[14]);
+					j -= 1;
+					shipy -= 25;
+					putimage(shipx, shipy, &this->img[13]);
+					putimage(s1Px, s1Py, &this->img[14]);
+					EndBatchDraw();
+				}
+			}
+		}
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		delete[]b1[i];
+	}
+	delete[] b1;
+	setbutton();
+}
 void Mananger::Mycreate()
 {
 
@@ -2696,329 +3064,7 @@ void Mananger::Mycreate()
 		Pall[i].getx() = randomgame.getp2array()[2 * number1 - 2 - i].returnx();
 		Pall[i].gety() = randomgame.getp2array()[2 * number1 - 2 - i].returny();
 	}
-	MyCreateGameP(randomgame, Pall);
-	cleardevice();
-	initgraph(1000, 729);
-	setbkmode(TRANSPARENT);
-	button** b1 = new button * [25];
-	for (int i = 0; i < 25; i++)
-	{
-		b1[i] = new button[25];
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++)
-		{
-			b1[i][j] = this->GQbutton[i][j];
-		}
-	}
-	ship s1(Pall[3].returnx(), Pall[3].returny());
-	ship s2(Pall[8].returnx(), Pall[8].returny());
-	BeginBatchDraw();
-	putimage(0, 0, &this->img[3]);
-	for (int i = 0; i < 25; i++)
-	{
-		for (int j = 0; j < 25; j++) { this->GQbutton[i][j].drawGQbutton(); }
-	}
-	drawMyCreate(Pall, 2 * number1 - 1, b1);
-	drawOtherPath(s1.revisepath(), s1.getrun(), b1);
-	drawOtherPath(s2.revisepath(), s2.getrun(), b1);
-	int shipx = b1[Pall[0].returnx()][Pall[0].returny()].returnx();
-	int shipy = b1[Pall[0].returnx()][Pall[0].returny()].returny();
-	putimage(800, 500, &this->Move[0]);
-	putimage(750, 500, &this->Move[1]);
-	putimage(850, 500, &this->Move[2]);
-	putimage(800, 450, &this->Move[3]);
-	EndBatchDraw();
-	int k = Pall[0].returnx();
-	int j = Pall[0].returny();
-	int s1Px = b1[Pall[3].returnx()][Pall[3].returny()].returnx();
-	int s1Py = b1[Pall[3].returnx()][Pall[3].returny()].returny();
-	int s1x = (s1Px - GQbuttonbeginlength) / 25;
-	int s1y = (s1Py - GQbuttonbeginwidth) / 25;
-	int s1index = s1.getrun() - 1;
-	bool s1AD = 0;
-	int s2Px = b1[Pall[8].returnx()][Pall[8].returny()].returnx();
-	int s2Py = b1[Pall[8].returnx()][Pall[8].returny()].returny();
-	int s2x = (s2Px - GQbuttonbeginlength) / 25;
-	int s2y = (s2Py - GQbuttonbeginwidth) / 25;
-	int s2index = s2.getrun() - 1;
-	bool s2AD = 0;
-	while (1)
-	{
-		starttime = clock();
-		putimage(shipx, shipy, &this->img[13]);
-		putimage(s1Px, s1Py, &this->img[14]);
-		putimage(s2Px, s2Py, &this->img[14]);
-		b1[k][j].reviseMycreateifpass() = true;
-		if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass() || (s1Px == shipx && s1Py == shipy) || (s2Px == shipx && s2Py == shipy))
-		{
-
-			drawNoMyCreate();
-			break;
-		}
-		bool x = 1;
-		for (int k = 0; k < 25; k++)
-		{
-			for (int j = 0; j < 25; j++)
-			{
-				if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass())
-				{
-					x = 0;
-				}
-			}
-		}
-		if (x && k == Pall[2 * number1 - 2].returnx() && j == Pall[2 * number1 - 2].returny())
-		{
-			drawYesPChallenge(randomgame);
-			break;
-		}
-		ExMessage msg;
-		if (peekmessage(&msg, EX_MOUSE))
-		{
-			if (msg.message == WM_LBUTTONDOWN)
-			{
-				if (ifinimage(msg, this->Move[0], 800, 500))
-				{
-					BeginBatchDraw();
-					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
-					else { this->GQbutton[k][j].drawGQbutton(); }
-					b1[s1x][s1y].drawbutton();
-					if (!s1AD)
-					{
-						if (s1index == 0)
-						{
-							s1index = 1;
-							s1AD = 1;
-						}
-						else s1index -= 1;
-					}
-					else
-					{
-						if (s1index == s1.getrun() - 1)
-						{
-							s1index -= 1;
-							s1AD = 0;
-						}
-						else { s1index += 1; }
-					}
-					s1x = s1.revisepath()[s1index].returnx();
-					s1y = s1.revisepath()[s1index].returny();
-					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
-					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
-					b1[s2x][s2y].drawbutton();
-					if (!s2AD)
-					{
-						if (s2index == 0)
-						{
-							s2index = 1;
-							s2AD = 1;
-						}
-						else s2index -= 1;
-					}
-					else
-					{
-						if (s2index == s2.getrun() - 1)
-						{
-							s2index -= 1;
-							s2AD = 0;
-						}
-						else { s2index += 1; }
-					}
-					s2x = s2.revisepath()[s2index].returnx();
-					s2y = s2.revisepath()[s2index].returny();
-					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
-					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
-					putimage(s2Px, s2Py, &this->img[14]);
-					j += 1;
-					shipy += 25;
-					putimage(shipx, shipy, &this->img[13]);
-					putimage(s1Px, s1Py, &this->img[14]);
-					EndBatchDraw();
-				}
-				else if (ifinimage(msg, this->Move[1], 750, 500))
-				{
-					BeginBatchDraw();
-					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
-					else { this->GQbutton[k][j].drawGQbutton(); }
-					b1[s1x][s1y].drawbutton();
-					if (!s1AD)
-					{
-						if (s1index == 0)
-						{
-							s1index = 1;
-							s1AD = 1;
-						}
-						else s1index -= 1;
-					}
-					else
-					{
-						if (s1index == s1.getrun() - 1)
-						{
-							s1index -= 1;
-							s1AD = 0;
-						}
-						else { s1index += 1; }
-					}
-					s1x = s1.revisepath()[s1index].returnx();
-					s1y = s1.revisepath()[s1index].returny();
-					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
-					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
-					b1[s2x][s2y].drawbutton();
-					if (!s2AD)
-					{
-						if (s2index == 0)
-						{
-							s2index = 1;
-							s2AD = 1;
-						}
-						else s2index -= 1;
-					}
-					else
-					{
-						if (s2index == s2.getrun() - 1)
-						{
-							s2index -= 1;
-							s2AD = 0;
-						}
-						else { s2index += 1; }
-					}
-					s2x = s2.revisepath()[s2index].returnx();
-					s2y = s2.revisepath()[s2index].returny();
-					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
-					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
-					putimage(s2Px, s2Py, &this->img[14]);
-					k -= 1;
-					shipx -= 25;
-					putimage(shipx, shipy, &this->img[13]);
-					putimage(s1Px, s1Py, &this->img[14]);
-					EndBatchDraw();
-				}
-				else if (ifinimage(msg, this->Move[2], 850, 500))
-				{
-					BeginBatchDraw();
-					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
-					else { this->GQbutton[k][j].drawGQbutton(); }
-					b1[s1x][s1y].drawbutton();
-					if (!s1AD)
-					{
-						if (s1index == 0)
-						{
-							s1index = 1;
-							s1AD = 1;
-						}
-						else s1index -= 1;
-					}
-					else
-					{
-						if (s1index == s1.getrun() - 1)
-						{
-							s1index -= 1;
-							s1AD = 0;
-						}
-						else { s1index += 1; }
-					}
-					s1x = s1.revisepath()[s1index].returnx();
-					s1y = s1.revisepath()[s1index].returny();
-					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
-					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
-					b1[s2x][s2y].drawbutton();
-					if (!s2AD)
-					{
-						if (s2index == 0)
-						{
-							s2index = 1;
-							s2AD = 1;
-						}
-						else s2index -= 1;
-					}
-					else
-					{
-						if (s2index == s2.getrun() - 1)
-						{
-							s2index -= 1;
-							s2AD = 0;
-						}
-						else { s2index += 1; }
-					}
-					s2x = s2.revisepath()[s2index].returnx();
-					s2y = s2.revisepath()[s2index].returny();
-					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
-					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
-					putimage(s2Px, s2Py, &this->img[14]);
-					k += 1;
-					shipx += 25;
-					putimage(shipx, shipy, &this->img[13]);
-					putimage(s1Px, s1Py, &this->img[14]);
-					EndBatchDraw();
-				}
-				else if (ifinimage(msg, this->Move[3], 800, 450))
-				{
-					BeginBatchDraw();
-					if (b1[k][j].revisecreateifpass()) { b1[k][j].drawbutton(); }
-					else { this->GQbutton[k][j].drawGQbutton(); }
-					b1[s1x][s1y].drawbutton();
-					if (!s1AD)
-					{
-						if (s1index == 0)
-						{
-							s1index = 1;
-							s1AD = 1;
-						}
-						else s1index -= 1;
-					}
-					else
-					{
-						if (s1index == s1.getrun() - 1)
-						{
-							s1index -= 1;
-							s1AD = 0;
-						}
-						else { s1index += 1; }
-					}
-					s1x = s1.revisepath()[s1index].returnx();
-					s1y = s1.revisepath()[s1index].returny();
-					s1Px = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returnx();
-					s1Py = b1[s1.revisepath()[s1index].returnx()][s1.revisepath()[s1index].returny()].returny();
-					b1[s2x][s2y].drawbutton();
-					if (!s2AD)
-					{
-						if (s2index == 0)
-						{
-							s2index = 1;
-							s2AD = 1;
-						}
-						else s2index -= 1;
-					}
-					else
-					{
-						if (s2index == s2.getrun() - 1)
-						{
-							s2index -= 1;
-							s2AD = 0;
-						}
-						else { s2index += 1; }
-					}
-					s2x = s2.revisepath()[s2index].returnx();
-					s2y = s2.revisepath()[s2index].returny();
-					s2Px = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returnx();
-					s2Py = b1[s2.revisepath()[s2index].returnx()][s2.revisepath()[s2index].returny()].returny();
-					putimage(s2Px, s2Py, &this->img[14]);
-					j -= 1;
-					shipy -= 25;
-					putimage(shipx, shipy, &this->img[13]);
-					putimage(s1Px, s1Py, &this->img[14]);
-					EndBatchDraw();
-				}
-			}
-		}
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		delete[]b1[i];
-	}
-	delete[] b1;
-	setbutton();
+	createchallenge(randomgame, number1, Pall);
 
 }
 void Mananger::createmiddle(people*& p1, game& g1)
