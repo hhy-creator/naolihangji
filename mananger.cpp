@@ -348,8 +348,9 @@ bool& button::revisebombpass()
 }
 void Mananger::Exitgame() 
 {
-	recordmessagetxt();
-	cout << "游戏已退出" << endl;
+	cout << "**********************" << endl;
+	cout << "******游戏已退出******" << endl;
+	cout << "**********************" << endl;
 	exit(0);
 }
 int Mananger::getlevel()const 
@@ -848,8 +849,7 @@ void button::drawbuttonwithPic(IMAGE* m1)
 {
 	putimage(this->x, this->y, m1);
 	settextstyle(35, 20, "黑体");
-	settextcolor(RGB(205, 207, 107));
-	settextcolor(BLACK);
+	settextcolor(RGB(252, 169, 97));
 	int hspace = (this->width - textwidth("查看规则")) / 2;
 	int vspace = (this->height - textheight("查看规则")) / 2;
 	outtextxy(this->x + hspace - 5, this->y + vspace, this->text.c_str());
@@ -870,8 +870,8 @@ void button::drawbutton()
 void button::drawbutton1()
 {
 	setfillcolor(this->color);
-	settextstyle(20, 20, "宋体");
-	settextcolor(BLACK);
+	settextstyle(20, 20, "黑体");
+	settextcolor(RGB(202,177,180));
 	int hspace = (this->width - textwidth("返回")) / 2;
 	int vspace = (this->height - textheight("返回")) / 2;
 	fillrectangle(this->x, this->y, this->x + this->width, this->y + this->height);
@@ -1043,7 +1043,7 @@ void Mananger::PlayerGreatgame()
 		IMAGE i1;
 		loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
 		putimage(0, 0, &i1);
-		InputBox(buffer, 256, _T("请输入步数大小（不包括起点）:"), _T("欢迎创建游戏"), _T("确定"));
+		InputBox(buffer, 256, _T("请输入步数大小（不包括起点）:"), _T("欢迎创建游戏"), _T("10"));
 		if ((buffer[1] >= '0' && buffer[1] <= '9' && buffer[0] >= '0' && buffer[0] <= '9')|| (buffer[1] == '\0' && buffer[0] >= '0' && buffer[0] <= '9'))
 		{
 			break;
@@ -1908,7 +1908,7 @@ void Mananger::creatrGameChallenge(game& g1)
 		{
 			closegraph();
 			bool a = 0;
-			drawNoP(g1);
+			drawNoPlayergame(g1);
 			break;
 		}
 	}
@@ -1964,7 +1964,7 @@ void Mananger::PlayercreatrGame(game& g1)
 		{
 			closegraph();
 			bool a = 0;
-			drawNoP(g1);
+			drawNoPlayergame(g1);
 			break;
 		}
 	}
@@ -2046,8 +2046,8 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 		putimage(0, 0, &this->img[4], SRCINVERT);
 		putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
 		putimage(0, 0, &this->img[27], SRCINVERT);
-		putimage(0, 100, &this->ymimg[3], NOTSRCERASE);
-		putimage(0, 100, &this->img[20],SRCINVERT);
+		putimage(0, 550, &this->ymimg[3], NOTSRCERASE);
+		putimage(0, 550, &this->img[20],SRCINVERT);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
 		if (ifinimage(msg, this->img[27], 0, 0))
@@ -2056,7 +2056,7 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 			RunChoose();
 			x = 1;
 		}
-		else if (ifinimage(msg,this->img[20],0,100))
+		else if (ifinimage(msg,this->img[20],0,550))
 		{
 			closegraph();
 			readgamekutxt();
@@ -2068,7 +2068,7 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 				IMAGE i1;
 				loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
 				putimage(0, 0, &i1);
-				InputBox(buffer, 256, _T("请输入关卡名字:"), _T("请选择关卡"), _T("确定"));
+				InputBox(buffer, 256, _T("请给关卡起名(重名会要求重新输入):"), _T("创建关卡中..."), _T("******"));
 				int i = 0;
 				while (buffer[i] != '\0') {
 					name += buffer[i];
@@ -2173,6 +2173,88 @@ void Mananger::drawNoMyCreate()
 			closegraph();
 			x = 1;
 			RunChoose();
+		}
+	}
+}
+void Mananger::drawNoPlayergame(game& g1) 
+{
+	cleardevice();
+	initgraph(800, 600);
+	setbkmode(TRANSPARENT);
+	setbkcolor(WHITE);
+	cleardevice();
+	button b4(280, 520, 200, 50, "再次挑战");
+	bool x = 0;
+	while (!x)
+	{
+		int number = 0;
+		BeginBatchDraw();
+		putimage(0, 0, &this->img[25]);
+		putimage(0, 0, &this->ymimg[4], NOTSRCERASE);
+		putimage(0, 0, &this->img[5], SRCINVERT);
+		putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
+		putimage(0, 0, &this->img[27], SRCINVERT);
+		putimage(0, 500, &this->img[29]);
+		b4.drawbuttonwithPic(&this->img[15]);
+		EndBatchDraw();
+		ExMessage msg = getmousemessage();
+		if (ifinimage(msg, this->img[27], 0, 0))
+		{
+			closegraph();
+			x = 1;
+			CreateMode();
+		}
+		else if (ifinbutoon(b4, msg))
+		{
+			closegraph();
+			x = 1;
+			PlayercreatrGame(g1);
+		}
+		else if (ifinimage(msg, this->img[29], 0, 500))
+		{
+			closegraph();
+			cleardevice();
+			initgraph(1000, 729);
+			setbkmode(TRANSPARENT);
+
+			button** b1 = new button * [25];
+			for (int i = 0; i < 25; i++)
+			{
+				b1[i] = new button[25];
+			}
+			for (int i = 0; i < 25; i++)
+			{
+				for (int j = 0; j < 25; j++)
+				{
+					b1[i][j] = this->GQbutton[i][j];
+				}
+			}
+			bool m = 1;
+			while (m) {
+				BeginBatchDraw();
+				putimage(0, 0, &this->img[3]);
+				putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
+				putimage(0, 0, &this->img[27], SRCINVERT);
+				for (int i = 0; i < 25; i++)
+				{
+					for (int j = 0; j < 25; j++) { b1[i][j].drawGQbutton(); }
+				}
+				drawanswerroad(g1.getp2array(), g1.getrun(), b1);
+				EndBatchDraw();
+				ExMessage msg = getmousemessage();
+				setbutton();
+				if (ifinimage(msg, this->img[27], 0, 0))
+				{
+					closegraph();
+					for (int i = 0; i < 25; i++)
+					{
+						delete[]b1[i];
+					}
+					delete[] b1;
+					m = 0;
+					PlayercreatrGame(g1);
+				}
+			}
 		}
 	}
 }
@@ -2387,8 +2469,8 @@ void Mananger::PTrankP()
 	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
 	putimage(0, 0, &this->img[7], SRCINVERT);
 	string text;
-	settextcolor(BLACK);
-	settextstyle(15, 15, "宋体");
+	settextcolor(RGB(7,56,132));
+	settextstyle(15, 15, "黑体");
 	for (int i = 0; i<min(20,rank.size()); i++)
 	{
 		text = to_string(i + 1);
@@ -2965,8 +3047,10 @@ void Mananger::createmiddle(people*& p1, game& g1)
 	EndBatchDraw();
 	bool x = 1;
 	drawanswerroad(p1, 11, b1,x);
-	button con(800, 679, 200, 50, "下一步");
-	con.drawbuttonwithPic(&this->img[15]);
+	putimage(800, 629, &this->ymimg[2], NOTSRCERASE);
+	putimage(800, 629, &this->img[19], SRCINVERT);
+	//button con(800, 679, 200, 50, "下一步");
+	//con.drawbuttonwithPic(&this->img[15]);
 	while (1)
 	{
 		ExMessage msg;
@@ -2974,7 +3058,7 @@ void Mananger::createmiddle(people*& p1, game& g1)
 		{
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				if (ifinbutoon(con, msg))
+				if (ifinimage(msg,this->img[19],800,629))
 				{
 					break;
 				}
@@ -3049,8 +3133,8 @@ void Mananger::CreateMode()
 	button b1(200, 200, 200, 50, "自建关卡");
 	button b2(200, 250, 200, 50, "创意总站");
 	putimage(0, 0, &this->img[9]);
-	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
-	putimage(0, 0, &this->img[7], SRCINVERT);
+	putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
+	putimage(0, 0, &this->img[27], SRCINVERT);
 	b1.drawbuttonwithPic(&this->img[23]);
 	b2.drawbuttonwithPic(&this->img[23]);
 	while (1) {
@@ -3070,16 +3154,16 @@ void Mananger::CreateMode()
 			initgraph(600, 700);
 			setbkmode(TRANSPARENT);
 			putimage(0, 0, &this->img[12]);
-			putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
-			putimage(0, 0, &this->img[7], SRCINVERT);
+			putimage(0, -10, &this->ymimg[6], NOTSRCERASE);
+			putimage(0, -10, &this->img[27], SRCINVERT);
 			putimage(430, 620, &this->ymimg[2], NOTSRCERASE);
 			putimage(430,620, &this->img[19], SRCINVERT);
 			string text;
-			settextstyle(20, 20, "宋体");
-			settextcolor(BLACK);
+			settextstyle(22, 22, "黑体");
+			settextcolor(RGB(130,170,230));
 			text = "已有自建关卡:";
 			outtextxy(150, 90 , text.c_str());
-			settextstyle(15, 15, "宋体");
+			settextstyle(15, 15, "黑体");
 			for (int i = 0; i < this->gameall.size(); i++)
 			{
 				text =gameall[i].name;
@@ -3099,7 +3183,7 @@ void Mananger::CreateMode()
 						IMAGE i1;
 						loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
 						putimage(0, 0, &i1);
-						InputBox(buffer, 256, _T("请输入关卡名字:"), _T("请选择关卡"), _T("确定"));
+						InputBox(buffer, 256, _T("请输入关卡名字:"), _T("请选择关卡"), _T("******"));
 						int i = 0;
 						while(buffer[i]!='\0'){
 							name += buffer[i];
@@ -3109,7 +3193,7 @@ void Mananger::CreateMode()
 						{
 							if (gameall[i].name == name)
 							{
-								PlayercreatrGame(gameall[i].g1);
+								creatrGameChallenge(gameall[i].g1);
 								x = 0;
 								break;
 							}
@@ -3117,17 +3201,17 @@ void Mananger::CreateMode()
 					}
 					closegraph();
 				}
-				else if (ifinimage(msg, this->img[7], 0, 0))
+				else if (ifinimage(msg, this->img[27], 0, -10))
 				{
 					closegraph();
-					RunChoose();
+					CreateMode();
 					break;
 				}
 			}
 			closegraph();
 			
 		}
-		else if (ifinimage(msg, this->img[7], 0, 0))
+		else if (ifinimage(msg, this->img[27], 0, 0))
 		{
 			EndBatchDraw();
 			closegraph();
@@ -3146,8 +3230,8 @@ void Mananger::WJrankP()
 	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
 	putimage(0, 0, &this->img[7], SRCINVERT);
 	string text;
-	settextstyle(15, 15, "宋体");
-	settextcolor(BLACK);
+	settextstyle(15, 15, "黑体");
+	settextcolor(RGB(7, 56, 132));
 	for (int i = 0; i < min(20,rank.size()); i++)
 	{
 		text = to_string(i + 1);
@@ -3179,9 +3263,9 @@ void Mananger::DGrankP()
 	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
 	putimage(0, 0, &this->img[7], SRCINVERT);
 	string text;
-	settextcolor(BLACK);
-	settextstyle(15, 15, "宋体");
-	for (int i = 0; i < 6; i++)
+	settextcolor(RGB(7, 56, 132));
+	settextstyle(15, 15, "黑体");
+	for (int i = 0; i < 9; i++)
 	{
 		sort(this->rank.begin(), this->rank.end(), [i](const player& p1, const player& p2)
 			{
@@ -3225,7 +3309,7 @@ void Mananger::checkmessageP()
 	settextstyle(20, 20, "黑体");
 	for (int i = 0; i < 9; i++)
 	{
-		outtextxy(170 + i * 70, 220, to_string(i + 1).c_str());
+		outtextxy(170 + i * 70, 223, to_string(i + 1).c_str());
 	}
 	settextstyle(17, 17, "黑体");
 	for (int i = 0; i < this->p1.Getaccuracy().size(); i++)
@@ -3261,18 +3345,12 @@ void Mananger::challengegame()
 	initgraph(400, 600);
 	setbkmode(TRANSPARENT);
 	putimage(0, 0, &this->img[8]);
-	button b0(150, 120, 100, 50, "简单");
-	button b1(150, 170, 100, 50, "普通");
-	button b2(150, 220, 100, 50, "困难");
-	button b3(150, 270, 100, 50, "史诗");
-	button b4(150, 320, 100, 50, "传说");
-	COLORREF c1 = RGB(242, 217, 151);
-	b0.revisecolor() = c1;
-	b1.revisecolor() = c1;
-	b2.revisecolor() = c1;
-	b3.revisecolor() = c1;
-	b4.revisecolor() = c1;
-	b4.drawbutton1();
+	button b0(150, 170, 100, 50, "简单");
+	button b1(150, 220, 100, 50, "普通");
+	button b2(150, 270, 100, 50, "困难");
+	button b3(150, 320, 100, 50, "史诗");
+	button b4(150, 370, 100, 50, "传说");
+	b0.drawbutton1();
 	b1.drawbutton1();
 	b2.drawbutton1();
 	b3.drawbutton1();

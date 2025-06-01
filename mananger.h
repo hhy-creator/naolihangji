@@ -117,6 +117,7 @@ public:
 	void randomcreatgame();
 	void PlayerGreatgame();
 	void drawYesPPlayerCreate(game& g1);
+	void drawNoPlayergame(game& g1);
 	void PlayercreatrGame(game& g1);
 	void challengegame();
 	void randomcreatgame(int number1);//Œﬁæ°ÃÙ’Ω

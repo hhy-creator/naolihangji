@@ -72,7 +72,7 @@ player& player::SetName()
 			IMAGE i1;
 			loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
 			putimage(0, 0, &i1);
-			InputBox(buffer, 256, _T("请输入操作（登陆or注册）:"), _T("请创建or登陆用户"), _T("确定"));
+			InputBox(buffer, 256, _T("请输入操作（登陆or注册）:"), _T("请创建or登陆用户"), _T("登陆"));
 			int i = 0;
 			while (buffer[i] != '\0') 
 			{
@@ -101,7 +101,7 @@ player& player::SetName()
 				IMAGE i1;
 				loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
 				putimage(0, 0, &i1);
-				InputBox(buffer, 256, _T("请输入名字（名字不正确会要求重新输入）:"), _T("请登陆用户"), _T("确定"));
+				InputBox(buffer, 256, _T("请输入名字（名字不正确会要求重新输入）:"), _T("请登陆用户"), _T("******"));
 				int j = 0;
 				while (buffer[j] != '\0')
 				{
@@ -121,7 +121,7 @@ player& player::SetName()
 			}
 			bool x1 = 1;
 			while (x1) {
-				InputBox(buffer1, 256, _T("请输入密码(错误请重新输入):"), _T("下一步"), _T("确定"));
+				InputBox(buffer1, 256, _T("请输入密码(错误请重新输入):"), _T("下一步"), _T("******"));
 				int m = 0;
 				while (buffer1[m]!='\0')
 				{
@@ -147,7 +147,7 @@ player& player::SetName()
 				IMAGE i1;
 				loadimage(&i1, "脑力航迹/实训/获取输入背景.jpg", 640, 480);
 				putimage(0, 0, &i1);
-				InputBox(buffer, 256, _T("请输入名字(发现重名或名字太长会要求重新输入):"), _T("请注册用户"), _T("确定"));
+				InputBox(buffer, 256, _T("请输入名字(发现重名或名字太长会要求重新输入):"), _T("请注册用户"), _T("******"));
 				int i = 0;
 				while (buffer[i] != '\0')
 				{
@@ -166,7 +166,7 @@ player& player::SetName()
 					if (sum == v1.size())
 					{
 						int j = 0;
-						InputBox(buffer1, 256, _T("请输入密码:"), _T("下一步"), _T("确定"));
+						InputBox(buffer1, 256, _T("请输入密码:"), _T("下一步"), _T("******"));
 						while (buffer1[j] != '\0' )
 						{
 							password += buffer1[j];
