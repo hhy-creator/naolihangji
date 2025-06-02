@@ -11,6 +11,11 @@
 #include <algorithm>
 #include <graphics.h>
 #include <time.h>
+#include<conio.h>
+#include <thread>
+#include <windows.h>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 using namespace std;
 
 int main() 

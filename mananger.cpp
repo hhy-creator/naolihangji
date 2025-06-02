@@ -11,6 +11,11 @@
 #include <fstream>
 #include <algorithm>
 #include <graphics.h>
+#include <windows.h>
+#include <mmsystem.h>
+#include<conio.h>
+#include <thread>
+#pragma comment(lib, "winmm.lib")
 using namespace std;
 const clock_t FPS = 1000/60;
 int starttime = 0;
@@ -1041,6 +1046,7 @@ int Mananger::ifinbutoon(button& pb, ExMessage m)
 {
 	if (pb.returnx() < m.x && pb.returnx() + pb.returnwidth() > m.x && pb.returny() < m.y && pb.returny() + pb.returnheight() > m.y)
 	{
+		PlaySound(TEXT("脑力航迹/实训/按钮点击音效.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		pb.drawbutton();
 		return 1;
 
@@ -1051,6 +1057,7 @@ bool Mananger::ifinimage(ExMessage m, IMAGE&pb,const int& wb,const int& hb)
 {
 	if (wb < m.x && wb + pb.getwidth() > m.x && hb< m.y && hb + pb.getheight() > m.y)
 	{
+		PlaySound(TEXT("脑力航迹/实训/按钮点击音效.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		return true;
 
 	}
@@ -1250,7 +1257,7 @@ void Mananger::loadgameP()
 	loadimage(&this->img[26], "脑力航迹/实训/返回主界面图片.jpg", 80, 80);
 	loadimage(&this->img[27], "脑力航迹/实训/返回图片.jpg", 100, 100);
 	loadimage(&this->img[28], "脑力航迹/实训/计时器.jpg", 70, 70);
-	loadimage(&this->img[29], "脑力航迹/实训/查看答案.jpg", 100, 100);
+	loadimage(&this->img[29], "脑力航迹/实训/查看答案.jpg", 50, 50);
 	loadimage(&this->Move[0], "脑力航迹/实训/创下.jpg", 50, 50);
 	loadimage(&this->Move[1], "脑力航迹/实训/创左.jpg", 50, 50);
 	loadimage(&this->Move[2], "脑力航迹/实训/创右.jpg", 50, 50);
@@ -1673,6 +1680,7 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 	
 		}
 	}
+	PlaySound(TEXT("脑力航迹/实训/游戏挑战中.wav"), NULL, SND_FILENAME | SND_ASYNC|SND_LOOP);
 	for (int i = 0; i < g1.getrun();) 
 	{
 		ExMessage msg;
@@ -1734,7 +1742,6 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 			}
 		}
 	}
-
 	for (int i = 0; i < g1.getrun(); i++)
 	{
 		if (g1.getp2array()[i].returnx() != p3array[i].returnx() || g1.getp2array()[i].returny() != p3array[i].returny())
@@ -2008,6 +2015,7 @@ void Mananger::drawYesP(game& g1)
 	setbkcolor(WHITE);
 	cleardevice();
 	bool x = 0;
+	PlaySound(TEXT("脑力航迹/实训/胜利.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	while (!x)
 	{
 		BeginBatchDraw();
@@ -2043,6 +2051,7 @@ void Mananger::drawYesPChallenge(game& g1)
 	setbkcolor(WHITE);
 	cleardevice();
 	bool x = 0;
+	PlaySound(TEXT("脑力航迹/实训/胜利.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	while (!x)
 	{
 		BeginBatchDraw();
@@ -2069,6 +2078,7 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 	setbkmode(TRANSPARENT);
 	setbkcolor(WHITE);
 	bool x = 0;
+	PlaySound(TEXT("脑力航迹/实训/胜利.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	while (!x)
 	{
 		BeginBatchDraw();
@@ -2155,6 +2165,7 @@ void Mananger::drawYesP(const int& i)
 	}
 
 	bool x = 0;
+	PlaySound(TEXT("脑力航迹/实训/胜利.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	while (!x)
 	{
 		BeginBatchDraw();
@@ -2188,6 +2199,7 @@ void Mananger::drawNoMyCreate(game& g1, int& number1, people*& Pall)
 	setbkcolor(WHITE);
 	cleardevice();
 	bool x = 0;
+	PlaySound(TEXT("脑力航迹/实训/失败.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	while (!x)
 	{
 		int number = 0;
@@ -2224,6 +2236,7 @@ void Mananger::drawNoPlayergame(game& g1)
 	cleardevice();
 	button b4(280, 520, 200, 50, "再次挑战");
 	bool x = 0;
+	PlaySound(TEXT("脑力航迹/实训/失败.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	while (!x)
 	{
 		int number = 0;
@@ -2233,7 +2246,7 @@ void Mananger::drawNoPlayergame(game& g1)
 		putimage(0, 0, &this->img[5], SRCINVERT);
 		putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
 		putimage(0, 0, &this->img[27], SRCINVERT);
-		putimage(0, 500, &this->img[29]);
+		putimage(0, 550, &this->img[29]);
 		b4.drawbuttonwithPic(&this->img[15]);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
@@ -2249,7 +2262,7 @@ void Mananger::drawNoPlayergame(game& g1)
 			x = 1;
 			PlayercreatrGame(g1);
 		}
-		else if (ifinimage(msg, this->img[29], 0, 500))
+		else if (ifinimage(msg, this->img[29], 0, 550))
 		{
 			closegraph();
 			cleardevice();
@@ -2306,6 +2319,7 @@ void Mananger::drawNoP(game& g1)
 	cleardevice();
 	button b4(280, 520, 200, 50, "再次挑战");
 	bool x = 0;
+	PlaySound(TEXT("脑力航迹/实训/失败.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	while (!x)
 	{
 		int number = 0;
@@ -2315,7 +2329,7 @@ void Mananger::drawNoP(game& g1)
 		putimage(0, 0, &this->img[5], SRCINVERT);
 		putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
 		putimage(0, 0, &this->img[27], SRCINVERT);
-		putimage(0, 500, &this->img[29]);
+		putimage(0, 550, &this->img[29]);
 		b4.drawbuttonwithPic(&this->img[15]);
 		EndBatchDraw();
 		ExMessage msg = getmousemessage();
@@ -2331,7 +2345,7 @@ void Mananger::drawNoP(game& g1)
 			x = 1;
 			createGameP(g1);
 		}
-		else if (ifinimage(msg,this->img[29],0,500))
+		else if (ifinimage(msg,this->img[29],0,550))
 		{
 			closegraph();
 			cleardevice();
@@ -2421,6 +2435,7 @@ void Mananger::drawNoP(game& g1, const int& i)
 	}
 	button b4(280, 520, 200, 50, "再次挑战");
 	bool x = 0;
+	PlaySound(TEXT("脑力航迹/实训/失败.wav"), NULL, SND_FILENAME | SND_ASYNC);
 	while (!x)
 	{
 		int number = 0;
@@ -2432,7 +2447,7 @@ void Mananger::drawNoP(game& g1, const int& i)
 		putimage(0, 0, &this->img[27], SRCINVERT);
 		putimage(250, 227, &this->ymimg[7], NOTSRCERASE);
 		putimage(250, 227, &this->img[28], SRCINVERT);
-		putimage(0, 500, &this->img[29]);
+		putimage(0, 550, &this->img[29]);
 		settextstyle(30, 30, "黑体");
 		settextcolor(RGB(250, 240, 202));
 		outtextxy(324, 250, s.c_str());
@@ -2462,7 +2477,7 @@ void Mananger::drawNoP(game& g1, const int& i)
 			case 8: { getfromgameku("关卡9", i); break; }
 			}
 		}
-		else if (ifinimage(msg,this->img[29],0,500))
+		else if (ifinimage(msg,this->img[29],0,550))
 		{
 			closegraph();
 			cleardevice();
@@ -2914,7 +2929,6 @@ void Mananger::createchallenge(game& randomgame, int&number1,people*& Pall)
 }
 void Mananger::Mycreate()
 {
-
 	game randomgame;
 	int number1 = 6;
 	randomgame.setrun(number1);
