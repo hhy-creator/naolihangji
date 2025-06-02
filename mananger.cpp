@@ -1290,6 +1290,7 @@ void Mananger::ChangeChoose()
 {
 	initgraph(900, 700);
 	setbkmode(TRANSPARENT);
+	PlaySound(TEXT("脑力航迹/实训/流水.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (1) {
 		cleardevice();
 		putimage(0, 0, &this->img[0]);
@@ -1680,7 +1681,6 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 	
 		}
 	}
-	PlaySound(TEXT("脑力航迹/实训/游戏挑战中.wav"), NULL, SND_FILENAME | SND_ASYNC|SND_LOOP);
 	for (int i = 0; i < g1.getrun();) 
 	{
 		ExMessage msg;
