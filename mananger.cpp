@@ -65,10 +65,10 @@ void ship::createMypath(const int&bx,const int& by)
 	while (x) 
 	{
 		int number2 = rand() % 4;
-		int change = rand() % 3 + 3;
 		for (int i = this->run - 2; i >= 0;)
 		{
-			if (i == 1) 
+			number2 = rand() % 4;
+			/*if (i == 1) 
 			{
 				switch (number2)
 				{
@@ -121,15 +121,15 @@ void ship::createMypath(const int&bx,const int& by)
 					break;
 				}
 				}
-			}
+			}*/
 			switch (number2)
 			{
 			case 0:
 			{
 				p1.Movepeople(UP);
+				this->path[i] = p1;
 				if (this->ifpass(this->path, i, this->run))
 				{
-					this->path[i] = p1;
 					i--;
 				}
 				else { p1.Movepeople(DOWN); }
@@ -138,9 +138,10 @@ void ship::createMypath(const int&bx,const int& by)
 			case 1:
 			{
 				p1.Movepeople(DOWN);
+				this->path[i] = p1;
 				if (this->ifpass(this->path, i, this->run))
 				{
-					this->path[i] = p1;
+			
 					i--;
 				}
 				else { p1.Movepeople(UP); }
@@ -149,10 +150,10 @@ void ship::createMypath(const int&bx,const int& by)
 			case 2:
 			{
 				p1.Movepeople(LEFT);
-				
+				this->path[i] = p1;
 				if (this->ifpass(this->path, i, this->run))
 				{
-					this->path[i] = p1;
+				
 					i--;
 				}
 				else { p1.Movepeople(RIGHT); }
@@ -161,10 +162,10 @@ void ship::createMypath(const int&bx,const int& by)
 			case 3:
 			{
 				p1.Movepeople(RIGHT);
-				
+				this->path[i] = p1;
 				if (this->ifpass(this->path, i, this->run))
 				{
-					this->path[i] = p1;
+				
 					i--;
 				}
 				else { p1.Movepeople(LEFT); }
