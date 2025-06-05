@@ -13,8 +13,6 @@
 #include <graphics.h>
 #include <windows.h>
 #include <mmsystem.h>
-#include<conio.h>
-#include <thread>
 #pragma comment(lib, "winmm.lib")
 using namespace std;
 const clock_t FPS = 1000/60;
@@ -67,6 +65,7 @@ void ship::createMypath(const int&bx,const int& by)
 	while (x) 
 	{
 		int number2 = rand() % 4;
+		int change = rand() % 3 + 3;
 		for (int i = this->run - 2; i >= 0;)
 		{
 			if (i == 1) 
@@ -92,6 +91,33 @@ void ship::createMypath(const int&bx,const int& by)
 				case 3:
 				{
 					number2 = 0;
+					break;
+				}
+				}
+			}
+			if ( i == change)
+			{
+				switch (number2)
+				{
+				case 0:
+				{
+					number2 = 2;
+					break;
+				}
+				case 1:
+				{
+					number2 = 3;
+					break;
+				}
+				case 2:
+				{
+					number2 = 0;
+
+					break;
+				}
+				case 3:
+				{
+					number2 = 1;
 					break;
 				}
 				}
@@ -1660,6 +1686,7 @@ button**& Mananger::drawrepetebutton(button**& b1)
 	}
 	return b1;
 }
+
 bool Mananger::clickanswer( game&g1, button**& b1)
 {
 

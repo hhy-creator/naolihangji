@@ -9,13 +9,8 @@
 #include <stdexcept>
 #include <fstream>
 #include <algorithm>
-#include <conio.h>
-#include <set>
 #include<time.h>
 #include <graphics.h>
-#include <windows.h>
-#include<conio.h>
-#include <thread>
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 struct gameku 

@@ -10,9 +10,8 @@
 #include <stdexcept>
 #include <algorithm>
 #include <graphics.h>
+#include <string>
 #include <time.h>
-#include<conio.h>
-#include <thread>
 #include <windows.h>
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
