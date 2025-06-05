@@ -1687,7 +1687,6 @@ button**& Mananger::drawrepetebutton(button**& b1)
 	}
 	return b1;
 }
-
 bool Mananger::clickanswer( game&g1, button**& b1)
 {
 
@@ -3221,8 +3220,8 @@ void Mananger::CreateMode()
 	button b1(200, 200, 200, 50, "自建关卡");
 	button b2(200, 250, 200, 50, "创意总站");
 	putimage(0, 0, &this->img[9]);
-	putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
-	putimage(0, 0, &this->img[27], SRCINVERT);
+	putimage(0, 0, &this->ymimg[5], NOTSRCERASE);
+	putimage(0, 0, &this->img[26], SRCINVERT);
 	b1.drawbuttonwithPic(&this->img[23]);
 	b2.drawbuttonwithPic(&this->img[23]);
 	while (1) {
@@ -3299,7 +3298,7 @@ void Mananger::CreateMode()
 			closegraph();
 			
 		}
-		else if (ifinimage(msg, this->img[27], 0, 0))
+		else if (ifinimage(msg, this->img[26], 0, 0))
 		{
 			EndBatchDraw();
 			closegraph();
@@ -3414,12 +3413,12 @@ void Mananger::checkmessageP()
 	text = to_string(this->p1.getnoendscore());
 	settextstyle(40, 40, "黑体");
 	outtextxy(300, 467, text.c_str());
-	putimage(0, 0, &this->ymimg[6], NOTSRCERASE);
-	putimage(0, 0, &this->img[27], SRCINVERT);
+	putimage(0, 0, &this->ymimg[5], NOTSRCERASE);
+	putimage(0, 0, &this->img[26], SRCINVERT);
 	while (1)
 	{
 		ExMessage msg = getmousemessage();
-		if (ifinimage(msg, this->img[27], 0, 0))
+		if (ifinimage(msg, this->img[26], 0, 0))
 		{
 			closegraph();
 			RunChoose();
@@ -3444,8 +3443,8 @@ void Mananger::challengegame()
 	b3.drawbutton1();
 	b4.drawbutton1();
 	int number;
-	putimage(0, 0, &this->ymimg[0], NOTSRCERASE);
-	putimage(0, 0, &this->img[7], SRCINVERT);
+	putimage(0, 0, &this->ymimg[5], NOTSRCERASE);
+	putimage(0, 0, &this->img[26], SRCINVERT);
 	while (1) {
 		ExMessage msg = getmousemessage();
 		BeginBatchDraw();
@@ -3476,7 +3475,7 @@ void Mananger::challengegame()
 			number = 5;
 			break;
 		}
-		else if (ifinimage(msg, this->img[7], 0, 0))
+		else if (ifinimage(msg, this->img[26], 0, 0))
 		{
 			EndBatchDraw();
 			RunChoose();
