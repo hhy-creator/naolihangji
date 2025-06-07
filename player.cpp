@@ -91,8 +91,9 @@ player& player::SetName()
 		}
 		if (caozuo == "µÇÂ½") 
 		{
-			string name = "";
+			
 			int index = 0;
+			string name = "";
 			string password = "";
 			bool x = 1;
 			while (x) {
@@ -116,7 +117,11 @@ player& player::SetName()
 						index = i;
 						break;
 					}
-					else { name = ""; }
+
+				}
+				if (x) 
+				{
+					name = "";
 				}
 			}
 			bool x1 = 1;
@@ -364,8 +369,8 @@ void player::CreatScore(vector<int>& score, const int&i,const bool&x,const vecto
 {
 	if (x) 
 	{
-		if (time[i] < run * 5) { score[i] =max( 100,score[i]); }
-		else { score[i] = max((100 / (time[i] / run)) * 5,score[i]); }
+		if (time[i] < run * 7) { score[i] =max( 100,score[i]); }
+		else { score[i] = max((100 / (time[i] / run)) * 7,score[i]); }
 	}
 	else 
 	{

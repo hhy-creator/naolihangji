@@ -1780,7 +1780,7 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 			}
 			delete[]b2;
 			delete[]p3array;
-
+			closegraph();
 			return false;
 		}
 	}
@@ -1791,6 +1791,7 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 		delete[]b2[i];
 	}
 	delete[]b2;
+	closegraph();
 	return true;
 
 }
@@ -3207,7 +3208,8 @@ void Mananger::MyCreateGameP(game& g1, people*& p1)
 		else
 		{
 			closegraph();
-			drawNoP(g1);
+			int a = 6;
+			drawNoMyCreate(g1,a, p1);
 			break;
 		}
 	}
