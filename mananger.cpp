@@ -1735,6 +1735,7 @@ bool Mananger::clickanswer( game&g1, button**& b1)
 						b1[g1.getp2array()[i].returnx()][g1.getp2array()[i].returny()].drawgamebutton(i + 1, BLACK,1);
 						p3array[i].getx() = g1.getp2array()[i].returnx();
 						p3array[i].gety() = g1.getp2array()[i].returny();
+						g1.reviselookanswer() = 1;
 						i++;
 						break;
 					}
@@ -1841,7 +1842,7 @@ void Mananger::createGameP(game& g1, const int& i)
 		int seconds = secondall % 60;
 		int minute = secondall / 60;
 		this->p1.gettime()[i] = secondall;
-		if (a)
+		if (a&&!g1.returnlookanswer())
 		{
 			x = 0;
 			getplayer().CreatScore(getplayer().Getscore(), getlevel()-1, a, this->p1.gettime(), g1.getrun());
@@ -1852,7 +1853,15 @@ void Mananger::createGameP(game& g1, const int& i)
 			drawYesP(i);
 			break;
 		}
-		else
+		else if (a && g1.returnlookanswer()) 
+		{
+			x = 0;
+			recordmessagetxt();
+			closegraph();
+			drawYesP(i);
+			break;
+		}
+		else 
 		{
 			closegraph();
 			getplayer().AddWrong(getplayer().Getwrong(), getlevel()-1);
@@ -1903,20 +1912,26 @@ void Mananger::createGameP(game& g1)
 		delete[] b1;
 		setbutton();
 
-		if (a)
+		if (a&&!g1.returnlookanswer())
 		{
 			x = 0;
 			closegraph();
 			this->p1.getnoendscore() =max((g1.getrun()-1)* 100,this->p1.getnoendscore());
 			recordmessagetxt();
 			drawYesP(g1);
-			bool a = 1;
+			break;
+		}
+		else if (a&&g1.returnlookanswer()) 
+		{
+			x = 0;
+			closegraph();
+			recordmessagetxt();
+			drawYesPChallenge(g1);
 			break;
 		}
 		else
 		{
 			closegraph();
-			bool a = 0;
 			recordmessagetxt();
 			drawNoP(g1);
 			break;
@@ -2688,7 +2703,7 @@ void Mananger::createchallenge(game& randomgame, int&number1,people*& Pall)
 		b1[k][j].reviseMycreateifpass() = true;
 		if (b1[k][j].reviseMycreateifpass() != b1[k][j].revisecreateifpass() || (s1Px == shipx && s1Py == shipy) || (s2Px == shipx && s2Py == shipy))
 		{
-
+			closegraph();
 			drawNoMyCreate(randomgame,  number1, Pall);
 			break;
 		}
@@ -2705,6 +2720,7 @@ void Mananger::createchallenge(game& randomgame, int&number1,people*& Pall)
 		}
 		if (x && k == Pall[2 * number1 - 2].returnx() && j == Pall[2 * number1 - 2].returny())
 		{
+			closegraph();
 			drawYesPChallenge(randomgame);
 			break;
 		}

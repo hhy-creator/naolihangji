@@ -42,12 +42,15 @@ public:
 	people* returnp2arr()const;
 	people* returnp2rearr()const;
 	void writegame(const std::string&);
+	bool& reviselookanswer();
+	bool returnlookanswer();
 private:
 	people p1, p2;
 	int run;
 	people* p1array = nullptr;
 	people* p2array = nullptr;
 	people* p2relative = nullptr;
+	bool iflookanswer = 0;
 };
 
 #endif // !GAME_H

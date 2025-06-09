@@ -77,6 +77,14 @@ void game::setp2relative(people*& p1, people*&p2, people*&p3,const int& run)
 	}
 
 }
+bool& game::reviselookanswer() 
+{
+	return this->iflookanswer;
+}
+bool game::returnlookanswer() 
+{
+	return this->iflookanswer;
+}
 bool game::ifpass(people*& p1, const int& num)const 
 {
 	for (int i = this->getrun() - 1; i > num; i--) 
