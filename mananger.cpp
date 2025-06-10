@@ -2170,6 +2170,10 @@ void Mananger::drawYesPPlayerCreate(game& g1)
 					closegraph();
 					break;
 				}
+				else 
+				{
+					name = "";
+				}
 				closegraph();
 			}
 				g1.writegame(name);
